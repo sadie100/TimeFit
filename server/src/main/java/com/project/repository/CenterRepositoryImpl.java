@@ -1,9 +1,9 @@
 package com.project.repository;
 
+import com.project.domain.Center;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.project.domain.Item;
-import com.project.request.ItemSearch;
+import com.project.request.CenterSearch;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +14,12 @@ import static com.project.domain.QItem.item;
 
 @RequiredArgsConstructor //자동으로 생성자 주입
 @ToString
-public class ItemRepositoryImpl implements ItemRepositoryCustom{
+public class CenterRepositoryImpl implements CenterRepositoryCustom {
 
 
     private final JPAQueryFactory jpaQueryFactory;
     @Override
-    public List<Item> getList(ItemSearch itemSearch){
+    public List<Center> getList(CenterSearch itemSearch){
         //JPAQueryFactory의 내무 메소드를 통해 페이지 규격 설정
         return jpaQueryFactory
                 .selectFrom(item)
@@ -34,14 +34,6 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom{
                 .fetch();
     }
 
-    //BooleanExpression을 통한 동적 쿼리문 작성
-//    private BooleanExpression eqtopNotes(List<String> topNotes){
-//        if(topNotes == null){
-//            return null;
-//        }
-//        item.topNotes.in(topNotes).and(item.topNotes.like("11"));
-//        return item.topNotes.in(topNotes);
-//    }
 
     private BooleanExpression eqbrand(List<String> brand){
         if(brand == null){
@@ -49,14 +41,6 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom{
         }
         return item.brand.in(brand);
     }
-
-//    private BooleanExpression search(List<String> searchKey){
-//        if(searchKey == null){
-//            return null;
-//        }
-//        return item.brand.like(searchKey.toString())
-//                .and(item.topNotes.contains(searchKey.toString()));
-//    }
 
 
 //    private BooleanExpression goeMinPrice(Integer minPrice){

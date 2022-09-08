@@ -1,16 +1,15 @@
 package com.project.response;
 
-import com.project.domain.Item;
+import com.project.domain.Center;
 import lombok.Getter;
 
 //응답 처리를 위한 클래스 생성
 @Getter
-public class ItemResponse {
+public class CenterResponse {
     private final String path = "/resources/static/img/";
     private final Long id;
     private final String name;
 
-    private final String brand;
     private final String mainImg;
 
 
@@ -24,10 +23,9 @@ public class ItemResponse {
 //        this.mainImg = path+name+"main.jpg";
 //    }
 
-    public ItemResponse(Item item) {
+    public CenterResponse(Center item) {
         this.id = item.getId();
         this.name = item.getName();
-        this.brand = item.getBrand();
         this.mainImg = path+item.getName()+"/main.jpg";
     }
 }

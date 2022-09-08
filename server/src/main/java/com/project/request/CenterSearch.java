@@ -13,7 +13,7 @@ import static java.lang.Math.min;
 //페이지서치를 위한 클래스 구현
 @Getter //getter, setter 사용
 @Setter
-public class ItemSearch {
+public class CenterSearch {
 
     private static final int MAX_SIZE = 2000;
 
@@ -27,7 +27,7 @@ public class ItemSearch {
 
 
     @Builder
-    public ItemSearch(Integer page, Integer size, List<String> topNotes, List<String> brand, List<String> searchKey) {
+    public CenterSearch(Integer page, Integer size, List<String> topNotes, List<String> brand, List<String> searchKey) {
         this.page = page == null ? 1 : page;
         this.size = size == null ? 10 :size;
         this.topNotes = topNotes;

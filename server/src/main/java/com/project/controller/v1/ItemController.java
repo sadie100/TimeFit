@@ -1,13 +1,11 @@
 package com.project.controller.v1;
 
 
-import com.project.request.ItemCommentCreate;
-import com.project.request.ItemSearch;
-import com.project.response.ItemCommentResponse;
-import com.project.response.ItemDetailResponse;
-import com.project.response.ItemImgResponse;
-import com.project.response.ItemResponse;
-import com.project.service.ItemService;
+import com.project.request.CenterSearch;
+import com.project.response.CenterDetailResponse;
+import com.project.response.CenterImgResponse;
+import com.project.response.CenterResponse;
+import com.project.service.CenterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,20 +19,20 @@ import java.util.List;
 @RequiredArgsConstructor ////lombok을 통해 생성자처리
 public class ItemController {
 
-    private final ItemService itemService;
+    private final CenterService itemService;
 
     @GetMapping("/items")
-    public List<ItemResponse> getList(@ModelAttribute ItemSearch itemSearch){
+    public List<CenterResponse> getList(@ModelAttribute CenterSearch itemSearch){
         return itemService.getList(itemSearch);
     }
 
     @GetMapping("/items/{itemId}")
-    public ItemDetailResponse get(@PathVariable Long itemId){
+    public CenterDetailResponse get(@PathVariable Long itemId){
         itemService.updateView(itemId);
         return itemService.get(itemId);
     }
     @GetMapping("/items/{itemId}/img")
-    public List<ItemImgResponse> getImg(@PathVariable Long itemId){
+    public List<CenterImgResponse> getImg(@PathVariable Long itemId){
         return itemService.getImg(itemId);
     }
     @GetMapping("/items/{itemId}/comments") //User
