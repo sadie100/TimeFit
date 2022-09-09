@@ -1,6 +1,7 @@
 package com.project.repository;
 
 import com.project.domain.Center;
+import com.project.domain.QCenter;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.project.request.CenterSearch;
@@ -10,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.project.domain.QItem.item;
+import static com.project.domain.QCenter.center;
+
 
 @RequiredArgsConstructor //자동으로 생성자 주입
 @ToString
@@ -22,25 +24,18 @@ public class CenterRepositoryImpl implements CenterRepositoryCustom {
     public List<Center> getList(CenterSearch itemSearch){
         //JPAQueryFactory의 내무 메소드를 통해 페이지 규격 설정
         return jpaQueryFactory
-                .selectFrom(item)
+                .selectFrom(center)
                 .where(
 //                        eqtopNotes(itemSearch.getTopNotes()),
-                        eqbrand(itemSearch.getBrand())
 //                        search(itemSearch.getSearchKey())
                 )
                 .limit(itemSearch.getSize())
                 .offset(itemSearch.getOffset())
-                .orderBy(item.id.desc())
+                .orderBy(center.id.desc())
                 .fetch();
     }
 
 
-    private BooleanExpression eqbrand(List<String> brand){
-        if(brand == null){
-            return null;
-        }
-        return item.brand.in(brand);
-    }
 
 
 //    private BooleanExpression goeMinPrice(Integer minPrice){
@@ -58,9 +53,9 @@ public class CenterRepositoryImpl implements CenterRepositoryCustom {
     @Override
     @Transactional
     public void updateView(Long itemId){
-        jpaQueryFactory.update(item)
-                .set(item.view, item.view.add(1))
-                .where(item.id.eq(itemId))
+        jpaQueryFactory.update(center)
+                .set(center.view, center.view.add(1))
+                .where(center.id.eq(itemId))
                 .execute();
 
     }

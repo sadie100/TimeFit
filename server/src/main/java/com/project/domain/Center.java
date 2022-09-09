@@ -24,13 +24,8 @@ public class Center {
     private String city;
     private String address;
 
-
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
-
-    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @OrderBy("id asc")
-    private Set<ItemComment> comments;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @OrderBy("id asc")
