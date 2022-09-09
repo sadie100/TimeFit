@@ -38,7 +38,7 @@ class CenterControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private CenterRepository itemRepository;
+    private CenterRepository centerRepository;
 
 
 
@@ -49,114 +49,116 @@ class CenterControllerTest {
 
     @BeforeEach
     void clean(){
-        itemRepository.deleteAll();
+        centerRepository.deleteAll();
         itemImgRepository.deleteAll();
         userRepository.deleteAll();
     }
 
     @Test
-    @DisplayName("아이템 페이지 조회")
+    @DisplayName("센터 페이지 조회")
     void test1() throws Exception {
         //given
-        List<Center> requestItems = IntStream.range(0,20)
+        List<Center> requestCenter = IntStream.range(0,20)
                 .mapToObj(i -> Center.builder()
-                        .name("상품" +i)
+                        .name("센터" +i)
+                        .region("서울")
+                        .price(i*10000)
                         .build()).collect(Collectors.toList());
-        itemRepository.saveAll(requestItems);
+        centerRepository.saveAll(requestCenter);
 
         //expected
-        mockMvc.perform(get("/items")
+        mockMvc.perform(get("/centers")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()",is(10)))
-                .andExpect(jsonPath("$[0].name").value("상품19"))
-                .andExpect(jsonPath("$[0].brand").value("브랜드19"))
+                .andExpect(jsonPath("$[0].name").value("센터19"))
                 .andDo(print());
 
     }
     @Test
-    @DisplayName("아이템 페이지 조회/페이지,갯수 추가")
+    @DisplayName("센터 페이지 조회/페이지,갯수 추가")
     void test2() throws Exception {
         //given
-        List<Center> requestItems = IntStream.range(0,20)
+        List<Center> requestCenter = IntStream.range(0,20)
                 .mapToObj(i -> Center.builder()
-                        .name("상품" +i)
+                        .name("센터" +i)
                         .build()).collect(Collectors.toList());
-        itemRepository.saveAll(requestItems);
+        centerRepository.saveAll(requestCenter);
 
         //expected
-        mockMvc.perform(get("/items?page=2&size=10")
+        mockMvc.perform(get("/centers?page=2&size=10")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()",is(10)))
-                .andExpect(jsonPath("$[0].name").value("상품9"))
-                .andExpect(jsonPath("$[0].brand").value("브랜드9"))
+                .andExpect(jsonPath("$[0].name").value("센터9"))
+
                 .andDo(print());
 
     }
     @Test
-    @DisplayName("아이템 필터링 조회")
+    @DisplayName("센터 필터링 조회")
     void test3() throws Exception {
         //given
         List<Center> requestItems = IntStream.range(0,20)
                 .mapToObj(i -> Center.builder()
-                        .name("상품" +i)
+                        .name("센터" +i)
+                        .region("도시"+i)
                         .build()).collect(Collectors.toList());
-        itemRepository.saveAll(requestItems);
+        centerRepository.saveAll(requestItems);
 
         //expected
-        mockMvc.perform(get("/items?page=1&size=10&brand=브랜드1,브랜드2")
+        mockMvc.perform(get("/centers?page=1&size=10&region=도시1")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].brand").value("브랜드2"))
+                .andExpect(jsonPath("$[0].name").value("센터1"))
                 .andDo(print());
 
     }
 
     @Test
-    @DisplayName("아이템 상세정보")
+    @DisplayName("센터 상세정보")
     void test4() throws Exception {
         //given
-        Center item = Center.builder()
-                .name("상품")
+        Center center = Center.builder()
+                .name("센터")
                 .build();
 
-        itemRepository.save(item);
+        centerRepository.save(center);
 
         //expected
-        mockMvc.perform(get("/items/{itemId}",item.getId())
+        mockMvc.perform(get("/centers/{centerId}",center.getId())
                     .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(item.getId()))
-                .andExpect(jsonPath("$.name").value("상품"))
+                .andExpect(jsonPath("$.id").value(center.getId()))
+                .andExpect(jsonPath("$.name").value("센터"))
                 .andDo(print());
 
     }
 
     @Test
-    @DisplayName("아이템 상세정보 이미지")
+    @DisplayName("센터 상세정보 이미지")
     void test5() throws Exception {
         //given
-        Center item = Center.builder()
+        Center center = Center.builder()
                 .name("상품")
                 .build();
 
-        itemRepository.save(item);
+        centerRepository.save(center);
 
         CenterImages images1 = CenterImages.builder()
                 .originFileName("123")
                 .newFileName("123")
-                .item(item).build();
+                .item(center).build();
         itemImgRepository.save(images1);
 
         CenterImages images2 = CenterImages.builder()
                 .originFileName("456")
                 .newFileName("444")
-                .item(item).build();
+                .item(center).build();
         itemImgRepository.save(images2);
 
         //expected
-        mockMvc.perform(get("/items/{itemId}/img",item.getId())
+        mockMvc.perform(get("/items/{itemId}/img",center.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

@@ -20,18 +20,26 @@ public class CenterSearch {
 
     private Integer page;
     private Integer size;
+    private String region;
+    private Integer minPrice;
+    private Integer maxPrice;
 
-    private List<String> topNotes;
-    private List<String> brand;
+    private Long equipmentId;
+    private Integer minNumber;
+
     private List<String> searchKey;
 
 
     @Builder
-    public CenterSearch(Integer page, Integer size, List<String> topNotes, List<String> brand, List<String> searchKey) {
+    public CenterSearch(Integer page, Integer size, String region,Integer maxPrice, Integer minPrice,
+                        Long equipmentId, Integer minNumber, List<String> searchKey) {
         this.page = page == null ? 1 : page;
         this.size = size == null ? 10 :size;
-        this.topNotes = topNotes;
-        this.brand = brand;
+        this.region = region;
+        this.maxPrice = maxPrice;
+        this.minPrice = minPrice;
+        this.equipmentId = equipmentId;
+        this.minNumber = minNumber;
         this.searchKey = searchKey;
     }
 

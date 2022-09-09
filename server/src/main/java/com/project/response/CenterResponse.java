@@ -6,11 +6,9 @@ import lombok.Getter;
 //응답 처리를 위한 클래스 생성
 @Getter
 public class CenterResponse {
-    private final String path = "/resources/static/img/";
     private final Long id;
     private final String name;
-
-    private final String mainImg;
+    private final String address;
 
 
 //    @Builder //빌더 패턴 새용
@@ -23,9 +21,9 @@ public class CenterResponse {
 //        this.mainImg = path+name+"main.jpg";
 //    }
 
-    public CenterResponse(Center item) {
-        this.id = item.getId();
-        this.name = item.getName();
-        this.mainImg = path+item.getName()+"/main.jpg";
+    public CenterResponse(Center center) {
+        this.id = center.getId();
+        this.name = center.getName();
+        this.address = center.getAddress();
     }
 }
