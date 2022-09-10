@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -15,16 +16,16 @@ import java.util.List;
 public class ReservationController {
 
         private final ReservationService reservationService;
-        @PostMapping("/centers/{centerId}")
-        public List<ReservationResponse> requestReserve(@ModelAttribute ReservationRequest reservationRequest,
-                                   @ModelAttribute ReservationRequest request){
-            reservationService.requestReservation(request);
-            return reservationService.getReservation(request);
+        @PostMapping("/centers/{centerId}/reserve")
+        public HashMap<Long,List<ReservationResponse>> requestReserve(@PathVariable Long centerId,
+                                                                      @ModelAttribute ReservationRequest request){
+            reservationService.requestReservation(centerId, request);
+            return reservationService.getReservation(centerId, request);
         }
 
-        @GetMapping("/center/{centerId}")
-        public List<ReservationResponse> getReservation(@PathVariable Long centerId,
+        @GetMapping("/center/{centerId}/reserve")
+        public HashMap<Long,List<ReservationResponse>> getReservation(@PathVariable Long centerId,
                                                         @ModelAttribute ReservationRequest request){
-            return reservationService.getReservation(request);
+            return reservationService.getReservation(centerId,request);
         }
 }

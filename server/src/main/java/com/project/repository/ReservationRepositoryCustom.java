@@ -7,10 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface ReservationRepositoryCustom {
-    boolean check(ReservationRequest reservationRequest);
+    boolean check(Long id, ReservationRequest reservationRequest);
 
-    List<Reservation> getReserve(ReservationRequest request);
+    List<Reservation> getReserve(Long id, ReservationRequest request);
 
-    @Transactional
-    void saveReservation(ReservationRequest request);
+//    void saveReservation(Long id, ReservationRequest request);
 }

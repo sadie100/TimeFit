@@ -39,18 +39,15 @@ class CenterControllerTest {
 
     @Autowired
     private CenterRepository centerRepository;
-
-
-
     @Autowired
-    private CenterImgRepository itemImgRepository;
+    private CenterImgRepository centerImgRepository;
     @Autowired
     private UserRepository userRepository;
 
     @BeforeEach
     void clean(){
         centerRepository.deleteAll();
-        itemImgRepository.deleteAll();
+        centerImgRepository.deleteAll();
         userRepository.deleteAll();
     }
 
@@ -135,34 +132,34 @@ class CenterControllerTest {
 
     }
 
-    @Test
-    @DisplayName("센터 상세정보 이미지")
-    void test5() throws Exception {
-        //given
-        Center center = Center.builder()
-                .name("상품")
-                .build();
-
-        centerRepository.save(center);
-
-        CenterImages images1 = CenterImages.builder()
-                .originFileName("123")
-                .newFileName("123")
-                .item(center).build();
-        itemImgRepository.save(images1);
-
-        CenterImages images2 = CenterImages.builder()
-                .originFileName("456")
-                .newFileName("444")
-                .item(center).build();
-        itemImgRepository.save(images2);
-
-        //expected
-        mockMvc.perform(get("/items/{itemId}/img",center.getId())
-                        .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+//    @Test
+//    @DisplayName("센터 상세정보 이미지")
+//    void test5() throws Exception {
+//        //given
+//        Center center = Center.builder()
+//                .name("상품")
+//                .build();
+//
+//        centerRepository.save(center);
+//
+//        CenterImages images1 = CenterImages.builder()
+//                .originFileName("123")
+//                .newFileName("123")
+//                .item(center).build();
+//        itemImgRepository.save(images1);
+//
+//        CenterImages images2 = CenterImages.builder()
+//                .originFileName("456")
+//                .newFileName("444")
+//                .item(center).build();
+//        itemImgRepository.save(images2);
+//
+//        //expected
+//        mockMvc.perform(get("/centers/{centerId}/img",center.getId())
+//                        .contentType(APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andDo(print());
+//    }
 
 
 }

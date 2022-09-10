@@ -24,17 +24,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class CenterServiceTest {
 
     @Autowired
-    private CenterService itemService;
+    private CenterService centerService;
 
     @Autowired
-    private CenterRepository itemRepository;
+    private CenterRepository centerRepository;
 
     @Autowired
-    private CenterImgRepository itemImgRepository;
+    private CenterImgRepository centerImgRepository;
 
     @BeforeEach
     void clean(){
-        itemRepository.deleteAll();
+        centerRepository.deleteAll();
+        centerImgRepository.deleteAll();
     }
 
     @Test
@@ -44,10 +45,10 @@ class CenterServiceTest {
                 .name("상품")
                 .build();
 
-        itemRepository.save(requestItem);
+        centerRepository.save(requestItem);
 
-        Assertions.assertEquals(1L,itemRepository.count());
-        Center item = itemRepository.findAll().get(0);
+        Assertions.assertEquals(1L,centerRepository.count());
+        Center item = centerRepository.findAll().get(0);
         assertEquals("상품", item.getName());
     }
 
@@ -59,13 +60,13 @@ class CenterServiceTest {
                 .mapToObj(i -> Center.builder()
                         .name("상품 " +i)
                         .build()).collect(Collectors.toList());
-        itemRepository.saveAll(requestItems);
+        centerRepository.saveAll(requestItems);
         CenterSearch itemSearch = CenterSearch.builder()
                 .page(1)
                 .build();
 
         //when
-        List<CenterResponse> items = itemService.getList(itemSearch);
+        List<CenterResponse> items = centerService.getList(itemSearch);
 
         //then
         assertEquals(10L, items.size());
@@ -74,35 +75,35 @@ class CenterServiceTest {
 
 
     }
-    @Test
-    @DisplayName("아이템 이미지 불러오기")
-    void test3(){
-        //given
-        Center requestItem = Center.builder()
-                .name("상품")
-                .build();
-
-        itemRepository.save(requestItem);
-
-
-
-        CenterImages images1 = CenterImages.builder()
-                .originFileName("123")
-                .newFileName("123")
-                .item(requestItem).build();
-        itemImgRepository.save(images1);
-
-        CenterImages images2 = CenterImages.builder()
-                .originFileName("456")
-                .newFileName("444")
-                .item(requestItem).build();
-        itemImgRepository.save(images2);
-
-        Center item = itemRepository.findAll().get(0);
-        assertEquals("상품", item.getName());
-        Set<CenterImages> itemImages = item.getImages();
-        System.out.println(item.getImages());
-    }
+//    @Test
+//    @DisplayName("아이템 이미지 불러오기")
+//    void test3(){
+//        //given
+//        Center requestItem = Center.builder()
+//                .name("상품")
+//                .build();
+//
+//        centerRepository.save(requestItem);
+//
+//
+//
+//        CenterImages images1 = CenterImages.builder()
+//                .originFileName("123")
+//                .newFileName("123")
+//                .item(requestItem).build();
+//        centerImgRepository.save(images1);
+//
+//        CenterImages images2 = CenterImages.builder()
+//                .originFileName("456")
+//                .newFileName("444")
+//                .item(requestItem).build();
+//        centerImgRepository.save(images2);
+//
+//        Center item = centerRepository.findAll().get(0);
+//        assertEquals("상품", item.getName());
+//        Set<CenterImages> itemImages = item.getImages();
+//        System.out.println(item.getImages());
+//    }
 
 
 }

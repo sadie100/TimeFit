@@ -21,7 +21,7 @@ public class Reservation {
     private Center center;
 
     @ManyToOne
-    @JoinColumn(name="equipment_id")
+    @JoinColumn(name="center_equipmentId")
     private CenterEquipment equipment;
 
     private LocalDateTime start;
