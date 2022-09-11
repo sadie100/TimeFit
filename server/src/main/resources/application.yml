@@ -30,3 +30,9 @@ spring:
     host: 127.0.0.1
     port: 6379
     timeout: 3000 #ms connection timeout
+
+  servlet:
+    multipart:
+      location: c:\\Temp\\upload
+      maxFileSize: 200MB
+      maxRequestSize: 100MB

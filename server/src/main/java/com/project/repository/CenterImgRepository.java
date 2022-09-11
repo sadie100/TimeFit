@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface CenterImgRepository extends JpaRepository<CenterImages, Long> {
     List<CenterImages> findByItem(Center item);
+
 }

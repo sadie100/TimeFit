@@ -2,10 +2,7 @@ package com.project.controller.v1;
 
 import com.project.domain.User;
 import com.project.exception.CookieNotFoundException;
-import com.project.request.CenterSignUp;
-import com.project.request.TokenRequest;
-import com.project.request.UserSignIn;
-import com.project.request.UserSignUp;
+import com.project.request.*;
 import com.project.response.CommonResult;
 import com.project.response.TokenResponse;
 import com.project.service.ResponseService;
@@ -15,13 +12,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.project.exception.UserExistException;
 
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -40,8 +42,8 @@ public class SignController {
         return responseService.getSuccessResult();
     }
 
-    @PostMapping("/signup")
-    public CommonResult signUp(@RequestBody @Valid CenterSignUp request) {
+    @PostMapping("/signup-center")
+    public CommonResult signUpCenter(@RequestBody @Valid CenterSignUp request) {
 //        request.setPassword(passwordEncoder.encode(request.getPassword()));
         signService.join(request);
         return responseService.getSuccessResult();
@@ -150,8 +152,6 @@ public class SignController {
                 getSingleResult(tokenResponse);
     }
 
-
-
     @GetMapping("/signin/find-email")
     public CommonResult findEmail(@RequestParam String phoneNumber) {
         Optional<User> user = signService.getByPhoneNumner(phoneNumber);
@@ -162,6 +162,18 @@ public class SignController {
         Optional<User> user = signService.getByEmail(email);
         return responseService.getSuccessResult();
     }
+
+    @GetMapping("/check")
+    public CommonResult tempCheck(@RequestParam String number) {
+        return responseService.getSuccessResult();
+    }
+
+    @PostMapping("/signup-trainer")
+    public CommonResult addTrainer(@RequestBody ArrayList<Object> trainer) {
+        System.out.println(trainer);
+        return responseService.getSuccessResult();
+    }
+
 
 }
 

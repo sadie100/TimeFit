@@ -7,6 +7,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -44,12 +46,11 @@ public class User implements UserDetails {
     @Column(length = 15)
     private String phoneNumber;
 
-    @Column(length = 100)
+    @Column(length = 2)
     private String gender;
 
     @Column(name = "DATETIME_FIELD")
-    private java.sql.Timestamp birth;
-
+    private Timestamp birth;
 
 
 
