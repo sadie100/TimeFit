@@ -1,3 +1,5 @@
 export default {
-  color: "blue",
+  main: {
+    color: "rgb(237, 125, 49)",
+  },
 };
