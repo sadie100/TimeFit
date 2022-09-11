@@ -24,6 +24,8 @@ public class Center {
     private String city;
     private String address;
 
+    private String storeNumber;
+
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
 

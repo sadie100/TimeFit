@@ -49,7 +49,6 @@ public class CenterService {
     }
 
 
-
     public void updateView(Long itemId) {
         itemRepository.updateView(itemId);
     }

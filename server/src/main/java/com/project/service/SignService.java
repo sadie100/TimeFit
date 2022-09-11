@@ -1,10 +1,13 @@
 package com.project.service;
 
 import com.project.config.security.JwtTokenProvider;
+import com.project.domain.Center;
 import com.project.domain.User;
 import com.project.exception.EmailSigninFailedException;
 import com.project.exception.UserNotFoundException;
+import com.project.repository.CenterRepository;
 import com.project.repository.UserRepository;
+import com.project.request.CenterSignUp;
 import com.project.request.TokenRequest;
 import com.project.request.UserSignIn;
 import com.project.request.UserSignUp;
@@ -29,6 +32,7 @@ public class SignService  {
 
     private final UserRepository userRepository;
 
+    private final CenterRepository centerRepository;
 
     @Autowired
     private final PasswordEncoder passwordEncoder;
@@ -46,18 +50,42 @@ public class SignService  {
 //    }
     // 현재는 여기서 loadUserByUsername를 구현하지 않음
     public void join(UserSignUp request){
-
         User user= User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .phoneNumber(request.getPhoneNumber())
                 .name(request.getName())
+                .birth(request.getBirth())
+                .gender(request.getGender())
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();
         userRepository.save(user);
     }
 
+    public void join(CenterSignUp request){
+        User user= User.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .phoneNumber(request.getPhoneNumber())
+                .roles(Collections.singletonList("ROLE_CENTER"))
+                .build();
+        userRepository.save(user);
+
+        Center center= Center.builder()
+                .name(request.getName())
+                .city(request.getCity())
+                .address(request.getAddress())
+//                .storeNumber(request.getStoreNumber())
+                .build();
+
+        centerRepository.save(center);
+    }
+
     public Optional<User> getByEmail(String request){
         return userRepository.findByEmail(request);
+    }
+    public Optional<User> getByPhoneNumner(String request){
+        return userRepository.findByPhoneNumber(request);
     }
 
     public TokenResponse signIn(UserSignIn request){

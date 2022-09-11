@@ -41,12 +41,14 @@ public class User implements UserDetails {
     @Column(length = 100)
     private String provider;
 
+    @Column(length = 15)
+    private String phoneNumber;
 
     @Column(length = 100)
     private String gender;
 
-    @Column(length = 100)
-    private int age;
+    @Column(name = "DATETIME_FIELD")
+    private java.sql.Timestamp birth;
 
 
 

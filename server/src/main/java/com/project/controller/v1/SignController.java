@@ -2,6 +2,7 @@ package com.project.controller.v1;
 
 import com.project.domain.User;
 import com.project.exception.CookieNotFoundException;
+import com.project.request.CenterSignUp;
 import com.project.request.TokenRequest;
 import com.project.request.UserSignIn;
 import com.project.request.UserSignUp;
@@ -32,12 +33,49 @@ public class SignController {
     private final SignService signService;
 
 
+    @PostMapping("/signup")
+    public CommonResult signUp(@RequestBody @Valid UserSignUp request) {
+//        request.setPassword(passwordEncoder.encode(request.getPassword()));
+        signService.join(request);
+        return responseService.getSuccessResult();
+    }
+
+    @PostMapping("/signup")
+    public CommonResult signUp(@RequestBody @Valid CenterSignUp request) {
+//        request.setPassword(passwordEncoder.encode(request.getPassword()));
+        signService.join(request);
+        return responseService.getSuccessResult();
+    }
+
+
+    @GetMapping("/signup/check-email")
+    public CommonResult checkEmail(@RequestParam String email) {
+//        request.setPassword(passwordEncoder.encode(request.getPassword()));
+        System.out.println(email);
+        Optional<User> user =signService.getByEmail(email);
+        System.out.println(user);
+        if(user.isEmpty()==false) throw new UserExistException("이메일이 중복되었습니다");
+        //1. 인증번호 전송 로직
+        //2. 인증번호 받기
+        //3. 인증 처리
+        return responseService.getSuccessResult();
+    }
+
+
+    @PostMapping("/signup/{provider}")
+    public CommonResult signupProvider( @PathVariable String provider,
+                                        @RequestParam String accessToken,
+                                        @RequestParam String name) {
+        signService.joinByKakao(provider, accessToken, name);
+        return responseService.getSuccessResult();
+    }
+
     @PostMapping("/signin")
     public SingleResult<TokenResponse> signIn(@RequestBody @Valid UserSignIn request, HttpServletResponse response) {
         System.out.println("로그인을 시도");
         //Access Token, RefreshToken 발행
         TokenResponse tokenResponse = signService.signIn(request);
-        
+
         Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
         accessCookie.setPath("/");
         //테스트를 위해 잠시 주석 처리
@@ -67,22 +105,6 @@ public class SignController {
         cookie.setPath("/");
         response.addCookie(cookie);
         return responseService.getSuccessResult();
-    }
-    @PostMapping("/signup")
-    public CommonResult signup(@RequestBody @Valid UserSignUp request) {
-//        request.setPassword(passwordEncoder.encode(request.getPassword()));
-        signService.join(request);
-        return responseService.getSuccessResult();
-    }
-
-    @GetMapping("/signup/check-email")
-    public CommonResult checkEmail(@RequestParam String email) {
-//        request.setPassword(passwordEncoder.encode(request.getPassword()));
-        System.out.println(email);
-        Optional<User> user =signService.getByEmail(email);
-        System.out.println(user);
-        if(user.isEmpty()==true) return responseService.getSuccessResult();
-        else throw new UserExistException("이메일이 중복되었습니다");
     }
 
     @GetMapping("/reissue")
@@ -128,78 +150,21 @@ public class SignController {
                 getSingleResult(tokenResponse);
     }
 
-    @PostMapping("/signup/{provider}")
-    public CommonResult signupProvider( @PathVariable String provider,
-                                       @RequestParam String accessToken,
-                                    @RequestParam String name) {
-        signService.joinByKakao(provider, accessToken, name);
+
+
+    @GetMapping("/signin/find-email")
+    public CommonResult findEmail(@RequestParam String phoneNumber) {
+        Optional<User> user = signService.getByPhoneNumner(phoneNumber);
         return responseService.getSuccessResult();
     }
-
+    @GetMapping("/signin/find-password")
+    public CommonResult findPassword(@RequestParam String email) {
+        Optional<User> user = signService.getByEmail(email);
+        return responseService.getSuccessResult();
+    }
 
 }
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-//    @PostMapping(value = "/signin")
-//    public ResponseEntity<?> signin(@RequestBody @Valid UserSignIn request, HttpServletResponse response) {
-//        User user = signService.comparePassword(request);
-//        String accessToken = jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles());
-////        final Cookie cookie = new Cookie("X-AUTH-TOKEN", accessToken);
-////        cookie.setMaxAge(7 * 24 * 60 * 60);
-////        cookie.setSecure(true);
-////        cookie.setHttpOnly(true);
-////        cookie.setPath("/");
-//        response.addHeader("X-AUTH-TOKEN",accessToken);
-//        return new ResponseEntity<>(accessToken, HttpStatus.OK);
-//    }
-//    @PostMapping(value = "/signin")
-//    public SingleResult<String> signin(@RequestBody @Valid UserSignIn request) {
-//        User user = userJpaRepo.findByEmail(request.getEmail()).orElseThrow(CEmailSigninFailedException::new);
-//        if (!passwordEncoder.matches(request.getPassword(), user.getPassword()))
-//            throw new CEmailSigninFailedException();
-//
-//        return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles()));
-//
-//    }
-//    @PostMapping(value = "/signin-kakao/{provider}")
-//    public SingleResult<String> signinkakao(
-//            @PathVariable String provider,
-//            @RequestParam String accessToken) {
-//        User user = userService.kakaoLogin(provider,accessToken);
-//        return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles()));
-//    }
-//    @PostMapping(value = "/signin/{provider}")
-//    public SingleResult<String> signinByProvider(
-//            @PathVariable String provider,
-//            @RequestParam String accessToken) {
-//
-//        KakaoProfile profile = kakaoService.getKakaoProfile(accessToken);
-//        User user = userJpaRepo.findByEmailAndProvider(String.valueOf(profile.getId()), provider).orElseThrow(UserNotFoundException::new);
-//        return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles()));
-//    }
-
-
-//    @PostMapping(value = "/reissue")
-//    public CommonResult reissue(HttpServletRequest request, HttpServletResponse response) {
-//        TokenResponse tokenResponse = signService.reissue(request);
-//        Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
-//        accessCookie.setPath("/");
-//        response.addCookie(accessCookie);
-////        Cookie refreshCookie = new Cookie("RefreshToken", tokenResponse.getRefreshToken());
-////        refreshCookie.setPath("/");
-////        response.addCookie(refreshCookie);
-//        return responseService.getSuccessResult();
-//    }
