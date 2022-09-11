@@ -3,16 +3,17 @@ package com.project.response;
 import com.project.domain.Reservation;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 public class ReservationResponse {
 
-    private Long equipmentId;
-    private Long name;
-    private List<ReservationTime> reservationTime;
+    private LocalDateTime start;
+    private LocalDateTime end;
 
     public ReservationResponse(Reservation reservation){
-        this.equipmentId = reservation.getId();
+        this.start = reservation.getStart();
+        this.end = reservation.getEnd();
     }
 }

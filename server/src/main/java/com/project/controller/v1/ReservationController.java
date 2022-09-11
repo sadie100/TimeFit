@@ -16,9 +16,9 @@ import java.util.List;
 public class ReservationController {
 
         private final ReservationService reservationService;
-        @PostMapping("/centers/{centerId}/reserve")
+        @PostMapping("/center/{centerId}/reserve")
         public HashMap<Long,List<ReservationResponse>> requestReserve(@PathVariable Long centerId,
-                                                                      @ModelAttribute ReservationRequest request){
+                                                                      @RequestBody ReservationRequest request){
             reservationService.requestReservation(centerId, request);
             return reservationService.getReservation(centerId, request);
         }

@@ -9,7 +9,7 @@ import java.util.List;
 public interface ReservationRepositoryCustom {
     boolean check(Long id, ReservationRequest reservationRequest);
 
-    List<Reservation> getReserve(Long id, ReservationRequest request);
+    List<Reservation> getReserve(Long id, Long equipment);
 
 //    void saveReservation(Long id, ReservationRequest request);
 }

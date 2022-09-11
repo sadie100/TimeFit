@@ -4,6 +4,7 @@ import com.project.domain.Center;
 import com.project.domain.CenterEquipment;
 import com.project.domain.Reservation;
 import com.project.exception.CenterNotFound;
+import com.project.exception.ReservationExist;
 import com.project.repository.CenterEquipmentRepository;
 import com.project.repository.CenterRepository;
 import com.project.repository.ReservationRepository;
@@ -33,11 +34,13 @@ public class ReservationService {
     }
 
     public HashMap<Long,List<ReservationResponse>> getReservation(Long id, ReservationRequest request){
-        HashMap<Long,List<ReservationResponse>> reservationList = null;
+        HashMap<Long,List<ReservationResponse>> reservationList = new HashMap<Long,List<ReservationResponse>>();
         for(Long equipment : request.getEquipments()){
-            reservationList.put(equipment,reservationRepository.getReserve(id, request).stream()
+            List<ReservationResponse> rv = reservationRepository.getReserve(id, equipment).stream()
                     .map(ReservationResponse::new)
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toList());
+
+            reservationList.put(equipment,rv);
         }
         return reservationList;
     }
@@ -47,9 +50,12 @@ public class ReservationService {
 //                .map(ReservationResponse::new)
 //                .collect(Collectors.toList());
 //    }
-    public void requestReservation(Long id, ReservationRequest request) {
+    public void requestReservation(Long id, ReservationRequest request){
         //예약 있을 시 예외처리 필요함
-        if(!reservationRepository.check(id, request)) return;
+
+        if(!reservationRepository.check(id, request)){
+            throw new ReservationExist();
+        }
         Center center = centerRepository.findById(id)
                 .orElseThrow(CenterNotFound::new);
         CenterEquipment ce = centerEquipmentRepository.findById(request.getEquipmentId())
