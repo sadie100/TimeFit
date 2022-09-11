@@ -3,6 +3,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 
 export const LoadingContext = createContext({
+  loading: false,
   startLoading: () => {},
   endLoading: () => {},
 });
@@ -15,26 +16,16 @@ const LoadingContextProvider = (props) => {
   const endLoading = () => {
     setLoading(false);
   };
-  axios.interceptors.request.use(() => {
-    return startLoading();
-  });
-  axios.interceptors.response.use(
-    (response) => {
-      return endLoading();
-    },
-    (error) => {
-      return endLoading();
-    }
-  );
+
   return (
     <LoadingContext.Provider
       value={{
+        loading,
         startLoading,
         endLoading,
       }}
-    >
-      {loading ? <CircularProgress /> : props.children}
-    </LoadingContext.Provider>
+      {...props}
+    ></LoadingContext.Provider>
   );
 };
 export default LoadingContextProvider;
