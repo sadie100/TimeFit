@@ -16,6 +16,7 @@ public class ReservationRequest {
     private final List<Long> equipments;
     private final LocalDateTime start;
     private final LocalDateTime end;
+//    private final Long reservationId;
 
 
 }

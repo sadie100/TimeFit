@@ -28,4 +28,11 @@ public class ReservationController {
                                                         @ModelAttribute ReservationRequest request){
             return reservationService.getReservation(centerId,request);
         }
+
+        @DeleteMapping("/center/{centerId}/reserve")
+        public HashMap<Long,List<ReservationResponse>> cancelReservation(@PathVariable Long centerId,
+                                                                         @ModelAttribute ReservationRequest request){
+            reservationService.cancelReservation(centerId,request);
+            return reservationService.getReservation(centerId,request);
+        }
 }

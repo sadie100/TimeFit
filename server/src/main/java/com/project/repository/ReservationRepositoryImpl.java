@@ -29,7 +29,7 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
                         reservation.equipment.id.eq(request.getEquipmentId()),
                         reservation.start.between(request.getStart(),request.getEnd())
                                 .or(reservation.end.between(request.getStart(),request.getStart()))                        )
-                .fetch() == null)
+                .fetch().size() == 0)
             return true;
         return false;
     }

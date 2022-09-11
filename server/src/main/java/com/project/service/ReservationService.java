@@ -27,12 +27,6 @@ public class ReservationService {
     private final CenterRepository centerRepository;
     private final CenterEquipmentRepository centerEquipmentRepository;
 
-    public boolean reserve(Long id, ReservationRequest reservationRequest){
-        if (!reservationRepository.check(id, reservationRequest))
-            return false;
-        return true;
-    }
-
     public HashMap<Long,List<ReservationResponse>> getReservation(Long id, ReservationRequest request){
         HashMap<Long,List<ReservationResponse>> reservationList = new HashMap<Long,List<ReservationResponse>>();
         for(Long equipment : request.getEquipments()){
@@ -67,5 +61,9 @@ public class ReservationService {
                 .end(request.getEnd())
                 .build();
         reservationRepository.save(rv);
+    }
+
+    public void cancelReservation(Long centerId, ReservationRequest request) {
+        reservationRepository.deleteById(1L);
     }
 }

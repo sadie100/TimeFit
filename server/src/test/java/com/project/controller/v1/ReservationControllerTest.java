@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.domain.Center;
 import com.project.domain.CenterEquipment;
 import com.project.domain.Reservation;
+import com.project.exception.ReservationExist;
 import com.project.repository.CenterEquipmentRepository;
 import com.project.repository.CenterRepository;
 import com.project.repository.ReservationRepository;
@@ -26,6 +27,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -54,6 +57,7 @@ class ReservationControllerTest {
     @BeforeEach
     void clean(){
         reservationRepository.deleteAll();
+        centerEquipmentRepository.deleteAll();
         centerRepository.deleteAll();
     }
 
@@ -75,12 +79,13 @@ class ReservationControllerTest {
                         .build()).collect(Collectors.toList());
         centerEquipmentRepository.saveAll(requestEquip);
 
+        LocalDate now = LocalDate.now();
         List<Reservation> requestReserve = IntStream.range(0,20)
                 .mapToObj(i -> Reservation.builder()
                         .center(requestCenter.get(i%5))
                         .equipment(requestEquip.get(i%5))
-                        .start(LocalDateTime.parse("2022-09-11T10:15:30"))
-                        .end(LocalDateTime.parse("2022-09-11T10:15:30"))
+                        .start(LocalDateTime.parse(now+"T10:15:30"))
+                        .end(LocalDateTime.parse(now+"T10:25:30"))
                         .build()).collect(Collectors.toList());
         reservationRepository.saveAll(requestReserve);
 
@@ -120,16 +125,16 @@ class ReservationControllerTest {
         reservationRepository.saveAll(requestReserve);
 
         List<Long> ids = new ArrayList<>();
-        ids.add(1l);
+        ids.add(requestEquip.get(1).getId());
         ReservationRequest request = ReservationRequest.builder()
-                .equipmentId(1L)
+                .equipmentId(requestEquip.get(1).getId())
                 .equipments(ids)
                 .start(LocalDateTime.parse(now+"T10:45:30"))
                 .end(LocalDateTime.parse(now+"T10:55:30"))
                 .build();
 
 
-        mockMvc.perform(post("/center/{centerId}/reserve",1L)
+        mockMvc.perform(post("/center/{centerId}/reserve",requestCenter.get(1).getId())
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -165,19 +170,24 @@ class ReservationControllerTest {
         reservationRepository.saveAll(requestReserve);
 
         List<Long> ids = new ArrayList<>();
-        ids.add(1l);
+        ids.add(requestEquip.get(1).getId());
         ReservationRequest request = ReservationRequest.builder()
-                .equipmentId(1L)
+                .equipmentId(requestEquip.get(1).getId())
                 .equipments(ids)
                 .start(LocalDateTime.parse(now+"T10:15:30"))
                 .end(LocalDateTime.parse(now+"T10:20:30"))
                 .build();
 
-
-        mockMvc.perform(post("/center/{centerId}/reserve",1L)
-                        .content(objectMapper.writeValueAsString(request))
-                        .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print());
+        assertThatThrownBy(() ->
+                mockMvc.perform(post("/center/{centerId}/reserve",requestCenter.get(1).getId())
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(APPLICATION_JSON))
+                        .andExpect(status().isOk())
+                        .andDo(print())).hasCause(new ReservationExist());
+//        mockMvc.perform(post("/center/{centerId}/reserve",1L)
+//                        .content(objectMapper.writeValueAsString(request))
+//                        .contentType(APPLICATION_JSON))
+//                .andExpect(result -> assertTrue(result.getResolvedException() instanceof RuntimeException))
+//                .andDo(print());
     }
 }

@@ -2,8 +2,10 @@ package com.project.service;
 
 import com.project.domain.CenterImages;
 import com.project.domain.Center;
+import com.project.repository.CenterEquipmentRepository;
 import com.project.repository.CenterImgRepository;
 import com.project.repository.CenterRepository;
+import com.project.repository.ReservationRepository;
 import com.project.request.CenterSearch;
 import com.project.response.CenterResponse;
 import org.junit.jupiter.api.Assertions;
@@ -27,15 +29,17 @@ class CenterServiceTest {
     private CenterService centerService;
 
     @Autowired
-    private CenterRepository centerRepository;
-
+    private ReservationRepository reservationRepository;
     @Autowired
-    private CenterImgRepository centerImgRepository;
+    private CenterRepository centerRepository;
+    @Autowired
+    private CenterEquipmentRepository centerEquipmentRepository;
 
     @BeforeEach
     void clean(){
+        reservationRepository.deleteAll();
+        centerEquipmentRepository.deleteAll();
         centerRepository.deleteAll();
-        centerImgRepository.deleteAll();
     }
 
     @Test
