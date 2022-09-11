@@ -7,16 +7,17 @@ import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
 import "./styles/global.css";
+import LoadingContextProvider from "contexts/LoadingContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
+  <BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <LoadingContextProvider>
         <App />
-      </ThemeProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+      </LoadingContextProvider>
+    </ThemeProvider>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
