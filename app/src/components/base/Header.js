@@ -23,7 +23,7 @@ const StyledHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 15px;
+  padding: 20px;
 `;
 
 export default Header;
