@@ -1,10 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import treadmill from "../assets/image/treadmill.jpg";
 import styled from "styled-components";
 import Button from "../components/common/Button";
+import { useNavigate } from "react-router-dom";
+import { checkLoggedIn } from "lib/auth";
 
 const Main = (props) => {
+  const navigate = useNavigate();
+  const handleReserve = () => {
+    navigate("/reserve");
+  };
+  const handleCenter = () => {
+    //헬스장찾기 버튼 눌렀을 때
+    navigate("/center");
+  };
   return (
     <>
       <Background>
@@ -18,8 +27,8 @@ const Main = (props) => {
               gap: "5rem",
             }}
           >
-            <Button>예약하기</Button>
-            <Button>헬스장 찾기</Button>
+            <Button onClick={handleReserve}>예약하기</Button>
+            <Button onClick={handleCenter}>헬스장 찾기</Button>
           </div>
         </TextBackground>
       </Background>
@@ -60,6 +69,7 @@ const TextBackground = styled.div`
   width: 100%;
   height: 100%;
 `;
+
 const Title = styled.div`
   font-family: SLEIGothicTTF;
   font-size: 40px;
