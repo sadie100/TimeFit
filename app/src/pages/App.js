@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from "./Main";
 import Login from "./Login";
-import Join from "./Join";
+import Join from "./join/Join";
 import Header from "components/base/Header";
 import Sample from "./Sample";
 import Reserve from "./Reserve";
