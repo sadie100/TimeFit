@@ -7,7 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
 import "./styles/global.css";
-import LoadingContextProvider from "contexts/adingContext";
+import LoadingContextProvider from "contexts/loadingContext";
 import AxiosInterceptor from "lib/AxiosInterceptor";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

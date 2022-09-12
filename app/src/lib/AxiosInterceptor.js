@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import axios from "axios";
-import { LoadingContext } from "contexts/adingContext";
+import { LoadingContext } from "contexts/loadingContext";
 
 const ApiController = ({ url, method, data }) => {
   const instance = axios.create({
