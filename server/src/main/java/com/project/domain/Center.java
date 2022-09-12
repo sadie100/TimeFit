@@ -21,8 +21,9 @@ public class Center {
     private Long id;
 
     private String name;
-    private String city;
+    private String region;
     private String address;
+    private Integer price;
 
     private String storeNumber;
 

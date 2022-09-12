@@ -13,6 +13,7 @@ public class CenterEquipment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="center_equipmentId")
     private Long id;
 
     @ManyToOne

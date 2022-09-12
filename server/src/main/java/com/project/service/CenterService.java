@@ -22,34 +22,34 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor  //lombok을 통해 생성자처리
 public class CenterService {
 
-    private final CenterRepository itemRepository;
-    private final CenterImgRepository itemImgRepository;
+    private final CenterRepository centerRepository;
+    private final CenterImgRepository centerImgRepository;
     private final UserRepository userRepository;
 
 
-    public List<CenterResponse> getList(CenterSearch itemSearch){
-        return itemRepository.getList(itemSearch).stream()
+    public List<CenterResponse> getList(CenterSearch centerSearch){
+        return centerRepository.getList(centerSearch).stream()
                 .map(CenterResponse::new)
                 .collect(Collectors.toList());
     }
 
     public CenterDetailResponse get(Long itemId) {
-        Center item = itemRepository.findById(itemId)
+        Center item = centerRepository.findById(itemId)
                 .orElseThrow(CenterNotFound::new);
         CenterDetailResponse itemDetailResponse = new CenterDetailResponse(item);
         return itemDetailResponse;
     }
 
     public List<CenterImgResponse> getImg(Long itemId){
-        Center item = itemRepository.findById(itemId)
+        Center item = centerRepository.findById(itemId)
                 .orElseThrow(CenterNotFound::new);
-        return itemImgRepository.findByItem(item).stream()
+        return centerImgRepository.findByItem(item).stream()
                 .map(CenterImgResponse::new)
                 .collect(Collectors.toList());
     }
 
 
     public void updateView(Long itemId) {
-        itemRepository.updateView(itemId);
+        centerRepository.updateView(itemId);
     }
 }
