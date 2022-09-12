@@ -12,7 +12,7 @@ import java.io.File;
 public class FileController {
 
     private FileService fileService;
-    @PostMapping("/post")
+    @PostMapping("/file")
     public String write(@RequestParam("file") MultipartFile files, long centerId) {
         try {
             String origFilename = files.getOriginalFilename();

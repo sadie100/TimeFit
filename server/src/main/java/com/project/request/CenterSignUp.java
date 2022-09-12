@@ -24,7 +24,7 @@ public class CenterSignUp {
     private String password;
 
     @NotBlank(message = "도시를 입력해주세요")
-    private String city;
+    private String region;
 
     @NotBlank(message = "주소를 입력해주세요")
     private String address;
@@ -36,11 +36,11 @@ public class CenterSignUp {
     private String storeNumber;
 
     @Builder
-    public CenterSignUp(String email, String name, String password,String city, String address, String phoneNumber, String storeNumber) {
+    public CenterSignUp(String email, String name, String password,String region, String address, String phoneNumber, String storeNumber) {
         this.email = email;
         this.name = name;
         this.password = password;
-        this.city = city;
+        this.region = region;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.storeNumber = storeNumber;

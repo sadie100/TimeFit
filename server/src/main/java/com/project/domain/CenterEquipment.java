@@ -24,4 +24,8 @@ public class CenterEquipment {
     @JoinColumn(name="equipment_id")
     private Equipment equipment;
 
+    private Long xLoc;
+    private Long yLoc;
+    private Long height;
+    private Long width;
 }

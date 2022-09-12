@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -73,7 +74,7 @@ public class SignService  {
 
         Center center= Center.builder()
                 .name(request.getName())
-                .city(request.getCity())
+                .region(request.getRegion())
                 .address(request.getAddress())
 //                .storeNumber(request.getStoreNumber())
                 .build();
@@ -107,13 +108,7 @@ public class SignService  {
                 .build();
     }
 
-//    public User comparePassword(UserSignIn request){
-//        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(EmailSigninFailedException::new);
-//        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-//            throw new EmailSigninFailedException();
-//        }
-//        return user;
-//    }
+
     public TokenResponse signInByKakao(String provider, String kakaoToken){
         KakaoProfile profile = kakaoService.getKakaoProfile(kakaoToken);
         User user = userRepository.findByEmailAndProvider(String.valueOf(profile.getId()), provider).orElseThrow(UserNotFoundException::new);
@@ -181,7 +176,21 @@ public class SignService  {
 //         토큰 발급
         return TokenResponse.builder().accessToken(newAccessToken).refreshToken(tokenRequest.getRefreshToken()).build();
     }
-    
+
+    public String makeNewPassword(String request){
+        User user= userRepository.findByEmail(request).orElseThrow(EmailSigninFailedException::new);
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        user.setPassword(passwordEncoder.encode(generatedString));
+        userRepository.save(user);
+        return generatedString;
+    }
 
 }
 

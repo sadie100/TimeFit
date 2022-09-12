@@ -73,7 +73,7 @@ public class SignController {
     }
 
     @PostMapping("/signin")
-    public SingleResult<TokenResponse> signIn(@RequestBody @Valid UserSignIn request, HttpServletResponse response) {
+    public TokenResponse signIn(@RequestBody @Valid UserSignIn request, HttpServletResponse response) {
         System.out.println("로그인을 시도");
         //Access Token, RefreshToken 발행
         TokenResponse tokenResponse = signService.signIn(request);
@@ -91,8 +91,7 @@ public class SignController {
 //        cookie.setSecure(true);
         response.addCookie(resfreshCookie);
 
-        return responseService.
-                getSingleResult(tokenResponse);
+        return tokenResponse;
         //        response.setHeader("X-AUTH-TOKEN", tokenResponse.getAccessToken());
         //        Cookie cookie = new Cookie("X-AUTH-TOKEN", tokenResponse.getAccessToken());
     }
@@ -158,9 +157,9 @@ public class SignController {
         return responseService.getSuccessResult();
     }
     @GetMapping("/signin/find-password")
-    public CommonResult findPassword(@RequestParam String email) {
-        Optional<User> user = signService.getByEmail(email);
-        return responseService.getSuccessResult();
+    public String findPassword(@RequestParam String email) {
+        String password = signService.makeNewPassword(email);
+        return password;
     }
 
     @GetMapping("/check")
@@ -173,6 +172,7 @@ public class SignController {
         System.out.println(trainer);
         return responseService.getSuccessResult();
     }
+
 
 
 }
