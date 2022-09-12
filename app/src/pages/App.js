@@ -32,7 +32,7 @@ const App = () => {
           {/* 메인 화면 */}
           <Route path="/" element={<Main />}></Route>
           {/* 회원가입 화면 */}
-          <Route path="/join" element={<Join />}></Route>
+          <Route path="/join/*" element={<Join />}></Route>
           {/* 로그인 화면 */}
           <Route path="/login" element={<Login />}></Route>
           {/* 이메일/비밀번호 찾기 화면 */}

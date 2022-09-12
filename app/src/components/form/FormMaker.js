@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Button from "components/common/Button";
 
 export default (props) => {
-  const { formData, onSubmit, formDownside, formName } = props;
+  const { formData, onSubmit, formDownside = () => {} } = props;
   const formStates = useForm();
   const {
     handleSubmit,
@@ -19,10 +19,10 @@ export default (props) => {
         {formData().map((formLine) => {
           return (
             <Line key={`line-${formLine.name}`}>
-              <>
-                {!!formLine.label && (
-                  <Label key={`label-${formLine.name}`}>{formLine.label}</Label>
-                )}
+              {!!formLine.label && (
+                <Label key={`label-${formLine.name}`}>{formLine.label}</Label>
+              )}
+              <LineContent>
                 {formLine.type === "email" ? (
                   <StyledInput
                     type="email"
@@ -63,7 +63,18 @@ export default (props) => {
                 ) : (
                   <div key={formLine.name}></div>
                 )}
-              </>
+                {formLine.button && (
+                  <Button
+                    padding={({ theme }) => theme.form.padding}
+                    fontSize="15px"
+                    //padding="10px"
+                    fontWeght="500"
+                    onClick={formLine.buttonOnClick}
+                  >
+                    {formLine.button}
+                  </Button>
+                )}
+              </LineContent>
             </Line>
           );
         })}
@@ -98,7 +109,7 @@ const Line = styled.div`
 const StyledInput = styled.input`
   border: ${({ error }) => `1px solid ${error ? "red" : "lightgray"}`};
   border-radius: 10px;
-  padding: 10px;
+  padding: ${({ theme }) => theme.form.padding};
   color: black;
   font-family: Noto Sans KR;
   ::placeholder,
@@ -107,5 +118,14 @@ const StyledInput = styled.input`
   }
   :-ms-input-placeholder {
     color: lightgray;
+  }
+`;
+const LineContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  * {
+    flex-grow: 1;
   }
 `;

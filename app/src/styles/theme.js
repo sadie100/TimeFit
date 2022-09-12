@@ -10,5 +10,6 @@ export default {
   form: {
     width: "100%",
     maxWidth: "500px",
+    padding: "10px",
   },
 };
