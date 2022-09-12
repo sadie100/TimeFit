@@ -116,7 +116,7 @@ export default () => {
 };
 
 const Background = styled.div`
-  height: 100vh;
+  padding: 10vh 0;
   width: 100%;
   background-color: white;
   display: flex;
