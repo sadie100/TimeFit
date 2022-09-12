@@ -8,7 +8,7 @@ import Header from "components/base/Header";
 import Sample from "./Sample";
 import Reserve from "./Reserve";
 import CircularProgress from "@mui/material/CircularProgress";
-import { LoadingContext } from "contexts/loadingContext";
+import { LoadingContext } from "contexts/adingContext";
 
 const App = () => {
   const { loading } = useContext(LoadingContext);
