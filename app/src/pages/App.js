@@ -35,6 +35,8 @@ const App = () => {
           <Route path="/join" element={<Join />}></Route>
           {/* 로그인 화면 */}
           <Route path="/login" element={<Login />}></Route>
+          {/* 이메일/비밀번호 찾기 화면 */}
+          <Route path="/help" element={<Login />}></Route>
           {/* 헬스장찾기 화면 */}
           <Route path="/center" element={<Sample />}></Route>
           {/* 예약 화면 */}

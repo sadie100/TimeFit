@@ -7,4 +7,8 @@ export default {
     borderRadius: "10px",
     fontSize: "22px",
   },
+  form: {
+    width: "100%",
+    maxWidth: "500px",
+  },
 };

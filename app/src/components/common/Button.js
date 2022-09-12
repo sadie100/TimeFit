@@ -5,12 +5,15 @@ const Button = (props) => {
 };
 
 const StyledButton = styled.button`
-  padding: 1.5rem 2rem;
+  padding: ${({ padding }) => (padding ? padding : "1.5rem 2rem")};
   border: none;
-  background-color: white;
+  background-color: ${({ primary = true, theme }) =>
+    primary ? theme.color.main : "white"};
+  color: black;
   font-family: ${(props) => props.theme.button.font};
   border-radius: ${(props) => props.theme.button.borderRadius};
-  font-size: ${(props) => props.theme.button.fontSize};
+  font-size: ${({ fontSize, theme }) =>
+    fontSize ? fontSize : theme.button.fontSize};
 `;
 
 export default Button;

@@ -10,13 +10,7 @@ import { Link } from "react-router-dom";
 export default () => {
   const Kakao = "KAKAO";
   const onSubmit = (data) => {
-    axios
-      .post("http://localhost:8080/signin/", data, { withCredentials: true })
-      .then((res) => console.log(res))
-      .catch((err) => {
-        console.log(err);
-        alert("오류가 발생했습니다. 다시 시도해 주세요.");
-      });
+    alert("로그인");
   };
   const formData = () => [
     {
@@ -61,15 +55,40 @@ export default () => {
             />
           </a>
           <div style={{ display: "flex", gap: "10px" }}>
-            <Link to="/join">회원가입</Link>|
-            <Link to="/help/email">이메일 찾기</Link>|
-            <Link to="/help/password">비밀번호 찾기</Link>
+            <Link to="/join">회원가입</Link>|<Link to="/">이메일 찾기</Link>|
+            <Link to="/">비밀번호 찾기</Link>
           </div>
         </div>
       </Line>
     );
   };
+  const [Email, SetEmail] = useState("");
+  const [Password, SetPassword] = useState("");
 
+  const emailHandler = (e) => {
+    e.preventDefault();
+    SetEmail(e.target.value);
+  };
+
+  const passwordHandler = (e) => {
+    e.preventDefault();
+    SetPassword(e.target.value);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log(Email);
+    console.log(Password);
+
+    let body = {
+      email: Email,
+      password: Password,
+    };
+
+    axios
+      .post("http://localhost:8080/signin/", body, { withCredentials: true })
+      .then((res) => console.log(res));
+  };
   const HelloHandler = (e) => {
     axios
       .get("http://localhost:8080/helloworld/string/", {
