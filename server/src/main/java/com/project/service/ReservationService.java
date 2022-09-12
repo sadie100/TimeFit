@@ -3,6 +3,7 @@ package com.project.service;
 import com.project.domain.Center;
 import com.project.domain.CenterEquipment;
 import com.project.domain.Reservation;
+import com.project.domain.User;
 import com.project.exception.CenterNotFound;
 import com.project.exception.ReservationExist;
 import com.project.repository.CenterEquipmentRepository;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,6 +61,7 @@ public class ReservationService {
                 .equipment(ce)
                 .start(request.getStart())
                 .end(request.getEnd())
+//                .user(user)
                 .build();
         reservationRepository.save(rv);
     }

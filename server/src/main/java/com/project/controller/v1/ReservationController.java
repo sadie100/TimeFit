@@ -1,12 +1,15 @@
 package com.project.controller.v1;
 
+import com.project.domain.User;
 import com.project.request.ReservationRequest;
 import com.project.response.ReservationResponse;
 import com.project.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,6 +22,7 @@ public class ReservationController {
         @PostMapping("/center/{centerId}/reserve")
         public HashMap<Long,List<ReservationResponse>> requestReserve(@PathVariable Long centerId,
                                                                       @RequestBody ReservationRequest request){
+//            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             reservationService.requestReservation(centerId, request);
             return reservationService.getReservation(centerId, request);
         }

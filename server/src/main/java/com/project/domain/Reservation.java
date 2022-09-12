@@ -24,6 +24,10 @@ public class Reservation {
     @JoinColumn(name="center_equipmentId")
     private CenterEquipment equipment;
 
+    @ManyToOne
+    @JoinColumn(name="msrl")
+    private User user;
+
     private LocalDateTime start;
     private LocalDateTime end;
 
