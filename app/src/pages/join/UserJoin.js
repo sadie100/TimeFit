@@ -134,7 +134,7 @@ export default () => {
             maxWidth: `calc(${theme.form.maxWidth} - 120px)`,
           }}
         >
-          다음
+          가입하기
         </SubmitButton>
       </Background>
       {/* <div>
