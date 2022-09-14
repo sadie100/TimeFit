@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Button from "components/common/Button";
 
 export default (props) => {
-  const { formData, onSubmit, formDownside = () => {} } = props;
+  const { formData, onSubmit, formDownside = () => {}, formId } = props;
   const formStates = useForm();
   const {
     handleSubmit,
@@ -15,13 +15,18 @@ export default (props) => {
 
   return (
     <>
-      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+      <StyledForm onSubmit={handleSubmit(onSubmit)} id={formId}>
         {formData().map((formLine) => {
           return (
             <Line key={`line-${formLine.name}`}>
-              {!!formLine.label && (
-                <Label key={`label-${formLine.name}`}>{formLine.label}</Label>
-              )}
+              {!!formLine.label &&
+                (!!formLine?.register?.required ? (
+                  <Label key={`label-${formLine.name}`}>
+                    {formLine.label} <span style={{ color: "red" }}>*</span>
+                  </Label>
+                ) : (
+                  <Label key={`label-${formLine.name}`}>{formLine.label}</Label>
+                ))}
               <LineContent>
                 {formLine.type === "email" ? (
                   <StyledInput
@@ -60,8 +65,50 @@ export default (props) => {
                   >
                     {formLine.text}
                   </Button>
+                ) : formLine.type === "date" ? (
+                  <StyledInput
+                    type="date"
+                    name={formLine.name}
+                    key={formLine.name}
+                    error={errors[formLine.name]}
+                    {...formLine}
+                    {...register(formLine.name, formLine.register)}
+                  ></StyledInput>
+                ) : formLine.type === "radio" ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                      justifyContent: "start",
+                      flexGrow: 0,
+                    }}
+                  >
+                    {formLine.buttons.map((btn, idx) => {
+                      return (
+                        <div key={`${formLine.name}_${idx}`}>
+                          <input
+                            type="radio"
+                            id={btn.value}
+                            key={btn.value}
+                            name={formLine.name}
+                            error={errors[formLine.name]}
+                            {...formLine}
+                            {...register(formLine.name, formLine.register)}
+                          />
+                          <label htmlFor={btn.value}>{btn.label}</label>
+                        </div>
+                      );
+                    })}
+                  </div>
                 ) : (
-                  <div key={formLine.name}></div>
+                  <StyledInput
+                    type={formLine.type}
+                    key={formLine.name}
+                    name={formLine.name}
+                    error={errors[formLine.name]}
+                    {...formLine}
+                    {...register(formLine.name, formLine.register)}
+                  ></StyledInput>
                 )}
                 {formLine.button && (
                   <Button
@@ -70,11 +117,16 @@ export default (props) => {
                     //padding="10px"
                     fontWeght="500"
                     onClick={formLine.buttonOnClick}
+                    disabled={formLine.buttonDisabled}
+                    type="button"
                   >
                     {formLine.button}
                   </Button>
                 )}
               </LineContent>
+              {!!errors?.[formLine.name] && (
+                <ErrorDiv>{errors[formLine.name].message}</ErrorDiv>
+              )}
             </Line>
           );
         })}
@@ -107,7 +159,8 @@ const Line = styled.div`
   gap: 3px;
 `;
 const StyledInput = styled.input`
-  border: ${({ error }) => `1px solid ${error ? "red" : "lightgray"}`};
+  // border: ${({ error }) => `1px solid ${error ? "red" : "lightgray"}`};
+  border: 1px solid lightgray;
   border-radius: 10px;
   padding: ${({ theme }) => theme.form.padding};
   color: black;
@@ -119,6 +172,12 @@ const StyledInput = styled.input`
   :-ms-input-placeholder {
     color: lightgray;
   }
+`;
+const ErrorDiv = styled.div`
+  border: none;
+  color: red;
+  font-family: Noto Sans KR;
+  font-size: 13px;
 `;
 const LineContent = styled.div`
   display: flex;
