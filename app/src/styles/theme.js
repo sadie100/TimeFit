@@ -12,4 +12,7 @@ export default {
     maxWidth: "500px",
     padding: "10px",
   },
+  height: {
+    header: "35px",
+  },
 };
