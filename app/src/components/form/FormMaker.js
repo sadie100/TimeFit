@@ -95,7 +95,12 @@ export default (props) => {
                             {...formLine}
                             {...register(formLine.name, formLine.register)}
                           />
-                          <label htmlFor={btn.value}>{btn.label}</label>
+                          <label
+                            style={{ cursor: "pointer" }}
+                            htmlFor={btn.value}
+                          >
+                            {btn.label}
+                          </label>
                         </div>
                       );
                     })}
