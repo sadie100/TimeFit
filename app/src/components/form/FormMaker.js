@@ -123,9 +123,9 @@ export default (props) => {
                     fontSize="15px"
                     //padding="10px"
                     fontWeght="500"
-                    onClick={formLine.buttonOnClick}
+                    onClick={formLine.buttonOnClick || (() => {})}
                     disabled={formLine.buttonDisabled}
-                    type="button"
+                    type={formLine.buttonType ? formLine.buttonType : "button"}
                   >
                     {formLine.button}
                   </Button>
