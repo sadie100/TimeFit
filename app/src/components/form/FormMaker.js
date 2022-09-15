@@ -18,21 +18,23 @@ export default (props) => {
       <StyledForm onSubmit={handleSubmit(onSubmit)} id={formId}>
         {formData().map((formLine) => {
           return (
-            <Line key={`line-${formLine.name}`}>
+            <Line key={`line-${formId}-${formLine.name}`}>
               {!!formLine.label &&
                 (!!formLine?.register?.required ? (
-                  <Label key={`label-${formLine.name}`}>
+                  <Label key={`label-${formId}-${formLine.name}`}>
                     {formLine.label} <span style={{ color: "red" }}>*</span>
                   </Label>
                 ) : (
-                  <Label key={`label-${formLine.name}`}>{formLine.label}</Label>
+                  <Label key={`label-${formId}-${formLine.name}`}>
+                    {formLine.label}
+                  </Label>
                 ))}
               <LineContent>
                 {formLine.type === "email" ? (
                   <StyledInput
                     type="email"
                     name={formLine.name}
-                    key={formLine.name}
+                    key={`${formId}-${formLine.name}`}
                     error={errors[formLine.name]}
                     {...formLine}
                     {...register(formLine.name, formLine.register)}
@@ -41,7 +43,7 @@ export default (props) => {
                   <StyledInput
                     type="password"
                     name={formLine.name}
-                    key={formLine.name}
+                    key={`${formId}-${formLine.name}`}
                     error={errors[formLine.name]}
                     {...formLine}
                     {...register(formLine.name, formLine.register)}
@@ -50,7 +52,7 @@ export default (props) => {
                   <StyledInput
                     type="text"
                     name={formLine.name}
-                    key={formLine.name}
+                    key={`${formId}-${formLine.name}`}
                     error={errors[formLine.name]}
                     {...formLine}
                     {...register(formLine.name, formLine.register)}
@@ -58,7 +60,7 @@ export default (props) => {
                 ) : formLine.type === "submit" ? (
                   <Button
                     type="submit"
-                    key={formLine.name}
+                    key={`${formId}-${formLine.name}`}
                     padding="15px"
                     fontSize="20px"
                     {...formLine}
@@ -69,7 +71,7 @@ export default (props) => {
                   <StyledInput
                     type="date"
                     name={formLine.name}
-                    key={formLine.name}
+                    key={`${formId}-${formLine.name}`}
                     error={errors[formLine.name]}
                     {...formLine}
                     {...register(formLine.name, formLine.register)}
@@ -82,14 +84,14 @@ export default (props) => {
                       justifyContent: "start",
                       flexGrow: 0,
                     }}
+                    key={`${formId}-${formLine.name}`}
                   >
                     {formLine.buttons.map((btn, idx) => {
                       return (
-                        <div key={`${formLine.name}_${idx}`}>
+                        <div key={`${formId}-${formLine.name}-${btn.value}`}>
                           <input
                             type="radio"
                             id={btn.value}
-                            key={btn.value}
                             name={formLine.name}
                             error={errors[formLine.name]}
                             {...formLine}
@@ -108,7 +110,7 @@ export default (props) => {
                 ) : (
                   <StyledInput
                     type={formLine.type}
-                    key={formLine.name}
+                    key={`${formId}-${formLine.name}`}
                     name={formLine.name}
                     error={errors[formLine.name]}
                     {...formLine}
