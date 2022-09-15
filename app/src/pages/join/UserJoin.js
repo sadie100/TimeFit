@@ -17,8 +17,12 @@ export default () => {
 
   const onSubmit = (data) => {
     if (!certified) return alert("이메일 인증을 진행해 주세요.");
-    navigate("/join/success");
-    // //회원가입 로직 진행
+
+    //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
+    window.sessionStorage.setItem("signup", data);
+
+    //헬스장 선택 페이지로 이동
+    navigate("/join/find-center");
     // axios
     //   .post(
     //     "http://localhost:8080/signup/",
@@ -134,7 +138,7 @@ export default () => {
             maxWidth: `calc(${theme.form.maxWidth} - 120px)`,
           }}
         >
-          가입하기
+          다음
         </SubmitButton>
       </Background>
       {/* <div>
@@ -166,9 +170,4 @@ const Background = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-`;
-const Line = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 `;
