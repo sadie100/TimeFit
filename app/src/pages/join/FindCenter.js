@@ -1,18 +1,22 @@
 //회원 헬스장 선택(회원가입)
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import SearchForm from "components/form/FormMaker";
 import styled from "styled-components";
 import SubmitButton from "components/form/SubmitButton";
 import { useTheme } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import CenterConfirmModal from "pages/join/CenterConfirmModal";
+import { ModalContext } from "contexts/dodalContext";
 
 export default () => {
   const formId = "UserFindCenter";
   const theme = useTheme();
   const navigate = useNavigate();
   const [centerList, setCenterList] = useState([]);
+  const [center, setCenter] = useState("");
+  const { handleOpen } = useContext(ModalContext);
 
   //검색 handle function
   const handleSearch = async (data) => {
@@ -26,26 +30,31 @@ export default () => {
     // }
     setCenterList([
       {
+        _id: 1,
         name: "11 헬스장",
         address: "서울시 11구 11로 111-111",
         image: "https://source.unsplash.com/random",
       },
       {
+        _id: 2,
         name: "22 헬스장",
         address: "서울시 22구 22로 222-222",
         image: "https://source.unsplash.com/random",
       },
       {
+        _id: 3,
         name: "33 헬스장",
         address: "서울시 33구 33로 333-333",
         image: "https://source.unsplash.com/random",
       },
       {
+        _id: 4,
         name: "44 헬스장",
         address: "서울시 44구 44로 444-444",
         image: "https://source.unsplash.com/random",
       },
       {
+        _id: 5,
         name: "55 헬스장",
         address: "서울시 55구 55로 555-555",
         image: "https://source.unsplash.com/random",
@@ -53,8 +62,9 @@ export default () => {
     ]);
   };
 
-  const handleClickCenter = () => {
-    alert("헬스장 선택 모달 구현하기");
+  const handleClickCenter = (center) => {
+    setCenter(center._id);
+    handleOpen("CenterConfirmModal");
   };
 
   const formData = () =>
@@ -79,7 +89,7 @@ export default () => {
         <ListWrapper>
           {centerList.map((center, idx) => {
             return (
-              <CenterWrapper onClick={handleClickCenter}>
+              <CenterWrapper onClick={() => handleClickCenter(center)}>
                 <img width="50%" height="100%" src={center.image} />
                 <TextWrapper>
                   <CenterName>{center.name}</CenterName>
@@ -91,6 +101,7 @@ export default () => {
             );
           })}
         </ListWrapper>
+        <CenterConfirmModal center={center} />
       </Background>
     </>
   );
