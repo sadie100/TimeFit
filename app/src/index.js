@@ -8,7 +8,7 @@ import theme from "./styles/theme";
 import "./styles/global.css";
 import LoadingContextProvider from "contexts/loadingContext";
 import AxiosInterceptor from "lib/AxiosInterceptor";
-import ModalContextProvider from "contexts/dodalContext";
+import ModalContextProvider from "contexts/modalContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

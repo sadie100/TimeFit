@@ -8,7 +8,7 @@ import SubmitButton from "components/form/SubmitButton";
 import { useTheme } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import CenterConfirmModal from "pages/join/CenterConfirmModal";
-import { ModalContext } from "contexts/dodalContext";
+import { ModalContext } from "contexts/modalContext";
 
 export default () => {
   const formId = "UserFindCenter";

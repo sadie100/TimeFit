@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { ModalContext } from "contexts/dodalContext";
+import { ModalContext } from "contexts/modalContext";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import styled from "styled-components";
