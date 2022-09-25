@@ -3,6 +3,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import Button from "components/common/Button";
+import DaumPostcode from "components/form/DaumPostcode";
 
 export default (props) => {
   const { formData, onSubmit, formDownside = () => {}, formId } = props;
@@ -107,6 +108,13 @@ export default (props) => {
                       );
                     })}
                   </div>
+                ) : formLine.type === "address" ? (
+                  <DaumPostcode
+                    StyledInput={StyledInput}
+                    formLine={formLine}
+                    {...formStates}
+                    {...props}
+                  ></DaumPostcode>
                 ) : (
                   <StyledInput
                     type={formLine.type}
