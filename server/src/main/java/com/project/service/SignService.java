@@ -63,14 +63,7 @@ public class SignService  {
         userRepository.save(user);
     }
 
-    public void join(CenterSignUp request){
-        User user= User.builder()
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .phoneNumber(request.getPhoneNumber())
-                .roles(Collections.singletonList("ROLE_CENTER"))
-                .build();
-        userRepository.save(user);
+    public void joinCenter(CenterSignUp request){
 
         Center center= Center.builder()
                 .name(request.getName())
@@ -80,6 +73,18 @@ public class SignService  {
                 .build();
 
         centerRepository.save(center);
+
+        User user= User.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .phoneNumber(request.getPhoneNumber())
+                .name(request.getName())
+                .center(center)
+                .roles(Collections.singletonList("ROLE_CENTER"))
+                .build();
+        userRepository.save(user);
+
+
     }
 
     public Optional<User> getByEmail(String request){

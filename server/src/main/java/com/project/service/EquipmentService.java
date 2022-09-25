@@ -11,6 +11,7 @@ import com.project.repository.CenterEquipmentRepository;
 import com.project.repository.CenterRepository;
 import com.project.repository.EquipmentRepository;
 import com.project.request.EquipmentAdd;
+import com.project.request.EquipmentCategory;
 import com.project.request.UserSignUp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,5 +48,17 @@ public class EquipmentService {
     public List<CenterEquipment> getByCenter(Long centerId) {
         Center center = centerRepository.findById(centerId).orElseThrow(CenterNotFound::new);
         return centerEquipmentRepository.findByCenter(center);
+    }
+
+    public List<Equipment> getAllEquipment() {
+        List<Equipment> equipment = equipmentRepository.findAll();
+        return equipment;
+    }
+    public void add(EquipmentCategory request) {
+        Equipment equipment = Equipment.builder()
+                .name(request.getName())
+                .img(request.getImg())
+                .build();
+        equipmentRepository.save(equipment);
     }
 }

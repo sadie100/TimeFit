@@ -44,8 +44,9 @@ public class SignController {
 
     @PostMapping("/signup-center")
     public CommonResult signUpCenter(@RequestBody @Valid CenterSignUp request) {
+        System.out.println(request);
 //        request.setPassword(passwordEncoder.encode(request.getPassword()));
-        signService.join(request);
+        signService.joinCenter(request);
         return responseService.getSuccessResult();
     }
 
@@ -92,8 +93,6 @@ public class SignController {
         response.addCookie(resfreshCookie);
 
         return tokenResponse;
-        //        response.setHeader("X-AUTH-TOKEN", tokenResponse.getAccessToken());
-        //        Cookie cookie = new Cookie("X-AUTH-TOKEN", tokenResponse.getAccessToken());
     }
 
     @PostMapping("/signout")

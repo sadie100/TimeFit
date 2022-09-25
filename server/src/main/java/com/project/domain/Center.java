@@ -34,6 +34,4 @@ public class Center {
     @OrderBy("id asc")
     private Set<CenterImages> images;
 
-
-
 }

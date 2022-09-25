@@ -37,7 +37,7 @@ public class User implements UserDetails {
     @Column( length = 100)
     private String password;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String name;
 
     @Column(length = 100)
@@ -52,7 +52,9 @@ public class User implements UserDetails {
     @Column(name = "DATETIME_FIELD")
     private Timestamp birth;
 
-
+    @OneToOne
+    @JoinColumn(name="id")
+    private Center center;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
