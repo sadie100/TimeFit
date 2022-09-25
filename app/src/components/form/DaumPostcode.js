@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import styled from "styled-components";
 import Button from "components/common/Button";
+import Modal from "components/common/Modal";
+import { ModalContext } from "contexts/modalContext";
+
+const modalName = "DaumPostcode";
 
 export default (props) => {
   const { formLine, formId, errors, register, StyledInput } = props;
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const { handleOpen } = useContext(ModalContext);
 
   const handleComplete = (data) => {
     let fullAddress = data.address;
@@ -40,18 +44,15 @@ export default (props) => {
         fontSize="15px"
         //padding="10px"
         fontWeght="500"
-        onClick={new daum.Postcode({
-          oncomplete: function (data) {
-            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
-          },
-        }).open()}
+        onClick={() => handleOpen(modalName)}
         disabled={formLine.buttonDisabled}
         type={formLine.buttonType ? formLine.buttonType : "button"}
       >
         {formLine.button}
       </Button>
-      <DaumPostcodeEmbed onComplete={handleComplete} {...props} />
+      <Modal modalName={modalName}>
+        <DaumPostcodeEmbed onComplete={handleComplete} />
+      </Modal>
     </>
   );
 };

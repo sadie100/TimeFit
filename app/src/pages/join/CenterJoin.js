@@ -86,17 +86,7 @@ export default () => {
       },
       {
         type: "address",
-        name: "postcode",
-        label: "헬스장 우편번호",
-        placeholder: "헬스장 우편번호를 입력해 주세요.",
-        register: {
-          required: "헬스장 우편번호를 입력해 주세요.",
-        },
-        button: "우편번호 검색",
-        buttonOnClick: () => {
-          //우편번호 검색하기
-          setIsMailSend(true);
-        },
+        name: "center",
       },
     ].filter((d) => !!d);
 
