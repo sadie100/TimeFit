@@ -16,6 +16,7 @@ export const Label = styled.span`
   color: gray;
   font-size: 14px;
   font-family: Noto Sans KR;
+  flex: 1 0 auto;
 `;
 export const Line = styled.div`
   display: flex;
@@ -29,6 +30,7 @@ export const StyledInput = styled.input`
   padding: ${({ theme }) => theme.form.padding};
   color: black;
   font-family: Noto Sans KR;
+  flex: 1 2 auto;
   ::placeholder,
   ::-webkit-input-placeholder {
     color: lightgray;

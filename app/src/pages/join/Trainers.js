@@ -2,9 +2,10 @@
 import LineMaker from "components/form/LineMaker";
 import * as FormComponent from "components/form/StyledComponents";
 import { useFieldArray, Controller } from "react-hook-form";
+import Button from "components/common/Button";
 
 export default (props) => {
-  const { formStates, name, formId, formLine } = props;
+  const { formStates, name, formId } = props;
   const { watch, setValue, getValues, control, register } = formStates;
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
@@ -14,7 +15,12 @@ export default (props) => {
   );
   const { StyledForm, Line, StyledInput, Label, LineContent, ErrorDiv } =
     FormComponent;
-
+  const handleAppend = () => {
+    append({ name: "", gender: "" });
+  };
+  const handleRemove = (index) => {
+    remove(index);
+  };
   const formData = (registered) => [
     {
       name: "name",
@@ -44,58 +50,89 @@ export default (props) => {
     },
   ];
   return (
-    <div>
-      {fields.map((field, index) => {
+    <ul
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+        flex: "1 1 auto",
+      }}
+    >
+      {fields.map((item, index) => {
         return (
-          <div style={{ display: "flex", gap: "1rem" }} key={field.id}>
+          <li
+            style={{ display: "flex", gap: "1rem", alignItems: "center" }}
+            key={item.id}
+          >
+            <Label>이름</Label>
             <StyledInput
               type="text"
+              placeholder="이름을 입력해 주세요."
               {...register(`${name}.${index}.name`)}
             ></StyledInput>
+            <Label>성별</Label>
             <div
               style={{
                 display: "flex",
                 gap: "10px",
                 justifyContent: "start",
-                flexGrow: 0,
+                flex: "1 0 auto",
               }}
             >
-              {formLine.buttons.map((btn, idx) => {
-                return (
-                  <Controller
-                    control={control}
-                    name=""
-                    key={`${formId}-${formLine.name}-${index}-${btn.value}-div`}
-                    render={(props) => (
-                      <>
-                        <input
-                          type="radio"
-                          key={`${formId}-${formLine.name}-${index}-${btn.value}`}
-                          name={formLine.name}
-                          {...formLine}
-                          {...props}
-                          {...register(`${name}.${index}.gender`)}
-                        />
-                        <label
-                          style={{ cursor: "pointer" }}
-                          htmlFor={btn.value}
-                        >
-                          {btn.label}
-                        </label>
-                      </>
-                    )}
-                  />
-                );
-              })}
+              {/* todo : 라디오 버튼 클릭했다가 추가/삭제하면 클릭 value 사라지는 오류 수정하기 */}
+              <Controller
+                control={control}
+                name={`${name}.${index}.gender`}
+                key={`${formId}-gender`}
+                render={({ field }) => (
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                      justifyContent: "start",
+                      flex: "0 0 auto",
+                    }}
+                  >
+                    <div>
+                      <input type="radio" id={`${index}_male`} {...field} />
+                      <label
+                        style={{ cursor: "pointer", flex: "1 0 auto" }}
+                        htmlFor={`${index}_male`}
+                      >
+                        남성
+                      </label>
+                    </div>
+                    <div>
+                      <input type="radio" id={`${index}_female`} {...field} />
+                      <label
+                        style={{ cursor: "pointer" }}
+                        htmlFor={`${index}_female`}
+                      >
+                        여성
+                      </label>
+                    </div>
+                  </div>
+                )}
+              />
             </div>
-          </div>
+            <button
+              type="button"
+              style={{ color: "red", border: "none", background: "none" }}
+              onClick={() => handleRemove(index)}
+            >
+              x
+            </button>
+          </li>
         );
       })}
-      <div style={{ display: "flex", gap: "1rem" }}>
-        {formData({}).map((data) => (
-          <LineMaker {...props} formLine={data} />
-        ))}
-      </div>
-    </div>
+      <Button
+        onClick={handleAppend}
+        type="button"
+        fontSize="14px"
+        padding="10px 20px"
+      >
+        추가하기
+      </Button>
+    </ul>
   );
 };
