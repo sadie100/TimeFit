@@ -4,21 +4,13 @@ import styled from "styled-components";
 import Button from "components/common/Button";
 import Modal from "components/common/Modal";
 import { ModalContext } from "contexts/modalContext";
+import * as FormComponent from "components/form/StyledComponents";
 
 const modalName = "DaumPostcode";
 
 export default (props) => {
-  const {
-    formLine,
-    formId,
-    errors,
-    register,
-    setValue,
-    StyledInput,
-    Label,
-    Line,
-    LineContent,
-  } = props;
+  const { formLine, formId, errors, register, setValue } = props;
+  const { StyledInput, Label, LineContent } = FormComponent;
   const { handleOpen, handleClose } = useContext(ModalContext);
 
   const handleComplete = (data) => {
@@ -84,6 +76,7 @@ export default (props) => {
           })}
         ></StyledInput>
       </LineContent>
+      {/* todo : 모달 크기 늘려 보기 */}
       <Modal modalName={modalName}>
         <DaumPostcodeEmbed onComplete={handleComplete} />
       </Modal>
