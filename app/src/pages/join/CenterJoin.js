@@ -86,7 +86,17 @@ export default () => {
       },
       {
         type: "address",
-        name: "center",
+        label: "헬스장 주소",
+        get: {
+          //다음 api에서 가져올 데이터와 가져올 이름을 짝지어 둔 객체
+          zonecode: "zonecode", //우편번호
+          address: "address", //기본 주소(ex: 경기 성남시 분당구 판교역로 235)
+          sido: "sido", //도/시 이름(ex:경기도,서울특별시)
+          sigungu: "sigungu", //시,군,구 이름
+          bname: "bname", //법정동/법정리 이름
+        },
+        detailName: "detail", //상세주소 이름
+        required: true,
       },
     ].filter((d) => !!d);
 

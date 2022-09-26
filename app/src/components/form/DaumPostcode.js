@@ -8,48 +8,82 @@ import { ModalContext } from "contexts/modalContext";
 const modalName = "DaumPostcode";
 
 export default (props) => {
-  const { formLine, formId, errors, register, StyledInput } = props;
-  const { handleOpen } = useContext(ModalContext);
+  const {
+    formLine,
+    formId,
+    errors,
+    register,
+    setValue,
+    StyledInput,
+    Label,
+    Line,
+    LineContent,
+  } = props;
+  const { handleOpen, handleClose } = useContext(ModalContext);
 
   const handleComplete = (data) => {
-    let fullAddress = data.address;
-    let extraAddress = "";
-
-    if (data.addressType === "R") {
-      if (data.bname !== "") {
-        extraAddress += data.bname;
-      }
-      if (data.buildingName !== "") {
-        extraAddress +=
-          extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
-      }
-      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
-    }
-
-    console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+    const required = Object.keys(formLine.get);
+    required.map((dataName) => {
+      setValue(formLine.get[dataName], data[dataName]);
+    });
+    handleClose();
   };
 
   return (
     <>
-      <StyledInput
-        type="text"
-        name={formLine.name}
-        key={`${formId}-${formLine.name}`}
-        error={errors?.[formLine.name]}
-        {...formLine}
-        {...register(formLine.name, formLine.register)}
-      ></StyledInput>
-      <Button
-        padding={({ theme }) => theme.form.padding}
-        fontSize="15px"
-        //padding="10px"
-        fontWeght="500"
-        onClick={() => handleOpen(modalName)}
-        disabled={formLine.buttonDisabled}
-        type={formLine.buttonType ? formLine.buttonType : "button"}
-      >
-        {formLine.button}
-      </Button>
+      <Label key={`label-${formId}-${formLine.name}`}>
+        {formLine.label}{" "}
+        {formLine.required && <span style={{ color: "red" }}>*</span>}
+      </Label>
+      <LineContent>
+        <StyledInput
+          type="text"
+          name={formLine.get?.zonecode || "zonecode"}
+          key={`${formId}-zonecode`}
+          error={errors?.[formLine.get?.zonecode || "zonecode"]}
+          placeholder="우편번호를 입력해 주세요"
+          {...formLine}
+          {...register(formLine.get?.zonecode || "zonecode", {
+            required: formLine.required ? "우편번호를 입력해 주세요" : false,
+          })}
+        ></StyledInput>
+        <Button
+          padding={({ theme }) => theme.form.padding}
+          fontSize="15px"
+          //padding="10px"
+          fontWeght="500"
+          onClick={() => handleOpen(modalName)}
+          type={"button"}
+        >
+          우편번호 검색
+        </Button>
+      </LineContent>
+      <LineContent>
+        <StyledInput
+          type="text"
+          name={formLine.get?.address || "address"}
+          key={`${formId}-address`}
+          error={errors?.[formLine.get?.address || "address"]}
+          placeholder="주소를 입력해 주세요."
+          {...formLine}
+          {...register(formLine.get?.address || "address", {
+            required: formLine.required ? "주소를 입력해 주세요" : false,
+          })}
+        ></StyledInput>
+      </LineContent>
+      <LineContent>
+        <StyledInput
+          type="text"
+          name={formLine.get?.detail || "detail"}
+          key={`${formId}-detail`}
+          error={errors?.[formLine.get?.detail || "detail"]}
+          placeholder="상세주소를 입력해 주세요"
+          {...formLine}
+          {...register(formLine.get?.detail || "detail", {
+            required: formLine.required ? "상세주소를 입력해 주세요" : false,
+          })}
+        ></StyledInput>
+      </LineContent>
       <Modal modalName={modalName}>
         <DaumPostcodeEmbed onComplete={handleComplete} />
       </Modal>
