@@ -18,12 +18,11 @@ export default (props) => {
   const { StyledSelect, Line, StyledInput, Label, LineContent, ErrorDiv } =
     FormComponent;
   const handleAppend = () => {
-    append({ name: "", equipment: "" });
+    append({ equipment: "", count: "" });
   };
   const handleRemove = (index) => {
     remove(index);
   };
-  const theme = useTheme();
 
   return (
     <ul
@@ -61,11 +60,13 @@ export default (props) => {
                   <option value="짐볼&보수볼">짐볼&보수볼</option>
                   <option value="기타">기타(직접입력)</option>
                 </StyledSelect>
-                {watch("equipment") === "기타" && (
+              </LineContent>
+              <LineContent>
+                {watch(`${name}.${index}.equipment`) === "기타" && (
                   <StyledInput
                     type="text"
                     placeholder="기구 이름을 입력해 주세요."
-                    {...register(`${name}.${index}.equipment`)}
+                    {...register(`${name}.${index}.name`)}
                   ></StyledInput>
                 )}
               </LineContent>
@@ -74,7 +75,7 @@ export default (props) => {
                 <StyledInput
                   type="number"
                   placeholder="해당 기구의 보유개수를 입력해 주세요."
-                  {...register(`${name}.${index}.number`)}
+                  {...register(`${name}.${index}.count`)}
                 ></StyledInput>
               </LineContent>
             </Line>
