@@ -47,7 +47,6 @@ export default (props) => {
                   {...register(`${name}.${index}.equipment`)}
                 >
                   <option value="러닝머신">러닝머신</option>
-                  <option value="워킹머신">워킹머신</option>
                   <option value="사이클">사이클</option>
                   <option value="일립티컬">일립티컬</option>
                   <option value="스텝퍼">스텝퍼</option>
@@ -55,7 +54,9 @@ export default (props) => {
                   <option value="벤치프레스">벤치프레스</option>
                   <option value="스쿼트머신">스쿼트머신</option>
                   <option value="치닝디핑">치닝디핑</option>
-                  <option value="바벨&덤벨">바벨&덤벨</option>
+                  <option value="바벨">바벨</option>
+                  <option value="덤벨">덤벨</option>
+                  <option value="케틀벨">케틀벨</option>
                   <option value="요가매트">요가매트</option>
                   <option value="짐볼&보수볼">짐볼&보수볼</option>
                   <option value="기타">기타(직접입력)</option>
