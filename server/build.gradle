@@ -64,11 +64,14 @@ asciidoctor {
 	dependsOn test
 }
 
+//asciidoctor.doFirst {
+//	delete file("src/main/resources/static/docs")
+//}
 bootJar {
 	dependsOn asciidoctor
 
 	copy{
 		from asciidoctor.outputDir
-		into "src/main/resources/statics/docs"
+		into "src/main/resources/static/docs"
 	}
 }

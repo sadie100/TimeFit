@@ -4,12 +4,13 @@ import com.project.domain.Reservation;
 import com.project.request.ReservationRequest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ReservationRepositoryCustom {
     boolean check(Long id, ReservationRequest reservationRequest);
 
-    List<Reservation> getReserve(Long id, Long equipment);
+    List<Reservation> getReserve(Long id, LocalDate date, Long equipment);
 
 //    void saveReservation(Long id, ReservationRequest request);
 }

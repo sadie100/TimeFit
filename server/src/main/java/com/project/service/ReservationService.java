@@ -3,21 +3,23 @@ package com.project.service;
 import com.project.domain.Center;
 import com.project.domain.CenterEquipment;
 import com.project.domain.Reservation;
-import com.project.domain.User;
 import com.project.exception.CenterNotFound;
 import com.project.exception.ReservationExist;
 import com.project.repository.CenterEquipmentRepository;
 import com.project.repository.CenterRepository;
 import com.project.repository.ReservationRepository;
 import com.project.request.ReservationRequest;
+import com.project.request.ReservationSearch;
+import com.project.response.ReservationDetailResponse;
 import com.project.response.ReservationResponse;
+import com.project.response.TempResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j //로그 작성
@@ -29,23 +31,17 @@ public class ReservationService {
     private final CenterRepository centerRepository;
     private final CenterEquipmentRepository centerEquipmentRepository;
 
-    public HashMap<Long,List<ReservationResponse>> getReservation(Long id, ReservationRequest request){
-        HashMap<Long,List<ReservationResponse>> reservationList = new HashMap<Long,List<ReservationResponse>>();
-        for(Long equipment : request.getEquipments()){
-            List<ReservationResponse> rv = reservationRepository.getReserve(id, equipment).stream()
-                    .map(ReservationResponse::new)
-                    .collect(Collectors.toList());
-
-            reservationList.put(equipment,rv);
+    public List<ReservationResponse> getReservation(Long id, ReservationSearch request){
+        List<ReservationResponse> reservationList = new ArrayList<>();
+        for(Long equipment : request.getSearchIds()){
+            List<ReservationDetailResponse> rv =
+                    reservationRepository.getReserve(id, request.getSearchDate(),equipment).stream()
+                            .map(ReservationDetailResponse::new)
+                            .collect(Collectors.toList());
+            reservationList.add(new ReservationResponse(equipment,rv));
         }
         return reservationList;
     }
-
-//    public List<ReservationResponse> getReservation(Long id, ReservationRequest request){
-//        return reservationRepository.getReserve(id, request).stream()
-//                .map(ReservationResponse::new)
-//                .collect(Collectors.toList());
-//    }
     public void requestReservation(Long id, ReservationRequest request){
         //예약 있을 시 예외처리 필요함
 
@@ -54,11 +50,11 @@ public class ReservationService {
         }
         Center center = centerRepository.findById(id)
                 .orElseThrow(CenterNotFound::new);
-        CenterEquipment ce = centerEquipmentRepository.findById(request.getEquipmentId())
+        CenterEquipment ce = centerEquipmentRepository.findById(request.getCenterEquipmentId())
                 .orElseThrow();
         Reservation rv = Reservation.builder()
                 .center(center)
-                .equipment(ce)
+                .centerEquipment(ce)
                 .start(request.getStart())
                 .end(request.getEnd())
 //                .user(user)
@@ -66,7 +62,7 @@ public class ReservationService {
         reservationRepository.save(rv);
     }
 
-    public void cancelReservation(Long centerId, ReservationRequest request) {
-        reservationRepository.deleteById(1L);
+    public void cancelReservation(Long centerId, Long reservationId) {
+        reservationRepository.deleteById(reservationId);
     }
 }

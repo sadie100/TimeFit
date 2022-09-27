@@ -2,10 +2,10 @@ package com.project.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.domain.Center;
+import com.project.domain.CenterEquipment;
 import com.project.domain.CenterImages;
-import com.project.repository.CenterImgRepository;
-import com.project.repository.CenterRepository;
-import com.project.repository.UserRepository;
+import com.project.domain.Equipment;
+import com.project.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,6 @@ class CenterControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -42,6 +41,10 @@ class CenterControllerTest {
     @Autowired
     private CenterImgRepository centerImgRepository;
     @Autowired
+    private CenterEquipmentRepository centerEquipmentRepository;
+    @Autowired
+    private EquipmentRepository equipmentRepository;
+    @Autowired
     private UserRepository userRepository;
 
     @BeforeEach
@@ -49,6 +52,8 @@ class CenterControllerTest {
         centerRepository.deleteAll();
         centerImgRepository.deleteAll();
         userRepository.deleteAll();
+        centerEquipmentRepository.deleteAll();
+        equipmentRepository.deleteAll();
     }
 
     @Test
@@ -131,7 +136,34 @@ class CenterControllerTest {
                 .andDo(print());
 
     }
+    @Test
+    @DisplayName("기구 특정 개수이상 보유한 센터 찾기")
+    void test5() throws Exception {
+        //given
+        List<Center> requestCenter = IntStream.range(0,20)
+                .mapToObj(i -> Center.builder()
+                        .name("센터" +i)
+                        .region("도시"+i)
+                        .build()).collect(Collectors.toList());
+        centerRepository.saveAll(requestCenter);
+        List<Equipment> equipments = IntStream.range(0,5)
+                .mapToObj(i -> Equipment.builder()
+                        .name("장비"+i)
+                        .build()).collect(Collectors.toList());
+        equipmentRepository.saveAll(equipments);
+        List<CenterEquipment> requestEquip = IntStream.range(0,20)
+                .mapToObj(i -> CenterEquipment.builder()
+                        .center(requestCenter.get(i%5))
+                        .equipment(equipments.get(i%3))
+                        .build()).collect(Collectors.toList());
+        centerEquipmentRepository.saveAll(requestEquip);
 
+        //expected
+        mockMvc.perform(get("/centers?equipmentId=1")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 //    @Test
 //    @DisplayName("센터 상세정보 이미지")
 //    void test5() throws Exception {
