@@ -36,23 +36,23 @@ public class SignController {
 
 
     @PostMapping("/signup")
-    public CommonResult signUp(@RequestBody @Valid UserSignUp request) {
+    public void signUp(@RequestBody @Valid UserSignUp request) {
 //        request.setPassword(passwordEncoder.encode(request.getPassword()));
         signService.join(request);
-        return responseService.getSuccessResult();
+        return;
     }
 
     @PostMapping("/signup-center")
-    public CommonResult signUpCenter(@RequestBody @Valid CenterSignUp request) {
+    public void signUpCenter(@RequestBody @Valid CenterSignUp request) {
         System.out.println(request);
 //        request.setPassword(passwordEncoder.encode(request.getPassword()));
         signService.joinCenter(request);
-        return responseService.getSuccessResult();
+        return ;
     }
 
 
     @GetMapping("/signup/check-email")
-    public CommonResult checkEmail(@RequestParam String email) {
+    public void checkEmail(@RequestParam String email) {
 //        request.setPassword(passwordEncoder.encode(request.getPassword()));
         System.out.println(email);
         Optional<User> user =signService.getByEmail(email);
@@ -61,9 +61,13 @@ public class SignController {
         //1. 인증번호 전송 로직
         //2. 인증번호 받기
         //3. 인증 처리
-        return responseService.getSuccessResult();
+        return ;
     }
 
+    @GetMapping("/check-storeNumber")
+    public void tempCheck(@RequestParam String number) {
+        return ;
+    }
 
     @PostMapping("/signup/{provider}")
     public CommonResult signupProvider( @PathVariable String provider,
@@ -75,23 +79,19 @@ public class SignController {
 
     @PostMapping("/signin")
     public TokenResponse signIn(@RequestBody @Valid UserSignIn request, HttpServletResponse response) {
-        System.out.println("로그인을 시도");
         //Access Token, RefreshToken 발행
         TokenResponse tokenResponse = signService.signIn(request);
-
         Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
         accessCookie.setPath("/");
         //테스트를 위해 잠시 주석 처리
 //         accessCookie.setHttpOnly(true);
 //         accessCookie.setSecure(true);
-
         response.addCookie(accessCookie);
         Cookie resfreshCookie = new Cookie("RefreshToken", tokenResponse.getRefreshToken());
         resfreshCookie.setPath("/");
 //        cookie.setHttpOnly(true);
 //        cookie.setSecure(true);
         response.addCookie(resfreshCookie);
-
         return tokenResponse;
     }
 
@@ -108,11 +108,10 @@ public class SignController {
     }
 
     @GetMapping("/reissue")
-    public CommonResult reissue(HttpServletRequest request, HttpServletResponse response) {
+    public void reissue(HttpServletRequest request, HttpServletResponse response) {
         String RefreshToken = null;
         Cookie cookie = WebUtils.getCookie(request, "RefreshToken");
         if(cookie == null)  throw new CookieNotFoundException("쿠키가 존재하지 않습니다");
-
         RefreshToken = cookie.getValue();
         TokenResponse tokenResponse = signService.reissue(TokenRequest.builder().refreshToken(RefreshToken).build());
         Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
@@ -121,9 +120,8 @@ public class SignController {
 //        Cookie refreshCookie = new Cookie("RefreshToken", tokenResponse.getRefreshToken());
 //        refreshCookie.setPath("/");
 //        response.addCookie(refreshCookie);
-        return responseService.getSuccessResult();
+        return;
     }
-
 
     @PostMapping("/signin/{provider}")
     public SingleResult<TokenResponse> signInByProvider(
@@ -131,7 +129,6 @@ public class SignController {
             @RequestParam String socialToken,
             HttpServletResponse response) {
         TokenResponse tokenResponse = signService.signInByKakao(provider,socialToken);
-
 //        response.setHeader("Set-Cookie", String.format("AccessToken=%s; Secure; SameSite=None",tokenResponse.getAccessToken()));
 //        response.addHeader("Set-Cookie", String.format("RefreshToken=%s; Secure; SameSite=None",tokenResponse.getRefreshToken()));
         Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
@@ -139,39 +136,33 @@ public class SignController {
 ////        accessCookie.setHttpOnly(true);
 ////        accessCookie.setSecure(true);
         response.addCookie(accessCookie);
-
         Cookie refreshCookie = new Cookie("RefreshToken", tokenResponse.getAccessToken());
         refreshCookie.setPath("/");
 //        cookie.setHttpOnly(true);
 //        cookie.setSecure(true);
         response.addCookie(refreshCookie);
-
         return responseService.
                 getSingleResult(tokenResponse);
     }
 
     @GetMapping("/signin/find-email")
-    public CommonResult findEmail(@RequestParam String phoneNumber) {
-        Optional<User> user = signService.getByPhoneNumner(phoneNumber);
-        return responseService.getSuccessResult();
+    public String findEmail(@RequestParam String phoneNumber) {
+        User user = signService.getByPhoneNumner(phoneNumber).orElseThrow();
+        return user.getEmail();
     }
+
     @GetMapping("/signin/find-password")
     public String findPassword(@RequestParam String email) {
         String password = signService.makeNewPassword(email);
         return password;
     }
 
-    @GetMapping("/check")
-    public CommonResult tempCheck(@RequestParam String number) {
-        return responseService.getSuccessResult();
-    }
-
-    @PostMapping("/signup-trainer")
-    public CommonResult addTrainer(@RequestBody ArrayList<Object> trainer) {
-        System.out.println(trainer);
-        return responseService.getSuccessResult();
-    }
-
+//    @PostMapping("/signup-trainer")
+//    public CommonResult addTrainer(@RequestBody ArrayList<Object> trainer) {
+//        System.out.println(trainer);
+//        return responseService.getSuccessResult();
+//    }
+//
 
 
 }

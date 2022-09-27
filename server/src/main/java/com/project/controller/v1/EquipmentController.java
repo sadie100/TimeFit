@@ -2,10 +2,8 @@ package com.project.controller.v1;
 
 import com.project.domain.CenterEquipment;
 import com.project.domain.Equipment;
-import com.project.request.CenterSearch;
-import com.project.request.EquipmentAdd;
+import com.project.request.CenterEquipmentAdd;
 import com.project.request.EquipmentCategory;
-import com.project.response.CenterResponse;
 import com.project.service.EquipmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,16 +20,18 @@ public class EquipmentController {
         return equipmentService.getAllEquipment();
     }
 
-    @PostMapping("/equipment/add")
-    public void addEquipment(@RequestBody EquipmentCategory request){
+    @PostMapping("/equipment/add-category")
+    public void addEquipmentCategory(@RequestBody EquipmentCategory request){
         System.out.println(request);
         equipmentService.add(request);
         return;
     }
 
-    @PostMapping("/equipment/add/{centerId}")
-    public void addCenterEquipment(@RequestBody Long centerId, Long equipmentId, List<EquipmentAdd> request){
-        equipmentService.addEquipment(centerId, equipmentId, request);
+    @PostMapping("/equipment/add")
+    public void addCenterEquipment(@RequestBody CenterEquipmentAdd request){
+        System.out.println(request);
+        equipmentService.addEquipment(request);
+        return;
     }
 
     @GetMapping("/equipment/{centerId}")

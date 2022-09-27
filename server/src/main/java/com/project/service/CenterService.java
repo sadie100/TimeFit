@@ -52,8 +52,14 @@ public class CenterService {
         centerRepository.updateView(itemId);
     }
 
-    public Center getByName(String name){
-        Center center =centerRepository.findByName(name).orElseThrow(RuntimeException::new);
-        return  center;
+    public List<Center> findAllCenter(){
+        List<Center> center =centerRepository.findAll();
+        return center;
+    }
+
+    public Center getCenterByID(Long centerId){
+        Center center = centerRepository.findById(centerId)
+                .orElseThrow(CenterNotFound::new);
+        return center;
     }
 }

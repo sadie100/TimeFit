@@ -32,10 +32,9 @@ public class CenterController {
         return centerService.get(centerId);
     }
 
-//    @GetMapping("/get-centers")
-//    public Center getCenterId(@PathVariable String name){
-//        System.out.println(name);
-//        return centerService.getByName(name);
-//    }
+    @GetMapping("/get-centers")
+    public List<Center> getCenterId(){
+        return centerService.findAllCenter();
+    }
 
 }

@@ -7,24 +7,18 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 @Setter
 @Getter
 @ToString
-public class EquipmentAdd {
+public class CenterEquipmentAdd {
 
-
-    private Center center;
-
-    private Equipment equipment;
-
+    private Long center;
+    private Long equipment;
     private Long xLoc;
     private Long yLoc;
 
     @Builder
-    public EquipmentAdd(Center center, Equipment equipment, Long xLoc, Long yLoc) {
+    public CenterEquipmentAdd(Long center, Long equipment, Long xLoc, Long yLoc) {
         this.center = center;
         this.equipment = equipment;
         this.xLoc = xLoc;

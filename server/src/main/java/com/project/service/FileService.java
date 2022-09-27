@@ -9,41 +9,42 @@ import com.project.request.FileDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class FileService {
-    private CenterImgRepository fileRepository;
-    private CenterRepository centerRepository;
+    private CenterImgRepository centerImgRepository;
 
     public FileService(CenterImgRepository fileRepository) {
-        this.fileRepository = fileRepository;
+        this.centerImgRepository = fileRepository;
     }
 
     @Transactional
-    public Long saveFile(FileDto fileDto) {
+    public void saveFile(FileDto fileDto) {
         CenterImages centerImages = CenterImages.builder()
                 .originFileName(fileDto.getOriginFileName())
                 .newFileName(fileDto.getNewFileName())
+                .filePath(fileDto.getFilePath())
                 .item(fileDto.getItem()).build();
-        return fileRepository.save(centerImages).getId();
+        centerImgRepository.save(centerImages).getId();
+        return;
     }
 
-    public Center getCenter(Long id){
-        Center center = centerRepository.findById(id).orElseThrow(()-> new CenterNotFound());;
-        return  center;
-    }
 
-//    @Transactional
-//    public FileDto getFile(Long id) {
-//        File file = fileRepository.findById(id).get();
-//
-//        FileDto fileDto = FileDto.builder()
-//                .id(id)
-//                .origFilename(file.getOrigFilename())
-//                .filename(file.getFilename())
-//                .filePath(file.getFilePath())
-//                .build();
-//        return fileDto;
-//    }
+    @Transactional
+    public List<FileDto> getFile(Center center) {
+        List<CenterImages> centerImages = centerImgRepository.findByItem(center);
+        List<FileDto> fileDtos = new ArrayList<>();
+        for(CenterImages img : centerImages){
+            fileDtos.add(FileDto.builder()
+                    .id(img.getId())
+                    .newFileName(img.getNewFileName())
+                    .filePath(img.getFilePath())
+                    .build());
+        }
+        centerImgRepository.findByItem(center);
+        return fileDtos;
+    }
 }
