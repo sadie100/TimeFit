@@ -14,6 +14,7 @@ const StyledButton = styled.button`
   border-radius: ${(props) => props.theme.button.borderRadius};
   font-size: ${({ fontSize, theme }) => fontSize || theme.button.fontSize};
   fontweight: ${({ fontWeight }) => fontWeight || "normal"};
+  ${({ theme, ...rest }) => ({ ...rest })}
 `;
 
 export default Button;

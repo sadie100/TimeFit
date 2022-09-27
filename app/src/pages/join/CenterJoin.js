@@ -8,6 +8,7 @@ import SubmitButton from "components/form/SubmitButton";
 import { useTheme } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Trainers from "pages/join/Trainers";
+import Machines from "pages/join/Machines";
 
 const formId = "CenterJoin";
 
@@ -124,6 +125,12 @@ export default () => {
         label: "보유 트레이너",
         name: "trainers",
         render: (props) => <Trainers {...props} />,
+      },
+      {
+        type: "custom",
+        label: "보유 운동기구",
+        name: "machines",
+        render: (props) => <Machines {...props} />,
       },
     ].filter((d) => !!d);
 

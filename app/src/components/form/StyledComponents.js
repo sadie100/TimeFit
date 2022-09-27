@@ -54,3 +54,19 @@ export const LineContent = styled.div`
     flex-grow: 1;
   }
 `;
+export const StyledSelect = styled.select`
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  padding: ${({ theme }) => theme.form.padding};
+  color: black;
+  width: 100%;
+  font-family: Noto Sans KR;
+  flex: 1 2 auto;
+  ::placeholder,
+  ::-webkit-input-placeholder {
+    color: lightgray;
+  }
+  :-ms-input-placeholder {
+    color: lightgray;
+  }
+`;
