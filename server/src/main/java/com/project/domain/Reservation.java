@@ -22,7 +22,7 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name="center_equipmentId")
-    private CenterEquipment equipment;
+    private CenterEquipment centerEquipment;
 
     @ManyToOne
     @JoinColumn(name="msrl")
