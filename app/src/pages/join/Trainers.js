@@ -103,6 +103,7 @@ export default (props) => {
         type="button"
         fontSize="14px"
         padding="10px 20px"
+        secondary={true}
       >
         추가하기
       </Button>

@@ -16,7 +16,7 @@ export default () => {
       <Route path="/user/form" element={<UserJoin />}></Route>
       <Route path="/center/form" element={<CenterJoin />}></Route>
       <Route path="/find-center" element={<FindCenter />}></Route>
-      <Route path="/center-layout" element={<CenterLayout />}></Route>
+      <Route path="/center/layout" element={<CenterLayout />}></Route>
       <Route path="/success" element={<Success />}></Route>
       <Route path="*" element={<Navigate to="/join/membertype" replace />} />
     </Routes>

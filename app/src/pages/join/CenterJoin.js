@@ -25,7 +25,7 @@ export default () => {
     window.sessionStorage.setItem("signup", data);
 
     //헬스장 배치도 페이지로 이동
-    navigate("/join/center-layout");
+    navigate("/join/center/layout");
   };
 
   const formData = () =>
