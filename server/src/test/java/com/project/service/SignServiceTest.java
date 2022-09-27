@@ -1,5 +1,6 @@
 package com.project.service;
 
+import com.project.domain.User;
 import com.project.repository.UserRepository;
 import com.project.request.TokenRequest;
 import com.project.request.UserSignIn;
@@ -11,6 +12,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Collections;
 
 @SpringBootTest
 class SignServiceTest {
@@ -32,6 +37,7 @@ class SignServiceTest {
                 .builder()
                 .email("id@naver.com")
                 .password("1234")
+                .phoneNumber("010-3333-3333")
                 .name("이름")
                 .build();
         signService.join(user);

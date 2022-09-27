@@ -114,6 +114,7 @@ class SignControllerTest {
                 .email("id@naver.com")
                 .password("1234")
                 .name("이름")
+                .phoneNumber("010-3333-3333")
                 .build();
         String json = objectMapper.writeValueAsString(request);
         mockMvc .perform(post("/signup")

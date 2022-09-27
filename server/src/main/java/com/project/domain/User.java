@@ -7,6 +7,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,21 +37,24 @@ public class User implements UserDetails {
     @Column( length = 100)
     private String password;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String name;
 
     @Column(length = 100)
     private String provider;
 
+    @Column(length = 15)
+    private String phoneNumber;
 
-    @Column(length = 100)
+    @Column(length = 2)
     private String gender;
 
-    @Column(length = 100)
-    private int age;
+    @Column(name = "DATETIME_FIELD")
+    private Timestamp birth;
 
-
-
+    @OneToOne
+    @JoinColumn(name="id")
+    private Center center;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

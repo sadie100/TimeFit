@@ -14,9 +14,9 @@ public class CenterImages {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String originFileName;
     private String newFileName;
+    private String filePath;
 
     @ManyToOne
     @JoinColumn(name = "item_id")

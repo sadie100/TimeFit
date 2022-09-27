@@ -25,13 +25,13 @@ public class Center {
     private String address;
     private Integer price;
 
+    private String storeNumber;
+
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @OrderBy("id asc")
     private Set<CenterImages> images;
-
-
 
 }

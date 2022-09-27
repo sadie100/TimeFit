@@ -1,10 +1,13 @@
 package com.project.service;
 
 import com.project.config.security.JwtTokenProvider;
+import com.project.domain.Center;
 import com.project.domain.User;
 import com.project.exception.EmailSigninFailedException;
 import com.project.exception.UserNotFoundException;
+import com.project.repository.CenterRepository;
 import com.project.repository.UserRepository;
+import com.project.request.CenterSignUp;
 import com.project.request.TokenRequest;
 import com.project.request.UserSignIn;
 import com.project.request.UserSignUp;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -29,6 +33,7 @@ public class SignService  {
 
     private final UserRepository userRepository;
 
+    private final CenterRepository centerRepository;
 
     @Autowired
     private final PasswordEncoder passwordEncoder;
@@ -46,18 +51,47 @@ public class SignService  {
 //    }
     // 현재는 여기서 loadUserByUsername를 구현하지 않음
     public void join(UserSignUp request){
-
         User user= User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .phoneNumber(request.getPhoneNumber())
                 .name(request.getName())
+                .birth(request.getBirth())
+                .gender(request.getGender())
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();
         userRepository.save(user);
     }
 
+    public void joinCenter(CenterSignUp request){
+
+        Center center= Center.builder()
+                .name(request.getName())
+                .region(request.getRegion())
+                .address(request.getAddress())
+//                .storeNumber(request.getStoreNumber())
+                .build();
+
+        centerRepository.save(center);
+
+        User user= User.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .phoneNumber(request.getPhoneNumber())
+                .name(request.getName())
+                .center(center)
+                .roles(Collections.singletonList("ROLE_CENTER"))
+                .build();
+        userRepository.save(user);
+
+
+    }
+
     public Optional<User> getByEmail(String request){
         return userRepository.findByEmail(request);
+    }
+    public Optional<User> getByPhoneNumner(String request){
+        return userRepository.findByPhoneNumber(request);
     }
 
     public TokenResponse signIn(UserSignIn request){
@@ -79,13 +113,7 @@ public class SignService  {
                 .build();
     }
 
-//    public User comparePassword(UserSignIn request){
-//        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(EmailSigninFailedException::new);
-//        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-//            throw new EmailSigninFailedException();
-//        }
-//        return user;
-//    }
+
     public TokenResponse signInByKakao(String provider, String kakaoToken){
         KakaoProfile profile = kakaoService.getKakaoProfile(kakaoToken);
         User user = userRepository.findByEmailAndProvider(String.valueOf(profile.getId()), provider).orElseThrow(UserNotFoundException::new);
@@ -153,7 +181,21 @@ public class SignService  {
 //         토큰 발급
         return TokenResponse.builder().accessToken(newAccessToken).refreshToken(tokenRequest.getRefreshToken()).build();
     }
-    
+
+    public String makeNewPassword(String request){
+        User user= userRepository.findByEmail(request).orElseThrow(EmailSigninFailedException::new);
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        user.setPassword(passwordEncoder.encode(generatedString));
+        userRepository.save(user);
+        return generatedString;
+    }
 
 }
 
