@@ -142,6 +142,15 @@ export default (props) => {
                   {formLine.button}
                 </Button>
               )}
+              {formLine.unit && (
+                <Label
+                  padding={({ theme }) => theme.form.padding}
+                  fontSize="15px"
+                  //padding="10px"
+                >
+                  {formLine.unit}
+                </Label>
+              )}
             </LineContent>
 
             {!!errors?.[formLine.name] && (

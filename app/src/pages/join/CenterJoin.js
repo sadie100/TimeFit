@@ -24,8 +24,8 @@ export default () => {
     //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
     window.sessionStorage.setItem("signup", data);
 
-    //헬스장 선택 페이지로 이동
-    navigate("/join/find-center");
+    //헬스장 배치도 페이지로 이동
+    navigate("/join/center-layout");
   };
 
   const formData = () =>
@@ -131,6 +131,13 @@ export default () => {
         label: "보유 운동기구",
         name: "machines",
         render: (props) => <Machines {...props} />,
+      },
+      {
+        type: "number",
+        label: "1개월 회원권 가격",
+        name: "memberFee",
+        placeholder: "1개월 회원권 가격을 입력해 주세요.",
+        unit: "원",
       },
     ].filter((d) => !!d);
 

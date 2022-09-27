@@ -4,6 +4,7 @@ import * as FormComponent from "components/form/StyledComponents";
 import { useFieldArray, Controller } from "react-hook-form";
 import Button from "components/common/Button";
 import { useTheme } from "styled-components";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default (props) => {
   const { formStates, name, formId } = props;
@@ -79,12 +80,12 @@ export default (props) => {
             </Line>
             <Button
               fontSize="14px"
-              padding="10px"
+              padding="5px"
               primary={false}
-              border={`2px solid ${theme.color.main}}`}
+              border="1px solid gray"
               onClick={() => handleRemove(index)}
             >
-              삭제하기
+              <DeleteIcon />
             </Button>
           </li>
         );
