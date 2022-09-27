@@ -4,41 +4,9 @@ import { useDrop } from "react-dnd";
 import { DraggableItem } from "./DraggableItem.js";
 import { snapToGrid as doSnapToGrid } from "./snapToGrid.js";
 
-export default ({ items, setItems, type }) => {
-  const moveBox = useCallback(
-    (id, left, top) => {
-      setItems(
-        update(items, {
-          [id]: {
-            $merge: { left, top },
-          },
-        })
-      );
-    },
-    [items]
-  );
-  // const [{ canDrop }, drop] = useDrop(
-  //   () => ({
-  //     accept: type,
-  //     drop(item, monitor) {
-  //       const delta = monitor.getDifferenceFromInitialOffset();
-  //       let left = Math.round(item.left + delta.x);
-  //       let top = Math.round(item.top + delta.y);
-  //       [left, top] = doSnapToGrid(left, top);
-  //       moveBox(item.id, left, top);
-  //       return undefined;
-  //     },
-  //     collect: (monitor) => ({
-  //       canDrop: monitor.canDrop(),
-  //     }),
-  //   }),
-  //   [moveBox]
-  // );
+export default ({ items, setItems, type, handleStatus }) => {
   return (
-    <div
-      // ref={drop}
-      style={{ width: "100%", height: "100%", position: "relative" }}
-    >
+    <div style={{ height: "100%", position: "relative", overflow: "auto" }}>
       {Object.keys(items).map((key) => (
         <DraggableItem key={key} id={key} type={type} {...items[key]} />
       ))}

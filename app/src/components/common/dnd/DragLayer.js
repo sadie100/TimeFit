@@ -1,3 +1,5 @@
+//드래그하는 동안 생기는 레이어
+
 import { useDragLayer } from "react-dnd";
 import { ItemDragPreview } from "./ItemDragPreview";
 import { snapToGrid } from "./snapToGrid.js";

@@ -6,23 +6,61 @@ import styled from "styled-components";
 import DraggableFromContainer from "components/common/dnd/DraggableFromContainer";
 import DraggableToContainer from "components/common/dnd/DraggableToContainer";
 import DragLayer from "components/common/dnd/DragLayer";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import machines from "assets/machines";
 
-export default () => {
+const upListHeight = 200;
+const gap = 50;
+const heightGap = upListHeight + gap;
+
+export default (props) => {
+  const {
+    machineList = [
+      { name: "barbell", count: 3 },
+      { name: "treadmill", count: 2 },
+      { name: "benchpress", count: 5 },
+    ],
+  } = props;
+
   //처음 헬스장 모음
-  const [fromItems, setFromItems] = useState(
-    Object.entries(machines).map(([key, value], idx) => {
-      return {
-        top: 10,
-        left: idx * 70,
-        component: <img src={value} height="50px" width="50px"></img>,
-      };
-    })
-  );
+  const [fromItems, setFromItems] = useState([]);
+
+  //이전 페이지에서 machine 데이터 가져와서 그 수만큼 아이콘 배치하기
+  useEffect(() => {
+    const machineArr = [];
+    machineList.map(({ name, count }, idx) => {
+      for (let i = 0; i < count; i++) {
+        machineArr.push({
+          name: `${name}_${i}`,
+          top: machineArr.length % 2 === 0 ? 10 : 100,
+          left: parseInt(machineArr.length / 2) * 70,
+          component: (
+            <img
+              src={machines[name]}
+              height="50px"
+              width="50px"
+              style={{ cursor: "pointer" }}
+            ></img>
+          ),
+        });
+      }
+    });
+    setFromItems(machineArr);
+  }, []);
 
   //헬스장 배치도 모음
   const [toItems, setToItems] = useState([]);
+
+  //layout 절대높이 알기 위한 로직
+  const layoutRef = useRef(null);
+  const [layoutTop, setLayoutTop] = useState(0);
+
+  useEffect(() => {
+    if (layoutRef.current) {
+      setLayoutTop(layoutRef.current.offsetTop);
+    }
+  }, []);
+
   return (
     <>
       <Background>
@@ -34,14 +72,16 @@ export default () => {
               setItems={setFromItems}
               type="machine"
             />
-            <DragLayer />
           </MachineBox>
-          <Layout>
+          <Layout ref={layoutRef}>
             <DraggableToContainer
               fromItems={fromItems}
               items={toItems}
               setItems={setToItems}
+              setListItems={setFromItems}
               type="machine"
+              heightGap={heightGap}
+              layoutTop={layoutTop}
             />
           </Layout>
         </DndProvider>
@@ -58,11 +98,11 @@ const Background = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 3rem;
+  gap: ${gap}px;
 `;
 
 const MachineBox = styled.div`
-  height: 200px;
+  height: ${upListHeight}px;
   border: 1px solid gray;
   width: 800px;
   padding: 10px;
