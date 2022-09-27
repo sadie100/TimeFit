@@ -46,9 +46,9 @@ export default (props) => {
                   name="equipment"
                   {...register(`${name}.${index}.equipment`)}
                 >
-                  <option value="런닝머신">런닝머신</option>
+                  <option value="러닝머신">러닝머신</option>
                   <option value="워킹머신">워킹머신</option>
-                  <option value="실내자전거">실내자전거</option>
+                  <option value="사이클">사이클</option>
                   <option value="일립티컬">일립티컬</option>
                   <option value="스텝퍼">스텝퍼</option>
                   <option value="로잉머신">로잉머신</option>
