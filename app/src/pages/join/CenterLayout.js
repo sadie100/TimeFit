@@ -16,8 +16,8 @@ const iconSize = 60;
 export default (props) => {
   const {
     machineList = [
-      { name: "barbell", count: 10 },
-      { name: "treadmill", count: 30 },
+      { name: "barbell", count: 5 },
+      { name: "treadmill", count: 3 },
       { name: "benchpress", count: 5 },
     ],
   } = props;
@@ -103,10 +103,8 @@ const MachineBox = styled.div`
 `;
 const Layout = styled.div`
   height: 500px;
-  // minheight: 300px;
   border: 1px solid gray;
   width: 800px;
-  // minwidth: 300px;
 `;
 
 const Entrance = styled.div`
