@@ -6,7 +6,7 @@ import Button from "components/common/Button";
 
 export default (props) => {
   const { formStates, name, formId } = props;
-  const { watch, setValue, getValues, control, register } = formStates;
+  const { control, register } = formStates;
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
       control, // control props comes from useForm (optional: if you are using FormContext)
@@ -21,34 +21,7 @@ export default (props) => {
   const handleRemove = (index) => {
     remove(index);
   };
-  const formData = (registered) => [
-    {
-      name: "name",
-      label: "이름",
-      type: "text",
-      register: { value: registered.name },
-    },
-    {
-      name: "gender",
-      label: "성별",
-      type: "radio",
-      buttons: [
-        { label: "남성", value: "male" },
-        { label: "여성", value: "female" },
-      ],
-    },
-    {
-      type: "button",
-      text: "추가",
-      name: "addBtn",
-      onClick: () => {
-        append({ name: watch("name"), gender: watch("gender") });
-        console.log(watch());
-        setValue("name", "");
-        setValue("gender", "");
-      },
-    },
-  ];
+
   return (
     <ul
       style={{
