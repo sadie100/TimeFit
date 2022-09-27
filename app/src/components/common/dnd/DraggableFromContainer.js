@@ -4,9 +4,15 @@ import { useDrop } from "react-dnd";
 import { DraggableItem } from "./DraggableItem.js";
 import { snapToGrid as doSnapToGrid } from "./snapToGrid.js";
 
-export default ({ items, setItems, type, handleStatus }) => {
+export default ({ items, setItems, type }) => {
   return (
-    <div style={{ height: "100%", position: "relative", overflow: "auto" }}>
+    <div
+      style={{
+        minHeight: "200px",
+        position: "relative",
+        overflow: "auto",
+      }}
+    >
       {Object.keys(items).map((key) => (
         <DraggableItem key={key} id={key} type={type} {...items[key]} />
       ))}

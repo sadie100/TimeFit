@@ -5,19 +5,19 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import styled from "styled-components";
 import DraggableFromContainer from "components/common/dnd/DraggableFromContainer";
 import DraggableToContainer from "components/common/dnd/DraggableToContainer";
-import DragLayer from "components/common/dnd/DragLayer";
 import { useState, useRef, useEffect } from "react";
 import machines from "assets/machines";
 
 const upListHeight = 200;
 const gap = 50;
 const heightGap = upListHeight + gap;
+const iconSize = 60;
 
 export default (props) => {
   const {
     machineList = [
-      { name: "barbell", count: 3 },
-      { name: "treadmill", count: 2 },
+      { name: "barbell", count: 10 },
+      { name: "treadmill", count: 30 },
       { name: "benchpress", count: 5 },
     ],
   } = props;
@@ -32,34 +32,30 @@ export default (props) => {
       for (let i = 0; i < count; i++) {
         machineArr.push({
           name: `${name}_${i}`,
-          top: machineArr.length % 2 === 0 ? 10 : 100,
-          left: parseInt(machineArr.length / 2) * 70,
+          top: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
+          left: parseInt(machineArr.length / 2) * (iconSize + 20),
           component: (
             <img
               src={machines[name]}
-              height="50px"
-              width="50px"
+              height={`${iconSize}px`}
+              width={`${iconSize}px`}
               style={{ cursor: "pointer" }}
             ></img>
           ),
         });
       }
     });
+    machineArr.push({
+      name: "entrance",
+      top: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
+      left: parseInt(machineArr.length / 2) * (iconSize + 20),
+      component: <Entrance>입구</Entrance>,
+    });
     setFromItems(machineArr);
   }, []);
 
   //헬스장 배치도 모음
   const [toItems, setToItems] = useState([]);
-
-  //layout 절대높이 알기 위한 로직
-  const layoutRef = useRef(null);
-  const [layoutTop, setLayoutTop] = useState(0);
-
-  useEffect(() => {
-    if (layoutRef.current) {
-      setLayoutTop(layoutRef.current.offsetTop);
-    }
-  }, []);
 
   return (
     <>
@@ -73,15 +69,14 @@ export default (props) => {
               type="machine"
             />
           </MachineBox>
-          <Layout ref={layoutRef}>
+          <Layout>
             <DraggableToContainer
               fromItems={fromItems}
               items={toItems}
               setItems={setToItems}
-              setListItems={setFromItems}
+              setFromItems={setFromItems}
               type="machine"
               heightGap={heightGap}
-              layoutTop={layoutTop}
             />
           </Layout>
         </DndProvider>
@@ -102,7 +97,6 @@ const Background = styled.div`
 `;
 
 const MachineBox = styled.div`
-  height: ${upListHeight}px;
   border: 1px solid gray;
   width: 800px;
   padding: 10px;
@@ -113,4 +107,13 @@ const Layout = styled.div`
   border: 1px solid gray;
   width: 800px;
   // minwidth: 300px;
+`;
+
+const Entrance = styled.div`
+  border: none;
+  border-radius: 10px;
+  background-color: lightgray;
+  cursor: pointer;
+  padding: 15px 20px;
+  font-family: SLEIGothicTTF;
 `;
