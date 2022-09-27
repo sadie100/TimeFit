@@ -7,6 +7,8 @@ import DraggableFromContainer from "components/common/dnd/DraggableFromContainer
 import DraggableToContainer from "components/common/dnd/DraggableToContainer";
 import { useState, useRef, useEffect } from "react";
 import machines from "assets/machines";
+import Button from "components/common/Button";
+import { useNavigate } from "react-router-dom";
 
 const upListHeight = 200;
 const gap = 50;
@@ -14,6 +16,7 @@ const heightGap = upListHeight + gap;
 const iconSize = 60;
 
 export default (props) => {
+  const navigate = useNavigate();
   const {
     machineList = [
       { name: "barbell", count: 5 },
@@ -57,6 +60,19 @@ export default (props) => {
   //헬스장 배치도 모음
   const [toItems, setToItems] = useState([]);
 
+  //회원가입 로직
+  const onSubmit = () => {
+    if (!window.confirm("배치도를 저장하시겠습니까?")) return;
+    //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
+    const data = window.sessionStorage.getItem("signup");
+    data.layout = toItems;
+
+    //서버 로직 하기
+
+    //성공 시 페이지 이동
+    navigate("/join/success");
+  };
+
   return (
     <>
       <Background>
@@ -80,6 +96,7 @@ export default (props) => {
             />
           </Layout>
         </DndProvider>
+        <Button onClick={onSubmit}>저장하기</Button>
       </Background>
     </>
   );
