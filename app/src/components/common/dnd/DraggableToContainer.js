@@ -2,6 +2,7 @@ import update from "immutability-helper";
 import { useCallback, useState, useEffect } from "react";
 import { useDrop } from "react-dnd";
 import { DraggableItem } from "./DraggableItem.js";
+import { useTheme } from "styled-components";
 
 const handleStatus = (item, fromItems) => {
   let status = "";
@@ -13,14 +14,12 @@ const handleStatus = (item, fromItems) => {
   return status;
 };
 
-export default ({
-  fromItems,
-  items,
-  setItems,
-  setFromItems,
-  type,
-  heightGap,
-}) => {
+export default ({ fromItems, items, setItems, setFromItems, type }) => {
+  const {
+    center: { upListHeight, gap },
+  } = useTheme();
+  const heightGap = upListHeight + gap;
+
   const moveBox = useCallback(
     (id, left, top, status) => {
       status === "UpToDown"

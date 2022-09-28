@@ -9,13 +9,13 @@ import { useState, useRef, useEffect } from "react";
 import machines from "assets/machines";
 import Button from "components/common/Button";
 import { useNavigate } from "react-router-dom";
-
-const upListHeight = 200;
-const gap = 50;
-const heightGap = upListHeight + gap;
-const iconSize = 60;
+import { Layout } from "components/center/Layout";
+import { useTheme } from "styled-components";
 
 export default (props) => {
+  const {
+    center: { iconSize },
+  } = useTheme();
   const navigate = useNavigate();
   const {
     machineList = [
@@ -92,7 +92,6 @@ export default (props) => {
               setItems={setToItems}
               setFromItems={setFromItems}
               type="machine"
-              heightGap={heightGap}
             />
           </Layout>
         </DndProvider>
@@ -110,18 +109,13 @@ const Background = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: ${gap}px;
+  gap: ${({ theme }) => theme.center.gap}px;
 `;
 
 const MachineBox = styled.div`
   border: 1px solid gray;
   width: 800px;
   padding: 10px;
-`;
-const Layout = styled.div`
-  height: 500px;
-  border: 1px solid gray;
-  width: 800px;
 `;
 
 const Entrance = styled.div`
