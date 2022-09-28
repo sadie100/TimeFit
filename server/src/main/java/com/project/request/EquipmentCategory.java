@@ -12,7 +12,6 @@ import lombok.ToString;
 @ToString
 public class EquipmentCategory {
 
-
     private String name;
     private String img;
 

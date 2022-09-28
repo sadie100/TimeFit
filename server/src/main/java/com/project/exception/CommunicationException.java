@@ -1,15 +1,15 @@
 package com.project.exception;
 
-public class CommunicationException extends RuntimeException {
-    public CommunicationException(String msg, Throwable t) {
-        super(msg, t);
+public class CommunicationException extends TimeFitException {
+
+    private static final String MESSAGE = "원활한 통신이 되지 않았습니다..";
+
+    public CommunicationException(){
+        super(MESSAGE);
     }
 
-    public CommunicationException(String msg) {
-        super(msg);
-    }
-
-    public CommunicationException() {
-        super();
+    @Override
+    public int getStatusCode() {
+        return 405;
     }
 }

@@ -3,10 +3,8 @@ package com.project.service;
 
 import com.project.domain.Center;
 import com.project.exception.CenterNotFound;
-import com.project.exception.EmailSigninFailedException;
 import com.project.repository.CenterImgRepository;
 import com.project.repository.CenterRepository;
-import com.project.repository.UserRepository;
 import com.project.request.CenterSearch;
 import com.project.response.CenterDetailResponse;
 import com.project.response.CenterImgResponse;

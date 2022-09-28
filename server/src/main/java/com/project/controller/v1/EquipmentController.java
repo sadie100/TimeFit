@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 public class EquipmentController {
-    private  final EquipmentService equipmentService;
+    private final EquipmentService equipmentService;
 
     @GetMapping("/equipment")
     public List<Equipment> getEquipments(){
@@ -35,9 +35,11 @@ public class EquipmentController {
     }
 
     @GetMapping("/equipment/{centerId}")
-    public List<CenterEquipment> getEquipments(@PathVariable Long centerId){
+    public List<CenterEquipment> getCenterEquipments(@PathVariable Long centerId){
         return equipmentService.getByCenter(centerId);
     }
+
+
 
 
 }

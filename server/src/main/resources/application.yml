@@ -22,7 +22,7 @@ spring:
 
   social:
     kakao:
-      client_id:  bcd243634170a5ed5a8a1bdcafc169af
+      client_id: bcd243634170a5ed5a8a1bdcafc169af
       redirect: /social/login/kakao
       url:
         login: https://kauth.kakao.com/oauth/authorize
