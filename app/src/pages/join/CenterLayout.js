@@ -9,7 +9,7 @@ import { useState, useRef, useEffect } from "react";
 import machines from "assets/machines";
 import Button from "components/common/Button";
 import { useNavigate } from "react-router-dom";
-import { Layout } from "components/center/Layout";
+import { Layout, Entrance } from "components/Center";
 import { useTheme } from "styled-components";
 
 export default (props) => {
@@ -19,9 +19,9 @@ export default (props) => {
   const navigate = useNavigate();
   const {
     machineList = [
-      { name: "barbell", count: 5 },
+      { name: "barbell", count: 3 },
       { name: "treadmill", count: 3 },
-      { name: "benchpress", count: 5 },
+      { name: "benchpress", count: 3 },
     ],
   } = props;
 
@@ -65,7 +65,13 @@ export default (props) => {
     if (!window.confirm("배치도를 저장하시겠습니까?")) return;
     //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
     const data = window.sessionStorage.getItem("signup");
-    data.layout = toItems;
+    const layoutData = toItems.map(({ left, top, name }) => ({
+      left,
+      top,
+      name,
+    }));
+    console.log(layoutData);
+    data.layout = layoutData;
 
     //서버 로직 하기
 
@@ -116,13 +122,4 @@ const MachineBox = styled.div`
   border: 1px solid gray;
   width: 800px;
   padding: 10px;
-`;
-
-const Entrance = styled.div`
-  border: none;
-  border-radius: 10px;
-  background-color: lightgray;
-  cursor: pointer;
-  padding: 15px 20px;
-  font-family: SLEIGothicTTF;
 `;

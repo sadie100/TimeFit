@@ -27,6 +27,7 @@ export default ({ fromItems, items, setItems, setFromItems, type }) => {
             ...items,
             {
               component: fromItems[id].component,
+              name: fromItems[id].name,
               top: top,
               left: left,
             },
@@ -59,7 +60,6 @@ export default ({ fromItems, items, setItems, setFromItems, type }) => {
           status === "UpToDown"
             ? Math.round(item.top + delta.y - heightGap)
             : Math.round(item.top + delta.y);
-
         moveBox(item.id, left, top, status);
         return undefined;
       },

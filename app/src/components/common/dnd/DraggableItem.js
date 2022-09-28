@@ -3,7 +3,7 @@ import { useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 
 function getStyles(left, top, isDragging) {
-  const transform = `translate3d(${left}px, ${top}px, 0)`;
+  // const transform = `translate3d(${left}px, ${top}px, 0)`;
   return {
     position: "absolute",
     left: left,
