@@ -5,6 +5,7 @@ import { useFieldArray, Controller } from "react-hook-form";
 import Button from "components/common/Button";
 import { useTheme } from "styled-components";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { MACHINE_NAME } from "constants/center";
 
 export default (props) => {
   const { formStates, name, formId } = props;
@@ -46,20 +47,11 @@ export default (props) => {
                   name="equipment"
                   {...register(`${name}.${index}.equipment`)}
                 >
-                  <option value="러닝머신">러닝머신</option>
-                  <option value="사이클">사이클</option>
-                  <option value="일립티컬">일립티컬</option>
-                  <option value="스텝퍼">스텝퍼</option>
-                  <option value="로잉머신">로잉머신</option>
-                  <option value="벤치프레스">벤치프레스</option>
-                  <option value="스쿼트머신">스쿼트머신</option>
-                  <option value="치닝디핑">치닝디핑</option>
-                  <option value="바벨">바벨</option>
-                  <option value="덤벨">덤벨</option>
-                  <option value="케틀벨">케틀벨</option>
-                  <option value="요가매트">요가매트</option>
-                  <option value="짐볼&보수볼">짐볼&보수볼</option>
-                  <option value="기타">기타(직접입력)</option>
+                  {Object.entries(MACHINE_NAME).map(([key, value]) => (
+                    <option key={key} value={key}>
+                      {value}
+                    </option>
+                  ))}
                 </StyledSelect>
               </LineContent>
               <LineContent>
