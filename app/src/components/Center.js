@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import machines from "assets/machines";
 import { useTheme } from "styled-components";
+import Popper from "@mui/material/Popper";
+import { useState, useContext } from "react";
+import { ReservePopperContext } from "contexts/reservePopperContext";
 
 export const Layout = styled.div`
   width: 800px;
@@ -17,29 +20,35 @@ export const Entrance = styled.div`
   font-family: SLEIGothicTTF;
 `;
 
-export const MakeItems = (itemData, handleClick) => {
+export const MakeItems = (itemData) => {
   const {
     center: { iconSize },
   } = useTheme();
-
+  const { id, anchorEl, handleOpen } = useContext(ReservePopperContext);
+  const handleClickItem = (event, name) => {
+    handleOpen(event);
+    // setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
   return itemData.map(({ top, left, name }) => {
     const imgName = name.replace(/_\d/, "");
     return (
-      <div
-        onClick={() => handleClick(imgName)}
-        style={{ top, left, position: "absolute" }}
-      >
-        {imgName === "entrance" ? (
-          <Entrance>입구</Entrance>
-        ) : (
-          <img
-            src={machines[imgName]}
-            height={`${iconSize}px`}
-            width={`${iconSize}px`}
-            style={{ cursor: "pointer" }}
-          ></img>
-        )}
-      </div>
+      <>
+        <div onClick={handleOpen} style={{ top, left, position: "absolute" }}>
+          {imgName === "entrance" ? (
+            <Entrance>입구</Entrance>
+          ) : (
+            <img
+              src={machines[imgName]}
+              height={`${iconSize}px`}
+              width={`${iconSize}px`}
+              style={{ cursor: "pointer" }}
+            ></img>
+          )}
+        </div>
+        <Popper id={name} open={id === name} anchorEl={anchorEl}>
+          <div>The content of the Popper.</div>
+        </Popper>
+      </>
     );
   });
 };

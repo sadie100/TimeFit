@@ -7,40 +7,74 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Layout, SampleData, MakeItems } from "components/Center";
 import styled from "styled-components";
+import { MACHINE_NAME } from "constants/center";
 
 const MachineReserve = () => {
   const navigate = useNavigate();
   const { machine } = useParams();
-  console.log(machine);
-  const [itemData, setItemData] = useState([]);
+  const [reservation, setReservation] = useState([]);
 
+  //서버에서 데이터 가져와야 함
   useEffect(() => {
-    // async function fetchData() {
-    //   try {
-    //     const { data } = ApiController({
-    //       url: "/api/?",
-    //       method: "get",
-    //     });
-    //     //예약데이터를 받는 api
-    //   } catch (e) {
-    //     console.log(e);
-    //     //에러 타입에 따라 처리
-    //     //우선 로그인 없는 경우만 생각해서 구현. 추후수정
-    //     alert("로그인 정보가 없습니다. 로그인 화면으로 이동합니다.");
-    //     return navigate("/login");
-    //   }
-    // }
-    // fetchData();
-    setItemData(SampleData);
+    const date = new Date("2017-03-11T11:30:00Z");
+
+    console.log(date.toISOString());
+    setReservation([
+      {
+        id: 22,
+        times: [
+          {
+            reservationId: 2,
+            start: "2022-09-27T10:15:11",
+            end: "2022-09-27T10:25:11",
+          },
+          {
+            reservationId: 7,
+            start: "2022-09-27T10:15:16",
+            end: "2022-09-27T10:25:16",
+          },
+          {
+            reservationId: 12,
+            start: "2022-09-27T10:15:21",
+            end: "2022-09-27T10:25:21",
+          },
+          {
+            reservationId: 17,
+            start: "2022-09-27T10:15:26",
+            end: "2022-09-27T10:25:26",
+          },
+        ],
+      },
+      {
+        id: 23,
+        times: [
+          {
+            reservationId: 3,
+            start: "2022-09-27T10:15:12",
+            end: "2022-09-27T10:25:12",
+          },
+          {
+            reservationId: 8,
+            start: "2022-09-27T10:15:17",
+            end: "2022-09-27T10:25:17",
+          },
+          {
+            reservationId: 13,
+            start: "2022-09-27T10:15:22",
+            end: "2022-09-27T10:25:22",
+          },
+          {
+            reservationId: 18,
+            start: "2022-09-27T10:15:27",
+            end: "2022-09-27T10:25:27",
+          },
+        ],
+      },
+    ]);
   }, []);
-
-  const handleClick = (machine) => {
-    navigate(`/reserve/${machine}`);
-  };
-
   return (
     <Background>
-      <div className="title">{machine} 예약하기</div>
+      <div className="title">{MACHINE_NAME[machine]} 예약하기</div>
     </Background>
   );
 };

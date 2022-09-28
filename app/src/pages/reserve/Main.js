@@ -8,9 +8,11 @@ import { useNavigate } from "react-router-dom";
 import ApiController from "lib/AxiosInterceptor";
 import { Layout, SampleData, MakeItems } from "components/Center";
 import styled from "styled-components";
+import ReservePopperContextProvider from "contexts/reservePopperContext";
 
 const Reserve = () => {
   const navigate = useNavigate();
+  //기구 배치 데이터
   const [itemData, setItemData] = useState([]);
 
   useEffect(() => {
@@ -33,25 +35,27 @@ const Reserve = () => {
     setItemData(SampleData);
   }, []);
 
-  const handleClick = (machineType) => {
-    navigate(`/reserve/${machineType}`);
-  };
+  // const handleClick = (machineType) => {
+  //   navigate(`/reserve/${machineType}`);
+  // };
 
   return (
-    <Background>
-      <div className="title">운동기구 예약하기</div>
-      <Layout>
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            position: "relative",
-          }}
-        >
-          {MakeItems(itemData, handleClick)}
-        </div>
-      </Layout>
-    </Background>
+    <ReservePopperContextProvider>
+      <Background>
+        <div className="title">운동기구 예약하기</div>
+        <Layout>
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              position: "relative",
+            }}
+          >
+            {MakeItems(itemData)}
+          </div>
+        </Layout>
+      </Background>
+    </ReservePopperContextProvider>
   );
 };
 export default Reserve;
