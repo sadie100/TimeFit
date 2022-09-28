@@ -21,7 +21,7 @@ export default function CenterConfirmModal({ center }) {
       phone: "02-111-1111",
       image: "https://source.unsplash.com/random",
       address: "서울시 광진구 아차산로 123-232",
-      trainors: "홍길동, 홍길길",
+      trainers: "홍길동, 홍길길",
       machines: "기구1 3개, 기구2 4개, 기구3 1개, 기구4 1개",
       price: "10만원",
     });
@@ -68,7 +68,7 @@ export default function CenterConfirmModal({ center }) {
             </Partition>
             <Partition>
               <BoldText>트레이너</BoldText>
-              <p>{data.trainors}</p>
+              <p>{data.trainers}</p>
             </Partition>
             <Partition>
               <BoldText>보유 기구</BoldText>

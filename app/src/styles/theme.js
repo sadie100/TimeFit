@@ -15,4 +15,10 @@ export default {
   height: {
     header: "35px",
   },
+  center: {
+    upListHeight: 200,
+    gap: 50,
+    iconSize: 60,
+    //heightGap : upListHeight + gap
+  },
 };
