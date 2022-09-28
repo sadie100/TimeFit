@@ -1,4 +1,6 @@
+/* nanumsquare */
 @import url("https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css");
+/* SLEIGothicTTF */
 @font-face {
   font-family: "SLEIGothicTTF";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SLEIGothicTTF.woff")
@@ -6,8 +8,8 @@
   font-weight: normal;
   font-style: normal;
 }
+/* Noto Sans KR */
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
-
 html,
 body {
   padding: 0;
@@ -20,6 +22,8 @@ a {
 }
 
 * {
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
   font-family: nanumsquare;
   font-size: 16px;

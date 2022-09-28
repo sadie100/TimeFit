@@ -68,3 +68,18 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+출처
+<a href="https://www.flaticon.com/kr/free-icons/-" title="벤치 프레스 아이콘">
+벤치 프레스 아이콘 제작자: shmai - Flaticon
+</a>
+<a href="https://www.flaticon.com/free-icons/gym" title="gym icons">Gym icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/gym" title="gym icons">Gym icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/barbell" title="barbell icons">Barbell icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/weight" title="weight icons">Weight icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/yoga-mat" title="yoga mat icons">Yoga mat icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/dumbbell" title="dumbbell icons">Dumbbell icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/sports-and-competition" title="sports and competition icons">Sports and competition icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/ball" title="ball icons">Ball icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/grip" title="grip icons">Grip icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/stepper" title="stepper icons">Stepper icons created by bastian 5 - Flaticon</a>

@@ -1,4 +1,4 @@
-//회원 회원가입
+//센터 회원가입
 
 import React, { useState } from "react";
 import axios from "axios";
@@ -7,11 +7,14 @@ import styled from "styled-components";
 import SubmitButton from "components/form/SubmitButton";
 import { useTheme } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import Trainers from "pages/join/Trainers";
+import Machines from "pages/join/Machines";
+
+const formId = "CenterJoin";
 
 export default () => {
   const [isMailSend, setIsMailSend] = useState(false);
   const [certified, setCertified] = useState(false);
-  const formId = "UserJoin";
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -21,34 +24,9 @@ export default () => {
     //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
     window.sessionStorage.setItem("signup", data);
 
-    //헬스장 선택 페이지로 이동
-    navigate("/join/find-center");
-    // axios
-    //   .post(
-    //     "http://localhost:8080/signup/",
-    //     { ...data, type: "member" },
-    //     { withCredentials: true }
-    //   )
-    //   .then((res) => {
-    //     console.log(res);
-    //     navigate("/join/success");
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //     alert("에러가 발생했습니다.");
-    //   });
+    //헬스장 배치도 페이지로 이동
+    navigate("/join/center/layout");
   };
-
-  // const checkEmailHandler = (e) => {
-  //   e.preventDefault();
-  //   let email = Email;
-  //   console.log(email);
-  //   axios
-  //     .get(`http://localhost:8080/signup/check-email?email=${email}`, {
-  //       withCredentials: true,
-  //     })
-  //     .then((res) => console.log(res));
-  // };
 
   const formData = () =>
     [
@@ -93,39 +71,76 @@ export default () => {
       {
         type: "text",
         name: "name",
-        label: "이름",
-        placeholder: "이름을 입력해 주세요.",
+        label: "헬스장명",
+        placeholder: "헬스장 이름을 입력해 주세요.",
         register: {
-          required: "이름을 입력해 주세요.",
-        },
-      },
-      {
-        type: "date",
-        name: "birthday",
-        label: "생년월일",
-        register: {
-          required: "생년월일을 입력해 주세요.",
-        },
-      },
-      {
-        type: "radio",
-        name: "gender",
-        label: "성별",
-        buttons: [
-          { label: "남성", value: "man" },
-          { label: "여성", value: "woman" },
-        ],
-        register: {
-          required: "생년월일을 입력해 주세요.",
+          required: "헬스장 이름을 입력해 주세요.",
         },
       },
       {
         type: "number",
         name: "phone",
-        label: "휴대전화",
-        placeholder: "휴대전화 번호를 입력해 주세요.",
+        label: "헬스장 연락처",
+        placeholder: "헬스장 연락처를 입력해 주세요.",
+        register: {
+          required: "헬스장 연락처를 입력해 주세요.",
+        },
+      },
+      {
+        type: "address",
+        label: "헬스장 주소",
+        get: {
+          //다음 api에서 가져올 데이터와 가져올 이름을 짝지어 둔 객체
+          zonecode: "zonecode", //우편번호
+          address: "address", //기본 주소(ex: 경기 성남시 분당구 판교역로 235)
+          sido: "sido", //도/시 이름(ex:경기도,서울특별시)
+          sigungu: "sigungu", //시,군,구 이름
+          bname: "bname", //법정동/법정리 이름
+        },
+        detailName: "detail", //상세주소 이름
+        required: true,
+      },
+      {
+        type: "text",
+        label: "사업자등록번호",
+        name: "companyNum",
+        button: "인증",
+        buttonOnClick: () => {
+          //todo : 인증 로직 구현하기
+          alert("사업자등록번호 인증 로직 구현 필요");
+        },
+        placeholder: "사업자등록번호를 입력해 주세요.",
+        register: {
+          required: "사업자등록번호를 입력해 주세요.",
+        },
+      },
+      {
+        //todo : 사진 컴포넌트 예쁜 걸로 변경 필요
+        type: "file",
+        label: "헬스장 사진",
+        name: "image",
+      },
+      {
+        type: "custom",
+        label: "보유 트레이너",
+        name: "trainers",
+        render: (props) => <Trainers {...props} />,
+      },
+      {
+        type: "custom",
+        label: "보유 운동기구",
+        name: "machines",
+        render: (props) => <Machines {...props} />,
+      },
+      {
+        type: "number",
+        label: "1개월 회원권 가격",
+        name: "memberFee",
+        placeholder: "1개월 회원권 가격을 입력해 주세요.",
+        unit: "원",
       },
     ].filter((d) => !!d);
+
   return (
     <>
       <Background>
@@ -141,23 +156,6 @@ export default () => {
           다음
         </SubmitButton>
       </Background>
-      {/* <div>
-        <form onSubmit={onSubmit}>
-          <label>Email</label>
-          <input type="email" value={Email} onChange={emailHandler}></input>
-          <label>Password</label>
-          <input
-            type="password"
-            value={Password}
-            onChange={passwordHandler}
-          ></input>
-          <label>Name</label>
-          <input type="name" value={Name} onChange={nameHandler}></input>
-
-          <button type="submit">회원가입</button>
-        </form>
-        <button onClick={checkEmailHandler}>아이디 중복체크</button>
-      </div> */}
     </>
   );
 };
