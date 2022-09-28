@@ -82,3 +82,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 <a href="https://www.flaticon.com/free-icons/sports-and-competition" title="sports and competition icons">Sports and competition icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/ball" title="ball icons">Ball icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/grip" title="grip icons">Grip icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/stepper" title="stepper icons">Stepper icons created by bastian 5 - Flaticon</a>
