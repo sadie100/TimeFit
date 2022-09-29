@@ -9,7 +9,7 @@ import TimeColumn from "pages/reserve/TimeColumn";
 
 export default ({ name, type }) => {
   const reservePopper = useContext(ReservePopperContext);
-  const { id, anchorEl, handleOpen } = reservePopper;
+  const { id, anchorEl } = reservePopper;
   const [reservation, setReservation] = useState([]);
 
   //서버에서 데이터 가져와야 함
@@ -17,8 +17,8 @@ export default ({ name, type }) => {
     setReservation([
       {
         reservationId: 2,
-        start: "2022-09-27T01:15:11",
-        end: "2022-09-27T01:25:11",
+        start: "2022-09-27T01:00:11",
+        end: "2022-09-27T01:15:11",
       },
       {
         reservationId: 7,
@@ -27,13 +27,13 @@ export default ({ name, type }) => {
       },
       {
         reservationId: 12,
-        start: "2022-09-27T03:15:21",
-        end: "2022-09-27T04:15:21",
+        start: "2022-09-27T05:00:21",
+        end: "2022-09-27T06:00:21",
       },
       {
         reservationId: 17,
-        start: "2022-09-27T04:15:26",
-        end: "2022-09-27T04:45:26",
+        start: "2022-09-27T12:00:26",
+        end: "2022-09-27T13:45:26",
       },
     ]);
   }, []);
@@ -56,7 +56,7 @@ const WrapperDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border: 1px solid black;
+  border: 1px solid lightgray;
 `;
 
 const Title = styled.div`

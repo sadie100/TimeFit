@@ -10,6 +10,7 @@ import { Layout, SampleData } from "components/Center";
 import styled from "styled-components";
 import ReservePopperContextProvider from "contexts/reservePopperContext";
 import SetItems from "pages/reserve/SetItems";
+import ReserveModal from "pages/reserve/ReserveModal";
 
 const Reserve = () => {
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ const Reserve = () => {
           </ReservePopperContextProvider>
         </div>
       </Layout>
+      <ReserveModal></ReserveModal>
     </Background>
   );
 };

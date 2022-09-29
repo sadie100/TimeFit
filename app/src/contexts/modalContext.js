@@ -6,15 +6,22 @@ export const ModalContext = createContext({
   nowOpenModal: "",
   handleOpen: () => {},
   handleClose: () => {},
+  handleModalProp: () => {},
+  modalProp: null,
 });
 
 const ModalContextProvider = (props) => {
   const [nowOpenModal, setNowOpenModal] = useState("");
+  const [modalProp, setModalProp] = useState(null);
+
   const handleOpen = (name) => {
     setNowOpenModal(name);
   };
   const handleClose = () => {
     setNowOpenModal("");
+  };
+  const handleModalProp = (data) => {
+    setModalProp(data);
   };
 
   return (
@@ -23,6 +30,8 @@ const ModalContextProvider = (props) => {
         nowOpenModal,
         handleOpen,
         handleClose,
+        modalProp,
+        handleModalProp,
       }}
       {...props}
     ></ModalContext.Provider>
