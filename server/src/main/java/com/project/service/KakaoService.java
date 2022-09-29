@@ -2,6 +2,9 @@ package com.project.service;
 
 
 import com.google.gson.Gson;
+import com.project.domain.User;
+import com.project.exception.UserNotFound;
+import com.project.repository.UserRepository;
 import com.project.response.KakaoProfile;
 import com.project.exception.CommunicationException;
 import com.project.response.KakaoAuth;
@@ -18,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class KakaoService {
 
+    private final UserRepository userRepository;
     private final RestTemplate restTemplate;
     private final Environment env;
     private final Gson gson;
@@ -85,5 +89,9 @@ public class KakaoService {
         throw new CommunicationException();
     }
 
+    public User getByKakao(KakaoProfile profile){
+        User user = userRepository.findByKakao(String.valueOf(profile.getId())).orElseThrow(UserNotFound::new);
+        return user;
 
+    }
 }

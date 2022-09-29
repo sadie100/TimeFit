@@ -1,18 +1,19 @@
 package com.project.controller.v1;
 
+import com.project.domain.Center;
 import com.project.domain.User;
-import com.project.exception.CookieNotFoundException;
+import com.project.exception.CookieNotFound;
 import com.project.request.*;
 import com.project.response.CommonResult;
 import com.project.response.TokenResponse;
-import com.project.service.ResponseService;
+
 import com.project.response.SingleResult;
+import com.project.service.CenterService;
 import com.project.service.SignService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.project.exception.UserExistException;
+import com.project.exception.UserExist;
 
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.WebUtils;
@@ -22,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +31,7 @@ import java.util.Optional;
 public class SignController {
 
     @Autowired
-    private final ResponseService responseService;
+    private final CenterService centerService;
     private final SignService signService;
 
 
@@ -42,39 +42,13 @@ public class SignController {
         return;
     }
 
+
     @PostMapping("/signup-center")
     public void signUpCenter(@RequestBody @Valid CenterSignUp request) {
         System.out.println(request);
 //        request.setPassword(passwordEncoder.encode(request.getPassword()));
         signService.joinCenter(request);
         return ;
-    }
-
-
-    @GetMapping("/signup/check-email")
-    public void checkEmail(@RequestParam String email) {
-//        request.setPassword(passwordEncoder.encode(request.getPassword()));
-        System.out.println(email);
-        Optional<User> user =signService.getByEmail(email);
-        System.out.println(user);
-        if(user.isEmpty()==false) throw new UserExistException("이메일이 중복되었습니다");
-        //1. 인증번호 전송 로직
-        //2. 인증번호 받기
-        //3. 인증 처리
-        return ;
-    }
-
-    @GetMapping("/check-storeNumber")
-    public void tempCheck(@RequestParam String number) {
-        return ;
-    }
-
-    @PostMapping("/signup/{provider}")
-    public CommonResult signupProvider( @PathVariable String provider,
-                                        @RequestParam String accessToken,
-                                        @RequestParam String name) {
-        signService.joinByKakao(provider, accessToken, name);
-        return responseService.getSuccessResult();
     }
 
     @PostMapping("/signin")
@@ -95,8 +69,8 @@ public class SignController {
         return tokenResponse;
     }
 
-    @PostMapping("/signout")
-    public CommonResult signOut(HttpServletResponse response){
+    @GetMapping("/signout")
+    public void signOut(HttpServletResponse response){
 //        Cookie cookie = new Cookie("X-AUTH-TOKEN", null);
         Cookie cookie = new Cookie("AccessToken", null);
         cookie.setHttpOnly(true);
@@ -104,14 +78,32 @@ public class SignController {
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
-        return responseService.getSuccessResult();
+        return ;
+    }
+
+    @GetMapping("/signup/check-email")
+    public void checkEmail(@RequestParam String email) {
+//        request.setPassword(passwordEncoder.encode(request.getPassword()));
+        System.out.println(email);
+        Optional<User> user =signService.getByEmail(email);
+        System.out.println(user);
+        if(user.isEmpty()==false) throw new UserExist();
+        //1. 인증번호 전송 로직
+        //2. 인증번호 받기
+        //3. 인증 처리
+        return ;
+    }
+
+    @GetMapping("/signup/check-storeNumber")
+    public void tempCheck(@RequestParam String number) {
+        return ;
     }
 
     @GetMapping("/reissue")
-    public void reissue(HttpServletRequest request, HttpServletResponse response) {
+    public TokenResponse reissue(HttpServletRequest request, HttpServletResponse response) {
         String RefreshToken = null;
         Cookie cookie = WebUtils.getCookie(request, "RefreshToken");
-        if(cookie == null)  throw new CookieNotFoundException("쿠키가 존재하지 않습니다");
+        if(cookie == null)  throw new CookieNotFound();
         RefreshToken = cookie.getValue();
         TokenResponse tokenResponse = signService.reissue(TokenRequest.builder().refreshToken(RefreshToken).build());
         Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
@@ -120,15 +112,20 @@ public class SignController {
 //        Cookie refreshCookie = new Cookie("RefreshToken", tokenResponse.getRefreshToken());
 //        refreshCookie.setPath("/");
 //        response.addCookie(refreshCookie);
-        return;
+        return tokenResponse;
     }
 
-    @PostMapping("/signin/{provider}")
-    public SingleResult<TokenResponse> signInByProvider(
-            @PathVariable String provider,
-            @RequestParam String socialToken,
+    @PostMapping("/signup/kakao")
+    public void signUpByProvider(
+            @RequestParam String email, String code) {
+        signService.joinByKakao(email,code);
+        return ;
+    }
+    @PostMapping("/signin/kakao")
+    public TokenResponse signInByProvider(
+            @RequestParam String code,
             HttpServletResponse response) {
-        TokenResponse tokenResponse = signService.signInByKakao(provider,socialToken);
+        TokenResponse tokenResponse = signService.signInByKakao(code);
 //        response.setHeader("Set-Cookie", String.format("AccessToken=%s; Secure; SameSite=None",tokenResponse.getAccessToken()));
 //        response.addHeader("Set-Cookie", String.format("RefreshToken=%s; Secure; SameSite=None",tokenResponse.getRefreshToken()));
         Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
@@ -141,13 +138,12 @@ public class SignController {
 //        cookie.setHttpOnly(true);
 //        cookie.setSecure(true);
         response.addCookie(refreshCookie);
-        return responseService.
-                getSingleResult(tokenResponse);
+        return tokenResponse;
     }
 
     @GetMapping("/signin/find-email")
     public String findEmail(@RequestParam String phoneNumber) {
-        User user = signService.getByPhoneNumner(phoneNumber).orElseThrow();
+        User user = signService.getByPhoneNumber(phoneNumber).orElseThrow();
         return user.getEmail();
     }
 
@@ -157,13 +153,12 @@ public class SignController {
         return password;
     }
 
-//    @PostMapping("/signup-trainer")
-//    public CommonResult addTrainer(@RequestBody ArrayList<Object> trainer) {
-//        System.out.println(trainer);
-//        return responseService.getSuccessResult();
-//    }
-//
 
+    @PostMapping("/signup/add-trainer/{centerId}")
+    public void addTrainer(@PathVariable Long centerId, @RequestBody TrainerRequest trainer ) {
+        Center center = centerService.getCenterByID(centerId);
+        signService.addTrainer(center, trainer);
+    }
 
 }
 

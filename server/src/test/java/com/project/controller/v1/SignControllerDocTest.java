@@ -9,22 +9,41 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class SignControllerTest {
+@AutoConfigureRestDocs(uriScheme = "https", uriHost = "api.timefit.com",uriPort = 443)
+@ExtendWith(RestDocumentationExtension.class)
+class SignControllerDocTest {
 
 
     @Autowired
@@ -38,10 +57,12 @@ class SignControllerTest {
     @Autowired
     private SignService signService;
 
+
     @BeforeEach
     void clean(){
         userRepository.deleteAll();
     }
+
 
     @Test
     @DisplayName("로그인을 실행한다")
@@ -61,14 +82,23 @@ class SignControllerTest {
                 .password("1234")
                 .build();
         String json = objectMapper.writeValueAsString(request);
-        mockMvc .perform(post("/signin")
+        mockMvc .perform(RestDocumentationRequestBuilders.post("/signin")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(print());
-    }
+                .andDo(document("signin",requestFields(
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("ID"),
+                        fieldWithPath("password").type(JsonFieldType.STRING).description("PASSWORD")
+                ), responseFields(
+                        fieldWithPath("grantType").type(JsonFieldType.STRING).description("grantType"),
+                        fieldWithPath("accessToken").type(JsonFieldType.STRING).description("인증용 토큰, 쿠키에 저장"),
+                        fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("재발급용 토큰, 쿠키에 저장"),
+                        fieldWithPath("refreshTokenExpirationTime").type(JsonFieldType.NUMBER).description("리프레시 토큰 유효 기간")
+                )));
 
+    }
     @Test
     @DisplayName("로그아웃을 실행한다")
     void signOut() throws Exception{
@@ -100,17 +130,20 @@ class SignControllerTest {
         mockMvc .perform(get("/signout")
                         .cookie(result.getResponse().getCookies()))
                 .andExpect(status().isOk())
-                .andDo(print());
-
+                .andDo(print())
+                .andDo(document("signout"));
 
     }
 
     @Test
     @DisplayName("회원가입을 실행한다")
     void signup() throws Exception{
+
         UserSignUp request = UserSignUp
                 .builder()
                 .email("id@naver.com")
+                .birth("1997-10-06")
+                .gender("남")
                 .password("1234")
                 .name("이름")
                 .phoneNumber("010-2323-3333")
@@ -122,11 +155,15 @@ class SignControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(print());
-//        Assertions.assertEquals(1, userRepository.count());
-//        User user = userRepository.findAll().get(0);
-//        assertEquals("id@naver.com",user.getEmail());
-//        assertEquals("이름",user.getName());
+                .andDo(print())
+                .andDo(document("signup",requestFields(
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("ID"),
+                        fieldWithPath("password").type(JsonFieldType.STRING).description("PASSWORD"),
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+                        fieldWithPath("gender").type(JsonFieldType.STRING).description("성별"),
+                        fieldWithPath("birth").description("생년월일 yyyy-mm-dd"),
+                        fieldWithPath("phoneNumber").description("핸드폰 번호 000-0000-000")
+                )));
     }
 
     @Test
@@ -158,7 +195,14 @@ class SignControllerTest {
         mockMvc .perform(get("/reissue")
                         .cookie(result.getResponse().getCookies()))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("reissue",
+                        responseFields(
+                                fieldWithPath("grantType").description("grantType"),
+                                fieldWithPath("accessToken").type(JsonFieldType.STRING).description("인증용 토큰, 쿠키에 저장"),
+                                fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("재발급용 토큰, 쿠키에 저장"),
+                                fieldWithPath("refreshTokenExpirationTime").description("리프레시 토큰 유효 기간")
+                        )));
 
     }
 
@@ -173,18 +217,25 @@ class SignControllerTest {
                 .phoneNumber("010-2323-3333")
                 .build();
         signService.join(user);
-        mockMvc .perform(get("/signup/check-email?email=id@naver.com"))
+        mockMvc .perform(RestDocumentationRequestBuilders.get("/signup/check-email?email=id@naver.com")
+                        )
                 .andExpect(status().isConflict())
-                .andDo(print());
-
+                .andDo(print())
+                .andDo(document("signup/check-email",requestParameters(
+                        parameterWithName("email").description("찾는 이메일")
+                        )));
     }
 
     @Test
     @DisplayName("사업자등록자번호 확인")
     void tempCheck() throws Exception{
-        mockMvc .perform(get("/signup/check-storeNumber/").param("number","100"))
+        mockMvc .perform(RestDocumentationRequestBuilders.get("/signup/check-storeNumber").param("number","100"))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("/signup/check-storeNumber"
+                        ,requestParameters(
+                                parameterWithName("number").description("등록자 번호"))));
+
     }
 
     @Test
@@ -199,9 +250,12 @@ class SignControllerTest {
                 .build();
         signService.join(user);
 
-        mockMvc .perform(get("/signin/find-email?phoneNumber=010-3333-3333"))
+        mockMvc .perform(RestDocumentationRequestBuilders.get("/signin/find-email?phoneNumber=010-3333-3333"))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("/signin/find-email"
+                        ,requestParameters(
+                                parameterWithName("phoneNumber").description("핸드폰 번호"))));
     }
 
     @Test
@@ -218,6 +272,10 @@ class SignControllerTest {
 
         mockMvc .perform(get("/signin/find-password?email=id@naver.com"))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("/signin/find-password"
+                ,requestParameters(
+                        parameterWithName("email").description("이메일"))));
+
     }
 }

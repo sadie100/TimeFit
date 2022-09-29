@@ -5,6 +5,7 @@ import com.project.domain.Center;
 import com.project.domain.CenterEquipment;
 import com.project.domain.Equipment;
 import com.project.exception.CenterNotFound;
+import com.project.exception.EquipmentNotFound;
 import com.project.repository.CenterEquipmentRepository;
 import com.project.repository.CenterRepository;
 import com.project.repository.EquipmentRepository;
@@ -38,6 +39,12 @@ public class EquipmentService {
                         .yLoc(request.getYLoc())
                         .build());
 //        }
+    }
+
+    public void setEquipmentImage(long equipmentId, String img){
+        Equipment equipment = equipmentRepository.findById(equipmentId).orElseThrow(EquipmentNotFound::new);
+        equipment.setImg(img);
+        equipmentRepository.save(equipment);
     }
 
     public List<CenterEquipment> getByCenter(Long centerId) {

@@ -13,21 +13,21 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 public class EquipmentController {
-    private  final EquipmentService equipmentService;
+    private final EquipmentService equipmentService;
 
     @GetMapping("/equipment")
     public List<Equipment> getEquipments(){
         return equipmentService.getAllEquipment();
     }
 
-    @PostMapping("/equipment/add-category")
+    @PostMapping("/equipment/add")
     public void addEquipmentCategory(@RequestBody EquipmentCategory request){
         System.out.println(request);
         equipmentService.add(request);
         return;
     }
 
-    @PostMapping("/equipment/add")
+    @PostMapping("/equipment/add-center")
     public void addCenterEquipment(@RequestBody CenterEquipmentAdd request){
         System.out.println(request);
         equipmentService.addEquipment(request);
@@ -35,9 +35,11 @@ public class EquipmentController {
     }
 
     @GetMapping("/equipment/{centerId}")
-    public List<CenterEquipment> getEquipments(@PathVariable Long centerId){
+    public List<CenterEquipment> getCenterEquipments(@PathVariable Long centerId){
         return equipmentService.getByCenter(centerId);
     }
+
+
 
 
 }

@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
 
 
-
     @Id // pk
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long msrl;
@@ -33,24 +32,23 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true, length = 30)
     private String email;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(unique = true, length = 30)
+    private String kakao;
+
     @Column( length = 100)
     private String password;
 
     @Column(length = 100)
     private String name;
 
-    @Column(length = 100)
-    private String provider;
-
-    @Column(length = 15)
+    @Column(unique = true,length = 15)
     private String phoneNumber;
 
     @Column(length = 2)
     private String gender;
 
-    @Column(name = "DATETIME_FIELD")
-    private Timestamp birth;
+    @Column(length = 10)
+    private String birth;
 
     @OneToOne
     @JoinColumn(name="id")

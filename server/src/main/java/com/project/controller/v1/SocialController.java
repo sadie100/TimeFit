@@ -23,12 +23,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/social/login")
 public class SocialController {
+
 
     private final Environment env;
     private final RestTemplate restTemplate;
@@ -68,22 +68,11 @@ public class SocialController {
      * 카카오 인증 완료 후 리다이렉트 화면
      */
     @GetMapping(value = "/kakao")
-    public @ResponseBody void redirectKakao(@RequestParam String code, HttpServletResponse response) throws IOException {
-//        mav.addObject("authInfo", kakaoService.getKakaoTokenInfo(code));
-//        mav.setViewName("social/redirectKakao");
+    public @ResponseBody String redirectKakao(@RequestParam String code, HttpServletResponse response) throws IOException {
         KakaoAuth kakaoAuth = kakaoService.getKakaoTokenInfo(code);
         KakaoProfile profile =kakaoService.getKakaoProfile(kakaoAuth.getAccess_token());
-        System.out.println(profile);
-        Optional<User> user= signService.getByEmailAndProvider("kakao",profile);
-        System.out.println(user);
-        // 이후 만약 empty일 경우, 회원가입으로 이동 아닐 경우 로그인 진행
-        if(user.isEmpty()){
-            response.sendRedirect("http://localhost:3000/join");
-//            return kakaoAuth.getAccess_token()+" 가입화면 redirect";
-        }
-        else{
-           System.out.println("로그인 처리");//로그인 처리
-        }
+        User user = kakaoService.getByKakao(profile);
+        return code;
     }
 
 }
