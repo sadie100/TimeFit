@@ -2,15 +2,14 @@ package com.project.service;
 
 import com.project.config.security.JwtTokenProvider;
 import com.project.domain.Center;
+import com.project.domain.Trainer;
 import com.project.domain.User;
 import com.project.exception.EmailSigninFailed;
 import com.project.exception.UserNotFound;
 import com.project.repository.CenterRepository;
+import com.project.repository.TrainerRepository;
 import com.project.repository.UserRepository;
-import com.project.request.CenterSignUp;
-import com.project.request.TokenRequest;
-import com.project.request.UserSignIn;
-import com.project.request.UserSignUp;
+import com.project.request.*;
 import com.project.response.KakaoAuth;
 import com.project.response.KakaoProfile;
 import com.project.response.TokenResponse;
@@ -39,6 +38,9 @@ public class SignService  {
     @Autowired
     private final PasswordEncoder passwordEncoder;
     private final KakaoService kakaoService;
+
+    private final TrainerRepository trainerRepository;
+
 
     private static final String BEARER_TYPE = "Bearer";
     private final RedisTemplate redisTemplate;
@@ -187,5 +189,13 @@ public class SignService  {
         return generatedString;
     }
 
+    public void addTrainer(Center center, TrainerRequest request){
+        Trainer trainer  = Trainer.builder()
+                .center(center)
+                .name(request.getName())
+                .gender(request.getGender())
+                .build();
+        trainerRepository.save(trainer);
+    }
 }
 

@@ -446,26 +446,32 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_예약_조회">예약 조회</a>
+<li><a href="#_운동기구_불러오기">운동기구 불러오기</a>
 <ul class="sectlevel2">
 <li><a href="#_요청">요청</a></li>
 <li><a href="#_응답">응답</a></li>
-<li><a href="#_curl">CURL</a></li>
+<li><a href="#_curl">Curl</a></li>
 </ul>
 </li>
-<li><a href="#_예약_신청">예약 신청</a>
+<li><a href="#_운동기구_추가하기">운동기구 추가하기</a>
 <ul class="sectlevel2">
 <li><a href="#_요청_2">요청</a></li>
 <li><a href="#_응답_2">응답</a></li>
-<li><a href="#_응답_예약_실패">응답 (예약 실패)</a></li>
-<li><a href="#_curl_2">CURL</a></li>
+<li><a href="#_curl_2">Curl</a></li>
 </ul>
 </li>
-<li><a href="#_예약_취소">예약 취소</a>
+<li><a href="#_센터_운동_기구_추가하기">센터 운동 기구 추가하기</a>
 <ul class="sectlevel2">
 <li><a href="#_요청_3">요청</a></li>
 <li><a href="#_응답_3">응답</a></li>
-<li><a href="#_curl_3">CURL</a></li>
+<li><a href="#_curl_3">Curl</a></li>
+</ul>
+</li>
+<li><a href="#_센터_운동_기구_불러오기">센터 운동 기구 불러오기</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_4">요청</a></li>
+<li><a href="#_응답_4">응답</a></li>
+<li><a href="#_curl_4">Curl</a></li>
 </ul>
 </li>
 </ul>
@@ -473,79 +479,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_예약_조회"><a class="link" href="#_예약_조회">예약 조회</a></h2>
+<h2 id="_운동기구_불러오기"><a class="link" href="#_운동기구_불러오기">운동기구 불러오기</a></h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_요청"><a class="link" href="#_요청">요청</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /center/2230/reserve HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /equipment HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Accept: application/json
-Content-Length: 51
-Host: api.timefit.com
-
-{"searchIds":[1670,1671],"searchDate":"2022-09-29"}</code></pre>
+Host: api.timefit.com</code></pre>
 </div>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Optional</th>
-<th class="tableblock halign-left valign-top">Constraint</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>centerId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">헬스장 ID</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Optional</th>
-<th class="tableblock halign-left valign-top">Constraint</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">searchIds</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Array</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">예약 내역 조회를 원하는 헬스장 기구 ID 리스트</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">searchDate</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">예약 조회 날짜, 미입력시 현재 날짜 자동 입력</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">YYYY-MM-DD</p></td>
-</tr>
-</tbody>
-</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code></code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_응답"><a class="link" href="#_응답">응답</a></h3>
@@ -563,106 +512,48 @@ Pragma: no-cache
 Expires: 0
 Strict-Transport-Security: max-age=31536000 ; includeSubDomains
 X-Frame-Options: DENY
-Content-Length: 693
+Content-Length: 1145
 
-[{"id":1670,"times":[{"reservationId":1492,"start":"2022-09-29T10:15:11","end":"2022-09-29T10:25:11"},{"reservationId":1497,"start":"2022-09-29T10:15:16","end":"2022-09-29T10:25:16"},{"reservationId":1502,"start":"2022-09-29T10:15:21","end":"2022-09-29T10:25:21"},{"reservationId":1507,"start":"2022-09-29T10:15:26","end":"2022-09-29T10:25:26"}]},{"id":1671,"times":[{"reservationId":1493,"start":"2022-09-29T10:15:12","end":"2022-09-29T10:25:12"},{"reservationId":1498,"start":"2022-09-29T10:15:17","end":"2022-09-29T10:25:17"},{"reservationId":1503,"start":"2022-09-29T10:15:22","end":"2022-09-29T10:25:22"},{"reservationId":1508,"start":"2022-09-29T10:15:27","end":"2022-09-29T10:25:27"}]}]</code></pre>
+[{"id":75,"name":"ss","img":"sss"},{"id":76,"name":"ss","img":"sss"},{"id":77,"name":"name","img":"img"},{"id":78,"name":"ss","img":"sss"},{"id":79,"name":"ss","img":"sss"},{"id":80,"name":"name","img":"img"},{"id":81,"name":"ss","img":"sss"},{"id":82,"name":"ss","img":"sss"},{"id":83,"name":"name","img":"img"},{"id":84,"name":"ss","img":"sss"},{"id":85,"name":"ss","img":"sss"},{"id":86,"name":"name","img":"img"},{"id":87,"name":"ss","img":"sss"},{"id":88,"name":"ss","img":"sss"},{"id":89,"name":"name","img":"img"},{"id":90,"name":"ss","img":"sss"},{"id":91,"name":"ss","img":"sss"},{"id":92,"name":"name","img":"img"},{"id":93,"name":"name","img":"img"},{"id":94,"name":"ss","img":"sss"},{"id":95,"name":"ss","img":"sss"},{"id":96,"name":"name","img":"img"},{"id":97,"name":"ss","img":"sss"},{"id":98,"name":"ss","img":"sss"},{"id":99,"name":"name","img":"img"},{"id":100,"name":"sssss","img":"sssssssss"},{"id":101,"name":"ss","img":"sss"},{"id":102,"name":"sssss","img":"sssssssss"},{"id":103,"name":"name","img":"img"},{"id":104,"name":"ss","img":"sss"},{"id":105,"name":"sssss","img":"sssssssss"},{"id":106,"name":"name","img":"img"}]</code></pre>
 </div>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">헬스장 기구 ID</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].times</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">기구 예약 리스트</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].times[].reservationId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">예약 ID</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].times[].start</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">예약 시작 시간</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].times[].end</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">예약 종료 시간</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_curl"><a class="link" href="#_curl">CURL</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/center/2230/reserve' -i -X GET \
-    -H 'Content-Type: application/json;charset=UTF-8' \
-    -H 'Accept: application/json' \
-    -d '{"searchIds":[1670,1671],"searchDate":"2022-09-29"}'</code></pre>
+<pre class="highlight nowrap"><code>[{"id":75,"name":"ss","img":"sss"},{"id":76,"name":"ss","img":"sss"},{"id":77,"name":"name","img":"img"},{"id":78,"name":"ss","img":"sss"},{"id":79,"name":"ss","img":"sss"},{"id":80,"name":"name","img":"img"},{"id":81,"name":"ss","img":"sss"},{"id":82,"name":"ss","img":"sss"},{"id":83,"name":"name","img":"img"},{"id":84,"name":"ss","img":"sss"},{"id":85,"name":"ss","img":"sss"},{"id":86,"name":"name","img":"img"},{"id":87,"name":"ss","img":"sss"},{"id":88,"name":"ss","img":"sss"},{"id":89,"name":"name","img":"img"},{"id":90,"name":"ss","img":"sss"},{"id":91,"name":"ss","img":"sss"},{"id":92,"name":"name","img":"img"},{"id":93,"name":"name","img":"img"},{"id":94,"name":"ss","img":"sss"},{"id":95,"name":"ss","img":"sss"},{"id":96,"name":"name","img":"img"},{"id":97,"name":"ss","img":"sss"},{"id":98,"name":"ss","img":"sss"},{"id":99,"name":"name","img":"img"},{"id":100,"name":"sssss","img":"sssssssss"},{"id":101,"name":"ss","img":"sss"},{"id":102,"name":"sssss","img":"sssssssss"},{"id":103,"name":"name","img":"img"},{"id":104,"name":"ss","img":"sss"},{"id":105,"name":"sssss","img":"sssssssss"},{"id":106,"name":"name","img":"img"}]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_curl"><a class="link" href="#_curl">Curl</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/equipment' -i -X GET \
+    -H 'Content-Type: application/json;charset=UTF-8'</code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_예약_신청"><a class="link" href="#_예약_신청">예약 신청</a></h2>
+<h2 id="_운동기구_추가하기"><a class="link" href="#_운동기구_추가하기">운동기구 추가하기</a></h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_요청_2"><a class="link" href="#_요청_2">요청</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /center/2251/reserve HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /equipment/add HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Accept: application/json
-Content-Length: 84
+Content-Length: 27
 Host: api.timefit.com
 
-{"centerEquipmentId":1690,"start":"2022-09-29T10:45:30","end":"2022-09-29T10:55:30"}</code></pre>
+{"name":"name","img":"img"}</code></pre>
 </div>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Optional</th>
-<th class="tableblock halign-left valign-top">Constraint</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>centerId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">헬스장 ID</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{"name":"name","img":"img"}</code></pre>
+</div>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 20%;">
@@ -682,25 +573,18 @@ Host: api.timefit.com
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">centerEquipmentId</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">예약하려는 기구 ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이름</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">start</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">img</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">예약 시작 시간</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지 이름, 파일 등록 후 수정 필요</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">YYYY-MM-DDTHH:MM:SS</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">end</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">예약 종료 시간</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">YYYY-MM-DDTHH:MM:SS</p></td>
 </tr>
 </tbody>
 </table>
@@ -722,99 +606,56 @@ Strict-Transport-Security: max-age=31536000 ; includeSubDomains
 X-Frame-Options: DENY</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in reservation.adoc - include::C:\Users\wlgns\project\TimeFit\server\build\generated-snippets/reservation-request/response-fields.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code></code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_응답_예약_실패"><a class="link" href="#_응답_예약_실패">응답 (예약 실패)</a></h3>
+<h3 id="_curl_2"><a class="link" href="#_curl_2">Curl</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 405 Method Not Allowed
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0
-Strict-Transport-Security: max-age=31536000 ; includeSubDomains
-X-Frame-Options: DENY
-Content-Length: 76
-
-{"code":"405","message":"예약 불가한 시간입니다.","validation":{}}</code></pre>
-</div>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">에러 코드</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">에러 메세지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>validation</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">validation</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_curl_2"><a class="link" href="#_curl_2">CURL</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/center/2251/reserve' -i -X POST \
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/equipment/add' -i -X POST \
     -H 'Content-Type: application/json;charset=UTF-8' \
-    -H 'Accept: application/json' \
-    -d '{"centerEquipmentId":1690,"start":"2022-09-29T10:45:30","end":"2022-09-29T10:55:30"}'</code></pre>
+    -d '{"name":"name","img":"img"}'</code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_예약_취소"><a class="link" href="#_예약_취소">예약 취소</a></h2>
+<h2 id="_센터_운동_기구_추가하기"><a class="link" href="#_센터_운동_기구_추가하기">센터 운동 기구 추가하기</a></h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_요청_3"><a class="link" href="#_요청_3">요청</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /center/2290/reserve/1552 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /equipment/add-center HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Accept: application/json
-Host: api.timefit.com</code></pre>
+Content-Length: 51
+Host: api.timefit.com
+
+{"center":2365,"equipment":107,"yloc":20,"xloc":30}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{"center":2365,"equipment":107,"yloc":20,"xloc":30}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
 <th class="tableblock halign-left valign-top">Description</th>
 <th class="tableblock halign-left valign-top">Optional</th>
 <th class="tableblock halign-left valign-top">Constraint</th>
@@ -822,14 +663,30 @@ Host: api.timefit.com</code></pre>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>centerId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">헬스장 ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">center</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">센터 ID</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>reservationId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">예약 ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">equipment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기구 종류 ID</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">xloc</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">x 좌표</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yloc</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">y 좌표</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -853,10 +710,96 @@ Strict-Transport-Security: max-age=31536000 ; includeSubDomains
 X-Frame-Options: DENY</code></pre>
 </div>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code></code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
-<h3 id="_curl_3"><a class="link" href="#_curl_3">CURL</a></h3>
+<h3 id="_curl_3"><a class="link" href="#_curl_3">Curl</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/equipment/add-center' -i -X POST \
+    -H 'Content-Type: application/json;charset=UTF-8' \
+    -d '{"center":2365,"equipment":107,"yloc":20,"xloc":30}'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_센터_운동_기구_불러오기"><a class="link" href="#_센터_운동_기구_불러오기">센터 운동 기구 불러오기</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_4"><a class="link" href="#_요청_4">요청</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /equipment/2366 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Host: api.timefit.com</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Optional</th>
+<th class="tableblock halign-left valign-top">Constraint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>centerId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">센터 아이디</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_응답_4"><a class="link" href="#_응답_4">응답</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY
+Content-Length: 243
 
+[{"id":1805,"center":{"id":2366,"name":"이름","region":"지역","address":"주소","price":null,"storeNumber":null,"view":0,"images":[]},"equipment":{"id":108,"name":"sssss","img":"sssssssss"},"height":null,"width":null,"xloc":30,"yloc":20}]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>[{"id":1805,"center":{"id":2366,"name":"이름","region":"지역","address":"주소","price":null,"storeNumber":null,"view":0,"images":[]},"equipment":{"id":108,"name":"sssss","img":"sssssssss"},"height":null,"width":null,"xloc":30,"yloc":20}]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_curl_4"><a class="link" href="#_curl_4">Curl</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/equipment/2366' -i -X GET \
+    -H 'Content-Type: application/json;charset=UTF-8'</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -864,7 +807,7 @@ X-Frame-Options: DENY</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-09-27 17:56:04 +0900
+Last updated 2022-09-29 04:08:56 +0900
 </div>
 </div>
 </body>

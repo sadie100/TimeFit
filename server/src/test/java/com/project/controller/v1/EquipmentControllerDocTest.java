@@ -3,43 +3,42 @@ package com.project.controller.v1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.domain.Center;
 import com.project.domain.CenterEquipment;
-import com.project.domain.CenterImages;
 import com.project.domain.Equipment;
-import com.project.repository.*;
-import com.project.request.*;
+import com.project.repository.CenterEquipmentRepository;
+import com.project.repository.CenterRepository;
+import com.project.repository.EquipmentRepository;
+import com.project.request.CenterEquipmentAdd;
+import com.project.request.EquipmentCategory;
 import com.project.service.EquipmentService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.service.SignService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-
-import javax.persistence.EntityManager;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class EquipmentControllerTest {
+@AutoConfigureRestDocs(uriScheme = "https", uriHost = "api.timefit.com",uriPort = 443)
+@ExtendWith(RestDocumentationExtension.class)
+class EquipmentControllerDocTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -55,39 +54,22 @@ class EquipmentControllerTest {
     @Autowired
     private CenterEquipmentRepository centerEquipmentRepository;
 
-
-    @Autowired
-    private CenterImgRepository centerImgRepository;
-
-    @Autowired
-    private ReservationRepository reservationRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private TrainerRepository trainerRepository;
-
     @Autowired
     private CenterRepository centerRepository;
 
-    EntityManager em;
 
     @BeforeEach
     void clean(){
-//        centerRepository.deleteAll();
-//        equipmentRepository.deleteAll();
-//        trainerRepository.deleteAll();
-//        centerImgRepository.deleteAll();
-//        reservationRepository.deleteAll();
-//        userRepository.deleteAll();
 //        centerEquipmentRepository.deleteAll();
+//        equipmentRepository.deleteAll();
     }
+
     @Test
     void getEquipments() throws Exception {
-        mockMvc.perform(get("/equipment")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/equipment")
                         .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(document("/equipment"));
     }
 
     @Test
@@ -98,12 +80,17 @@ class EquipmentControllerTest {
                 .img("img")
                 .build();
         String json = objectMapper.writeValueAsString(equipmentCategory);
-        mockMvc .perform(post("/equipment/add")
+        mockMvc .perform(RestDocumentationRequestBuilders.post("/equipment/add")
                 .contentType(APPLICATION_JSON)
                 .content(json))
-                .andExpect(status().isOk());
-        Assertions.assertEquals(1, equipmentRepository.count());
-        equipmentRepository.deleteAll();
+                .andExpect(status().isOk())
+                .andDo(document("equipment/add",
+                        requestFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("img").type(JsonFieldType.STRING).description("이미지 이름, 파일 등록 후 수정 필요")
+                                )
+                        ))
+        ;
 
     }
 
@@ -129,15 +116,19 @@ class EquipmentControllerTest {
 
         String json = objectMapper.writeValueAsString(centerEquipmentAdd);
 
-        mockMvc.perform(post("/equipment/add-center")
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/equipment/add-center")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )
-                .andExpect(status().isOk());
-//        Assertions.assertEquals(1, centerEquipmentRepository.count());
-        centerEquipmentRepository.deleteAll();
-        equipmentRepository.deleteAll();
-        centerRepository.deleteAll();
+                .andExpect(status().isOk())
+                .andDo(document("/equipment/add-center",
+                        requestFields(
+                                fieldWithPath("center").type(JsonFieldType.NUMBER).description("센터 ID"),
+                                fieldWithPath("equipment").type(JsonFieldType.NUMBER).description("기구 종류 ID"),
+                                fieldWithPath("xloc").type(JsonFieldType.NUMBER).description("x 좌표"),
+                                fieldWithPath("yloc").type(JsonFieldType.NUMBER).description("y 좌표")
+                        )
+                        ));
 
     }
 
@@ -150,8 +141,8 @@ class EquipmentControllerTest {
 //                .storeNumber(request.getStoreNumber())
                 .build();
         Equipment equipment = Equipment.builder()
-                .name("ss")
-                .img("sss")
+                .name("sssss")
+                .img("sssssssss")
                 .build();
         centerRepository.save(center);
         equipmentRepository.save(equipment);
@@ -159,12 +150,11 @@ class EquipmentControllerTest {
                 CenterEquipment.builder().equipment(equipment).center(center).xLoc(30L).yLoc(20L).build();
         centerEquipmentRepository.save(centerEquipment);
 
-        mockMvc.perform(get("/equipment/{centerId}",center.getId())
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/equipment/{centerId}",center.getId())
                         .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk());
-        centerEquipmentRepository.deleteAll();
-        equipmentRepository.deleteAll();
-        centerRepository.deleteAll();
+                .andExpect(status().isOk())
+                .andDo(document("/equipment/{centerId}",
+                        pathParameters(RequestDocumentation.parameterWithName("centerId").description("센터 아이디"))));
 
     }
 }

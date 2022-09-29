@@ -1,0 +1,65 @@
+= TimeFit API
+:doctype: book
+:icons: font
+:source-highlighter: highlights
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== 운동기구 불러오기
+
+=== 요청
+include::{snippets}/equipment/http-request.adoc[]
+include::{snippets}/equipment/request-body.adoc[]
+
+=== 응답
+include::{snippets}/equipment/http-response.adoc[]
+include::{snippets}/equipment/response-body.adoc[]
+
+=== Curl
+include::{snippets}/equipment/curl-request.adoc[]
+
+
+== 운동기구 추가하기
+
+=== 요청
+include::{snippets}/equipment/add/http-request.adoc[]
+include::{snippets}/equipment/add/request-body.adoc[]
+include::{snippets}/equipment/add/request-fields.adoc[]
+
+=== 응답
+include::{snippets}/equipment/add-center/http-response.adoc[]
+include::{snippets}/equipment/add/response-body.adoc[]
+
+=== Curl
+include::{snippets}/equipment/add/curl-request.adoc[]
+
+
+== 센터 운동 기구 추가하기
+
+=== 요청
+include::{snippets}/equipment/add-center/http-request.adoc[]
+include::{snippets}/equipment/add-center/request-body.adoc[]
+include::{snippets}/equipment/add-center/request-fields.adoc[]
+=== 응답
+include::{snippets}/equipment/add-center/http-response.adoc[]
+include::{snippets}/equipment/add-center/response-body.adoc[]
+
+=== Curl
+include::{snippets}/equipment/add-center/curl-request.adoc[]
+
+
+
+== 센터 운동 기구 불러오기
+
+=== 요청
+include::{snippets}/equipment/{centerId}/http-request.adoc[]
+include::{snippets}/equipment/{centerId}/path-parameters.adoc[]
+
+
+=== 응답
+include::{snippets}/equipment/{centerId}/http-response.adoc[]
+include::{snippets}/equipment/{centerId}/response-body.adoc[]
+
+=== Curl
+include::{snippets}/equipment/{centerId}/curl-request.adoc[]

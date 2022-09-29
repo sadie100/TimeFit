@@ -9,7 +9,8 @@
 == 헬스장 조회
 === 요청
 include::{snippets}/center-search/http-request.adoc[]
-include::{snippets}/center-search/path-parameters.adoc[]
+include::{snippets}/center-search/path-parameters.adoc[
+
 === 응답
 include::{snippets}/center-search/http-response.adoc[]
 

@@ -20,14 +20,14 @@ public class EquipmentController {
         return equipmentService.getAllEquipment();
     }
 
-    @PostMapping("/equipment/add-category")
+    @PostMapping("/equipment/add")
     public void addEquipmentCategory(@RequestBody EquipmentCategory request){
         System.out.println(request);
         equipmentService.add(request);
         return;
     }
 
-    @PostMapping("/equipment/add")
+    @PostMapping("/equipment/add-center")
     public void addCenterEquipment(@RequestBody CenterEquipmentAdd request){
         System.out.println(request);
         equipmentService.addEquipment(request);

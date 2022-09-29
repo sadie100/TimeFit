@@ -47,8 +47,8 @@ public class User implements UserDetails {
     @Column(length = 2)
     private String gender;
 
-    @Column(name = "DATETIME_FIELD")
-    private Timestamp birth;
+    @Column(length = 10)
+    private String birth;
 
     @OneToOne
     @JoinColumn(name="id")

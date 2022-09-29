@@ -40,6 +40,7 @@ public class FileService {
         for(CenterImages img : centerImages){
             fileDtos.add(FileDto.builder()
                     .id(img.getId())
+                    .originFileName(img.getOriginFileName())
                     .newFileName(img.getNewFileName())
                     .filePath(img.getFilePath())
                     .build());
