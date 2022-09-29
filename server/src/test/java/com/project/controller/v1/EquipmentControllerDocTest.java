@@ -5,6 +5,7 @@ import com.project.domain.Center;
 import com.project.domain.CenterEquipment;
 import com.project.domain.Equipment;
 import com.project.repository.CenterEquipmentRepository;
+import com.project.repository.CenterImgRepository;
 import com.project.repository.CenterRepository;
 import com.project.repository.EquipmentRepository;
 import com.project.request.CenterEquipmentAdd;
@@ -56,10 +57,16 @@ class EquipmentControllerDocTest {
 
     @Autowired
     private CenterRepository centerRepository;
-
+    @Autowired
+    private CenterImgRepository centerImgRepository;
 
     @BeforeEach
     void clean(){
+        centerEquipmentRepository.deleteAll();
+        equipmentRepository.deleteAll();
+        centerRepository.deleteAll();
+//        centerRepository.deleteAll();
+//        centerImgRepository.deleteAll();
 //        centerEquipmentRepository.deleteAll();
 //        equipmentRepository.deleteAll();
     }
@@ -129,7 +136,9 @@ class EquipmentControllerDocTest {
                                 fieldWithPath("yloc").type(JsonFieldType.NUMBER).description("y 좌표")
                         )
                         ));
-
+//        centerEquipmentRepository.deleteAll();
+//        equipmentRepository.deleteAll();
+//        centerRepository.deleteAll();
     }
 
     @Test
@@ -155,6 +164,9 @@ class EquipmentControllerDocTest {
                 .andExpect(status().isOk())
                 .andDo(document("/equipment/{centerId}",
                         pathParameters(RequestDocumentation.parameterWithName("centerId").description("센터 아이디"))));
-
+//
+//        centerEquipmentRepository.deleteAll();
+//        equipmentRepository.deleteAll();
+//        centerRepository.deleteAll();
     }
 }
