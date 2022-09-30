@@ -93,14 +93,16 @@ const Center = () => {
     <>
       <Background>
         <div className="title">헬스장 선택</div>
-        <FormMaker
-          formData={formData}
-          onSubmit={handleSearch}
-          formId={formId}
-        />
-        <FilterDiv>
-          <TuneIcon onClick={handleFilter} style={{ cursor: "pointer" }} />
-        </FilterDiv>
+        <SearchWrapper>
+          <FormMaker
+            formData={formData}
+            onSubmit={handleSearch}
+            formId={formId}
+          />
+          <FilterDiv>
+            <TuneIcon onClick={handleFilter} style={{ cursor: "pointer" }} />
+          </FilterDiv>
+        </SearchWrapper>
         <ListWrapper>
           {centerList.map((center, idx) => {
             return (
@@ -135,11 +137,16 @@ const Background = styled.div`
   flex-direction: column;
 `;
 
+const SearchWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`;
 const FilterDiv = styled.div`
-  text-align: right;
-  width: ${({ theme }) => theme.form.width};
-  max-width: ${({ theme }) => theme.form.maxWidth};
-  padding: 0 30px;
+  padding: 30px 0;
+  margin-left: -20px;
+  display: flex;
+  align-items: center;
 `;
 const ListWrapper = styled.div`
   //border: 1px solid blue;
