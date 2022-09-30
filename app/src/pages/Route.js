@@ -9,6 +9,7 @@ import Sample from "./Sample";
 import Reserve from "pages/reserve/Reserve";
 import Center from "pages/center/Center";
 import Help from "pages/help/Help";
+import MyPage from "pages/mypage/MyPage";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LoadingContext } from "contexts/loadingContext";
 
@@ -44,7 +45,7 @@ const App = () => {
           {/* 예약 화면 */}
           <Route path="/reserve/*" element={<Reserve />}></Route>
           {/* 마이페이지 화면 */}
-          <Route path="/mypage/*" element={<Reserve />}></Route>
+          <Route path="/mypage/*" element={<MyPage />}></Route>
         </Routes>
       )}
     </Background>
