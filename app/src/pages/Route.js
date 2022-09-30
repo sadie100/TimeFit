@@ -43,6 +43,8 @@ const App = () => {
           <Route path="/center" element={<Center />}></Route>
           {/* 예약 화면 */}
           <Route path="/reserve/*" element={<Reserve />}></Route>
+          {/* 마이페이지 화면 */}
+          <Route path="/mypage/*" element={<Reserve />}></Route>
         </Routes>
       )}
     </Background>
