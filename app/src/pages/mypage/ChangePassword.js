@@ -1,13 +1,32 @@
-//마이페이지
+//비밀번호 변경
 
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Button from "components/common/Button";
 import { useNavigate } from "react-router-dom";
+import {
+  StyledInput,
+  StyledForm,
+  LineContent,
+} from "components/form/StyledComponents";
 
-const MyPageMain = () => {
+const ChangePassword = () => {
   const navigate = useNavigate();
+  const [value, setValue] = useState("");
+
+  const handleSubmit = (e) => {
+    //비밀번호 변경 로직
+    e.preventDefault();
+    if (!window.confirm("비밀번호를 변경하시겠습니까?")) return;
+    //비밀번호 변경 로직
+    alert("비밀번호가 변경되었습니다.");
+    setValue("");
+  };
+
+  const handleChange = (e) => {
+    setValue(e.currentTarget.value);
+  };
   const handleCancel = () => {
     if (!window.confirm("예약을 취소하시겠습니까?")) return;
   };
@@ -15,41 +34,25 @@ const MyPageMain = () => {
   return (
     <Background>
       <Wrapper>
-        <div className="title">마이페이지</div>
-        <SubTitle>내 예약</SubTitle>
-        <LongButton>
-          <div>
-            <BoxText>런닝머신1</BoxText>
-            <BoxText className="bold">21:00~21:50</BoxText>
-          </div>
-          <div>
-            <Button backgroundColor="lightgray" onClick={handleCancel}>
-              예약취소
+        <div className="title">비밀번호 변경</div>
+        <StyledForm onSubmit={handleSubmit}>
+          <LineContent>
+            <StyledInput
+              type="password"
+              placeholder="변경할 비밀번호를 입력해 주세요."
+              onChange={handleChange}
+            />
+            <Button padding="10px" fontSize="20px">
+              변경
             </Button>
-          </div>
-        </LongButton>
-        <SubTitle>계정관리</SubTitle>
-        <LongButton className="normal" onClick={() => navigate("/mypage/info")}>
-          <BoxText>내 정보 관리</BoxText>
-          <BoxText>&#62;</BoxText>
-        </LongButton>
-        <LongButton
-          className="normal"
-          onClick={() => navigate("/mypage/password")}
-        >
-          <BoxText>비밀번호 변경</BoxText>
-          <BoxText>&#62;</BoxText>
-        </LongButton>
-        <LongButton className="normal">
-          <BoxText>헬스장 변경</BoxText>
-          <BoxText>&#62;</BoxText>
-        </LongButton>
+          </LineContent>
+        </StyledForm>
       </Wrapper>
     </Background>
   );
 };
 
-export default MyPageMain;
+export default ChangePassword;
 
 const Background = styled.div`
   padding: 10vh 0;
