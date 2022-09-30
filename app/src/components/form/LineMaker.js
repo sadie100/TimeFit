@@ -38,6 +38,7 @@ export default (props) => {
                   name={formLine.name}
                   key={`${formId}-${formLine.name}`}
                   error={errors[formLine.name]}
+                  disabled={!!formLine?.register?.disabled}
                   {...formLine}
                   {...register(formLine.name, formLine.register)}
                 ></StyledInput>
