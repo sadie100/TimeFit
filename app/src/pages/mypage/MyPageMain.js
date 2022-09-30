@@ -40,7 +40,10 @@ const MyPageMain = () => {
           <BoxText>비밀번호 변경</BoxText>
           <BoxText>&#62;</BoxText>
         </LongButton>
-        <LongButton className="normal">
+        <LongButton
+          className="normal"
+          onClick={() => navigate("/mypage/center")}
+        >
           <BoxText>헬스장 변경</BoxText>
           <BoxText>&#62;</BoxText>
         </LongButton>
