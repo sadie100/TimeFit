@@ -15,12 +15,14 @@ export default (props) => {
     handleSubmit,
     formState: { errors },
     register,
+    watch,
   } = formStates;
 
+  console.log(watch());
   return (
     <>
       <StyledForm onSubmit={handleSubmit(onSubmit)} id={formId}>
-        {formData().map((formLine) => {
+        {formData(formStates).map((formLine) => {
           return (
             <LineMaker
               formLine={formLine}
