@@ -1,56 +1,76 @@
 package com.project.controller.v1;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.domain.Center;
-import com.project.repository.CenterImgRepository;
-import com.project.repository.CenterRepository;
-import com.project.repository.UserRepository;
+import com.project.domain.CenterEquipment;
+import com.project.domain.Equipment;
+import com.project.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.payload.PayloadDocumentation;
+import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@AutoConfigureMockMvc
+@AutoConfigureRestDocs(uriScheme = "https", uriHost = "api.timefit.com",uriPort = 443)
 @ExtendWith(RestDocumentationExtension.class)
 public class CenterControllerDocTest {
+    @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
     @Autowired
     private CenterRepository centerRepository;
     @Autowired
     private CenterImgRepository centerImgRepository;
     @Autowired
+    private CenterEquipmentRepository centerEquipmentRepository;
+    @Autowired
+    private EquipmentRepository equipmentRepository;
+    @Autowired
     private UserRepository userRepository;
+
 
     @BeforeEach
     void clean(){
         centerRepository.deleteAll();
         centerImgRepository.deleteAll();
         userRepository.deleteAll();
+        centerEquipmentRepository.deleteAll();
+        equipmentRepository.deleteAll();
     }
 
-    @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .apply(documentationConfiguration(restDocumentation))
-                .build();
-    }
+
 
     @Test
     @DisplayName("센터 조회")
@@ -59,14 +79,72 @@ public class CenterControllerDocTest {
                 .mapToObj(i -> Center.builder()
                         .name("센터" +i)
                         .region("서울")
+                        .address("서울시 어딘가")
                         .price(i*10000)
                         .build()).collect(Collectors.toList());
         centerRepository.saveAll(requestCenter);
 
-        this.mockMvc.perform(get("/centers")
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get("/centers")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("index"));
+                .andDo(document("search-center"
+//                        , pathParameters(RequestDocumentation.parameterWithName("").description("1"))
+                        , responseFields(
+                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("센터 ID"),
+                                fieldWithPath("[].name").type(JsonFieldType.STRING).description("센터 이름"),
+                                fieldWithPath("[].address").type(JsonFieldType.STRING).description("센터 주소")
+                        )
+                ));
+    }
+
+
+    @Test
+    @DisplayName("기구 특정 개수이상 보유한 센터 찾기&필터링")
+    void test2() throws Exception {
+        //given
+        List<Center> requestCenter = IntStream.range(0, 20)
+                .mapToObj(i -> Center.builder()
+                        .name("센터" + i)
+                        .region("서울")
+                        .address("서울시 어딘가")
+                        .price(i * 10000)
+                        .build()).collect(Collectors.toList());
+        centerRepository.saveAll(requestCenter);
+
+        List<Equipment> equipments = IntStream.range(0, 5)
+                .mapToObj(i -> Equipment.builder()
+                        .name("장비" + i)
+                        .build()).collect(Collectors.toList());
+        equipmentRepository.saveAll(equipments);
+
+        List<CenterEquipment> requestEquip = IntStream.range(0, 20)
+                .mapToObj(i -> CenterEquipment.builder()
+                        .center(requestCenter.get(i % 5))
+                        .equipment(equipments.get(i % 3))
+                        .build()).collect(Collectors.toList());
+        centerEquipmentRepository.saveAll(requestEquip);
+
+        //expected
+        this.mockMvc.perform(RestDocumentationRequestBuilders
+                        .get("/centers?region=서울&minPrice=10000&maxPrice=20000&equipmentId=1&minNumber=1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("center-search"
+                        , pathParameters(
+                                parameterWithName("region").optional().description("지역"),
+                                parameterWithName("minPrice").description("최소 가격").optional(),
+                                parameterWithName("maxPrice").description("최대 가격").optional(),
+                                parameterWithName("equipmentId").description("헬스 기구 ID").optional(),
+                                parameterWithName("minNumber").description("최소 갯수").optional()
+                                        .attributes(key("constraint").value("미입력시 헬스기구 보유한 헬스장 필터링"))
+                        )
+                        , responseFields(
+                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("센터 ID"),
+                                fieldWithPath("[].name").type(JsonFieldType.STRING).description("센터 이름"),
+                                fieldWithPath("[].address").type(JsonFieldType.STRING).description("센터 주소")
+                        )
+                ));
     }
 }

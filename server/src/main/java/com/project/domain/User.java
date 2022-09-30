@@ -7,6 +7,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,7 +25,6 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
 
 
-
     @Id // pk
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long msrl;
@@ -31,25 +32,27 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true, length = 30)
     private String email;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(unique = true, length = 30)
+    private String kakao;
+
     @Column( length = 100)
     private String password;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String name;
 
-    @Column(length = 100)
-    private String provider;
+    @Column(unique = true,length = 15)
+    private String phoneNumber;
 
-
-    @Column(length = 100)
+    @Column(length = 2)
     private String gender;
 
-    @Column(length = 100)
-    private int age;
+    @Column(length = 10)
+    private String birth;
 
-
-
+    @OneToOne
+    @JoinColumn(name="id")
+    private Center center;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

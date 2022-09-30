@@ -1,0 +1,97 @@
+= TimeFit API
+:doctype: book
+:icons: font
+:source-highlighter: highlights
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== 로그인
+
+=== 요청
+include::{snippets}/signin/http-request.adoc[]
+include::{snippets}/signin/request-body.adoc[]
+include::{snippets}/signin/request-fields.adoc[]
+
+=== 응답
+include::{snippets}/signin/http-response.adoc[]
+include::{snippets}/signin/response-body.adoc[]
+
+=== Curl
+include::{snippets}/signin/curl-request.adoc[]
+
+
+== 이메일 찾기
+
+=== 요청
+include::{snippets}/signin/find-email/http-request.adoc[]
+
+=== 응답
+include::{snippets}/signin/find-email/http-response.adoc[]
+
+=== Curl
+include::{snippets}/signin/find-email/curl-request.adoc[]
+
+
+== 비밀번호 찾기
+
+=== 요청
+include::{snippets}/signin/find-password/http-request.adoc[]
+
+=== 응답
+include::{snippets}/signin/find-password/http-response.adoc[]
+
+=== Curl
+include::{snippets}/signin/find-password/curl-request.adoc[]
+
+
+
+== 로그아웃
+
+=== 요청
+include::{snippets}/signout/http-request.adoc[]
+
+=== 응답
+include::{snippets}/signout/http-response.adoc[]
+
+=== Curl
+include::{snippets}/signout/curl-request.adoc[]
+
+
+== 회원가입
+
+=== 요청
+include::{snippets}/signup/http-request.adoc[]
+include::{snippets}/signup/request-body.adoc[]
+include::{snippets}/signup/request-fields.adoc[]
+
+=== 응답
+include::{snippets}/signup/http-response.adoc[]
+include::{snippets}/signup/response-body.adoc[]
+
+=== Curl
+include::{snippets}/signup/curl-request.adoc[]
+
+
+== 이메일 확인
+
+=== 요청
+include::{snippets}/signup/check-email/http-request.adoc[]
+
+=== 응답
+include::{snippets}/signup/check-email/http-response.adoc[]
+
+=== Curl
+include::{snippets}/signup/check-email/curl-request.adoc[]
+
+
+== 사업자등록번호 확인
+
+=== 요청
+include::{snippets}/signup/check-storeNumber/http-request.adoc[]
+
+=== 응답
+include::{snippets}/signup/check-storeNumber//http-response.adoc[]
+
+=== Curl
+include::{snippets}/signup/check-storeNumber//curl-request.adoc[]

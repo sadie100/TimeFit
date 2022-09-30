@@ -1,0 +1,21 @@
+= TimeFit API
+:doctype: book
+:icons: font
+:source-highlighter: highlights
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== 헬스장 조회
+=== 요청
+include::{snippets}/center-search/http-request.adoc[]
+include::{snippets}/center-search/path-parameters.adoc[
+
+=== 응답
+include::{snippets}/center-search/http-response.adoc[]
+
+include::{snippets}/center-search/response-fields.adoc[]
+
+=== CURL
+include::{snippets}/center-search/curl-request.adoc[]
+

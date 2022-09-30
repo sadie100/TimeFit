@@ -26,7 +26,7 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
     public boolean check(Long id, ReservationRequest request){
         if (jpaQueryFactory.selectFrom(reservation)
                 .where(reservation.center.id.eq(id),
-                        reservation.equipment.id.eq(request.getEquipmentId()),
+                        reservation.centerEquipment.id.eq(request.getCenterEquipmentId()),
                         reservation.start.between(request.getStart(),request.getEnd())
                                 .or(reservation.end.between(request.getStart(),request.getStart()))                        )
                 .fetch().size() == 0)
@@ -34,14 +34,19 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
         return false;
     }
     @Override
-    public List<Reservation> getReserve(Long id, Long equipment){
+    public List<Reservation> getReserve(Long id, String date, Long equipment){
+
         LocalDate now = LocalDate.now();
+        if(date != null){
+            now = LocalDate.parse(date);
+        }
         LocalDateTime st = LocalDateTime.parse(now+"T00:00:00");
         LocalDateTime end = LocalDateTime.parse(now+"T23:59:59");
         return jpaQueryFactory.selectFrom(reservation)
                 .where(reservation.center.id.eq(id),
-                        reservation.equipment.id.eq(equipment),
+                        reservation.centerEquipment.id.eq(equipment),
                         reservation.start.between(st,end))
+                .orderBy(reservation.start.asc())
                 .fetch();
     }
 

@@ -13,9 +13,16 @@ spring:
       ddl-auto: create  # 서버 재부팅 시 DB에 저장된 파일 초기화하지 않음(초기화 : update -> create)
   jwt:
     secret: govlepel@$&
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      location: c:\\temp\\upload
+
   social:
     kakao:
-      client_id:  bcd243634170a5ed5a8a1bdcafc169af
+      client_id: bcd243634170a5ed5a8a1bdcafc169af
       redirect: /social/login/kakao
       url:
         login: https://kauth.kakao.com/oauth/authorize
@@ -30,3 +37,4 @@ spring:
     host: 127.0.0.1
     port: 6379
     timeout: 3000 #ms connection timeout
+

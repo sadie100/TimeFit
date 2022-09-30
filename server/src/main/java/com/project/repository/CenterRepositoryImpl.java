@@ -61,11 +61,13 @@ public class CenterRepositoryImpl implements CenterRepositoryCustom {
         if(equipmentId == null){
             return null;
         }
+        if(number == null){
+            number = 0;
+        }
         List<Long> ids =
-        jpaQueryFactory.select(center.id).from(center)
-                .leftJoin(centerEquipment).on(center.eq(centerEquipment.center))
+                jpaQueryFactory.select(centerEquipment.center.id).from(centerEquipment)
                 .where(centerEquipment.equipment.id.eq(equipmentId))
-                .groupBy(centerEquipment.equipment)
+                .groupBy(centerEquipment.center,centerEquipment.equipment)
                 .having(centerEquipment.equipment.count().goe(number))
                 .fetch();
         return center.id.in(ids);

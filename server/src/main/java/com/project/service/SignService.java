@@ -1,13 +1,16 @@
 package com.project.service;
 
 import com.project.config.security.JwtTokenProvider;
+import com.project.domain.Center;
+import com.project.domain.Trainer;
 import com.project.domain.User;
-import com.project.exception.EmailSigninFailedException;
-import com.project.exception.UserNotFoundException;
+import com.project.exception.EmailSigninFailed;
+import com.project.exception.UserNotFound;
+import com.project.repository.CenterRepository;
+import com.project.repository.TrainerRepository;
 import com.project.repository.UserRepository;
-import com.project.request.TokenRequest;
-import com.project.request.UserSignIn;
-import com.project.request.UserSignUp;
+import com.project.request.*;
+import com.project.response.KakaoAuth;
 import com.project.response.KakaoProfile;
 import com.project.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -29,10 +33,14 @@ public class SignService  {
 
     private final UserRepository userRepository;
 
+    private final CenterRepository centerRepository;
 
     @Autowired
     private final PasswordEncoder passwordEncoder;
     private final KakaoService kakaoService;
+
+    private final TrainerRepository trainerRepository;
+
 
     private static final String BEARER_TYPE = "Bearer";
     private final RedisTemplate redisTemplate;
@@ -46,25 +54,53 @@ public class SignService  {
 //    }
     // 현재는 여기서 loadUserByUsername를 구현하지 않음
     public void join(UserSignUp request){
-
         User user= User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .phoneNumber(request.getPhoneNumber())
                 .name(request.getName())
+                .birth(request.getBirth())
+                .gender(request.getGender())
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();
         userRepository.save(user);
     }
 
+    public void joinCenter(CenterSignUp request){
+        Center center= Center.builder()
+                .name(request.getName())
+                .region(request.getRegion())
+                .address(request.getAddress())
+//                .storeNumber(request.getStoreNumber())
+                .build();
+
+        centerRepository.save(center);
+
+        User user= User.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .phoneNumber(request.getPhoneNumber())
+                .name(request.getName())
+                .center(center)
+                .roles(Collections.singletonList("ROLE_CENTER"))
+                .build();
+        userRepository.save(user);
+
+
+    }
+
     public Optional<User> getByEmail(String request){
         return userRepository.findByEmail(request);
     }
+    public Optional<User> getByPhoneNumber(String request){
+        return userRepository.findByPhoneNumber(request);
+    }
 
     public TokenResponse signIn(UserSignIn request){
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(EmailSigninFailedException::new);
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(EmailSigninFailed::new);
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new EmailSigninFailedException();
+            throw new EmailSigninFailed();
         }
         String accessToken = jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles(), ACCESS_TOKEN_EXPIRE_TIME);
         String refreshToken = jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles(), REFRESH_TOKEN_EXPIRE_TIME);
@@ -79,16 +115,11 @@ public class SignService  {
                 .build();
     }
 
-//    public User comparePassword(UserSignIn request){
-//        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(EmailSigninFailedException::new);
-//        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-//            throw new EmailSigninFailedException();
-//        }
-//        return user;
-//    }
-    public TokenResponse signInByKakao(String provider, String kakaoToken){
-        KakaoProfile profile = kakaoService.getKakaoProfile(kakaoToken);
-        User user = userRepository.findByEmailAndProvider(String.valueOf(profile.getId()), provider).orElseThrow(UserNotFoundException::new);
+
+    public TokenResponse signInByKakao(String code){
+        KakaoAuth kakaoAuth = kakaoService.getKakaoTokenInfo(code);
+        KakaoProfile profile = kakaoService.getKakaoProfile(kakaoAuth.getAccess_token());
+        User user = userRepository.findByKakao(String.valueOf(profile.getId())).orElseThrow(UserNotFound::new);
         String accessToken = jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles(), ACCESS_TOKEN_EXPIRE_TIME);
         String refreshToken = jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles(), REFRESH_TOKEN_EXPIRE_TIME);
         return TokenResponse
@@ -100,27 +131,16 @@ public class SignService  {
                 .build();
     }
 
-    public void joinByKakao(String provider, String accessToken, String name){
-        KakaoProfile profile = kakaoService.getKakaoProfile(accessToken);
-        Optional<User> user = userRepository.findByEmailAndProvider(String.valueOf(profile.getId()), provider);
-        userRepository.save(User.builder()
-                .email(String.valueOf(profile.getId()))
-                .provider(provider)
-                .name(name)
-                .roles(Collections.singletonList("ROLE_USER"))
-                .build());
+    //회원가입 이후 카카오 ID 설정
+    public void joinByKakao(String email, String code){
+        KakaoAuth kakaoAuth = kakaoService.getKakaoTokenInfo(code);
+        KakaoProfile profile = kakaoService.getKakaoProfile(kakaoAuth.getAccess_token());
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFound::new);
+        user.setKakao(String.valueOf(profile.getId()));
+        userRepository.save(user);
     }
-    public Optional<User> getByEmailAndProvider(String provider, KakaoProfile profile){
-        Optional<User> user = userRepository.findByEmailAndProvider(String.valueOf(profile.getId()), provider);
-//        if(user.isPresent()){
-//            System.out.println("로그인 과정");
-//        }
-//        else{
-//            System.out.println("회원 가입 과정");
-//        }
-        return user;
 
-    }
+
     @Transactional
     public TokenResponse reissue(TokenRequest tokenRequest) { //추후 리퀘스트로 수정
 
@@ -153,7 +173,29 @@ public class SignService  {
 //         토큰 발급
         return TokenResponse.builder().accessToken(newAccessToken).refreshToken(tokenRequest.getRefreshToken()).build();
     }
-    
 
+    public String makeNewPassword(String request){
+        User user= userRepository.findByEmail(request).orElseThrow(UserNotFound::new);
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        user.setPassword(passwordEncoder.encode(generatedString));
+        userRepository.save(user);
+        return generatedString;
+    }
+
+    public void addTrainer(Center center, TrainerRequest request){
+        Trainer trainer  = Trainer.builder()
+                .center(center)
+                .name(request.getName())
+                .gender(request.getGender())
+                .build();
+        trainerRepository.save(trainer);
+    }
 }
 
