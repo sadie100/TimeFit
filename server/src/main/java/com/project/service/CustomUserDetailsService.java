@@ -1,6 +1,6 @@
 package com.project.service;
 
-import com.project.exception.UserNotFoundException;
+import com.project.exception.UserNotFound;
 import com.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +17,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userPk) {
-        return userRepository.findById(Long.valueOf(userPk)).orElseThrow(UserNotFoundException::new);
+        return userRepository.findById(Long.valueOf(userPk)).orElseThrow(UserNotFound::new);
     }
 }

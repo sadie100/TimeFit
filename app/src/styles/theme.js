@@ -12,4 +12,13 @@ export default {
     maxWidth: "500px",
     padding: "10px",
   },
+  height: {
+    header: "35px",
+  },
+  center: {
+    upListHeight: 200,
+    gap: 50,
+    iconSize: 60,
+    //heightGap : upListHeight + gap
+  },
 };

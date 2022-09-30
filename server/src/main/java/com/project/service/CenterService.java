@@ -5,7 +5,6 @@ import com.project.domain.Center;
 import com.project.exception.CenterNotFound;
 import com.project.repository.CenterImgRepository;
 import com.project.repository.CenterRepository;
-import com.project.repository.UserRepository;
 import com.project.request.CenterSearch;
 import com.project.response.CenterDetailResponse;
 import com.project.response.CenterImgResponse;
@@ -24,7 +23,6 @@ public class CenterService {
 
     private final CenterRepository centerRepository;
     private final CenterImgRepository centerImgRepository;
-    private final UserRepository userRepository;
 
 
     public List<CenterResponse> getList(CenterSearch centerSearch){
@@ -48,9 +46,18 @@ public class CenterService {
                 .collect(Collectors.toList());
     }
 
-
-
     public void updateView(Long itemId) {
         centerRepository.updateView(itemId);
+    }
+
+    public List<Center> findAllCenter(){
+        List<Center> center =centerRepository.findAll();
+        return center;
+    }
+
+    public Center getCenterByID(Long centerId){
+        Center center = centerRepository.findById(centerId)
+                .orElseThrow(CenterNotFound::new);
+        return center;
     }
 }

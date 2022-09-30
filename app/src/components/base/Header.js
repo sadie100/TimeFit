@@ -17,7 +17,7 @@ const Header = () => {
   );
 };
 const StyledHeader = styled.div`
-  height: 35px;
+  height: ${({ theme }) => theme.height.header};
   width: 100%;
   background-color: ${(props) => props.theme.color.main};
   display: flex;

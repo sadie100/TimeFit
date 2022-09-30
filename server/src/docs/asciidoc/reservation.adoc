@@ -11,7 +11,6 @@
 === 요청
 include::{snippets}/reservation-list/http-request.adoc[]
 include::{snippets}/reservation-list/path-parameters.adoc[]
-include::{snippets}/reservation-list/request-fields.adoc[]
 
 === 응답
 include::{snippets}/reservation-list/http-response.adoc[]
@@ -27,7 +26,6 @@ include::{snippets}/reservation-list/curl-request.adoc[]
 === 요청
 include::{snippets}/reservation-request/http-request.adoc[]
 include::{snippets}/reservation-request/path-parameters.adoc[]
-include::{snippets}/reservation-request/request-fields.adoc[]
 
 === 응답
 include::{snippets}/reservation-request/http-response.adoc[]

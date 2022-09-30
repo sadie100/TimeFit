@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./pages/App";
+import Route from "./pages/Route";
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "styled-components";
@@ -9,16 +8,19 @@ import theme from "./styles/theme";
 import "./styles/global.css";
 import LoadingContextProvider from "contexts/loadingContext";
 import AxiosInterceptor from "lib/AxiosInterceptor";
+import ModalContextProvider from "contexts/modalContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <BrowserRouter>
     <ThemeProvider theme={theme}>
-      <LoadingContextProvider>
-        <AxiosInterceptor />
-        <App />
-      </LoadingContextProvider>
+      <ModalContextProvider>
+        <LoadingContextProvider>
+          <AxiosInterceptor />
+          <Route />
+        </LoadingContextProvider>
+      </ModalContextProvider>
     </ThemeProvider>
   </BrowserRouter>
 );

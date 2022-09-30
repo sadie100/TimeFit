@@ -9,7 +9,6 @@ export default () => {
   const navigate = useNavigate();
   const handleType = () => {
     if (type === "") return alert("회원 유형을 선택해 주세요.");
-    window.localStorage.setItem("membertype", type);
     navigate(`/join/${type}/form`);
   };
   return (
@@ -54,8 +53,7 @@ const ButtonWrapper = styled.div`
   gap: 3rem;
 `;
 const StyledButton = styled(Button)`
-  border: 3px solid
-    ${({ primary, theme }) => (primary ? "none" : theme.color.main)};
+  border: 3px solid ${({ primary, theme }) => theme.color.main};
   backgroundcolor: ${({ primary, theme }) =>
     primary ? theme.color.main : "white"};
   min-width: 11rem;
