@@ -38,6 +38,7 @@ export const StyledInput = styled.input`
   :-ms-input-placeholder {
     color: lightgray;
   }
+  width: ${({ width }) => width};
 `;
 export const ErrorDiv = styled.div`
   border: none;

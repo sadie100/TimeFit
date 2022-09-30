@@ -7,6 +7,7 @@ import Join from "./join/Join";
 import Header from "components/base/Header";
 import Sample from "./Sample";
 import Reserve from "pages/reserve/Reserve";
+import Center from "pages/center/Center";
 import Help from "pages/help/Help";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LoadingContext } from "contexts/loadingContext";
@@ -39,7 +40,7 @@ const App = () => {
           {/* 이메일/비밀번호 찾기 화면 */}
           <Route path="/help/*" element={<Help />}></Route>
           {/* 헬스장찾기 화면 */}
-          <Route path="/center" element={<Sample />}></Route>
+          <Route path="/center" element={<Center />}></Route>
           {/* 예약 화면 */}
           <Route path="/reserve/*" element={<Reserve />}></Route>
         </Routes>

@@ -1,6 +1,8 @@
 import * as FormComponent from "components/form/StyledComponents";
 import Button from "components/common/Button";
 import DaumPostcode from "components/form/DaumPostcode";
+import { StyledSelect } from "components/form/StyledComponents";
+import Slider from "components/form/Slider";
 
 export default (props) => {
   const { formId, formLine, formStates, errors } = props;
@@ -94,7 +96,7 @@ export default (props) => {
                     justifyContent: "start",
                     flexGrow: 0,
                   }}
-                  key={`${formId}-${formLine.name}`}
+                  key={`radio-${formId}-${formLine.name}`}
                 >
                   {formLine.buttons.map((btn, idx) => {
                     return (
@@ -119,6 +121,67 @@ export default (props) => {
                 </div>
               ) : formLine.type === "custom" ? (
                 <formLine.render {...props} {...formLine}></formLine.render>
+              ) : formLine.type === "select" ? (
+                <StyledSelect
+                  name={formLine.name}
+                  key={`select-${formId}-${formLine.name}`}
+                  {...register(formLine.name, formLine.register)}
+                >
+                  {formLine.placeholder && (
+                    <option
+                      value=""
+                      disabled
+                      selected
+                      style={{ display: "none" }}
+                    >
+                      {formLine.placeholder}
+                    </option>
+                  )}
+                  {formLine.items.map(({ label, value }) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </StyledSelect>
+              ) : formLine.type === "checkbox" ? (
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    justifyContent: "start",
+                    flexGrow: 0,
+                    flexWrap: "wrap",
+                  }}
+                  key={`checkbox-${formId}-${formLine.name}`}
+                >
+                  {formLine.buttons.map(({ label, value }, idx) => {
+                    return (
+                      <>
+                        <input
+                          type="checkbox"
+                          id={`${formLine.name}_${idx}`}
+                          name={formLine.name}
+                          value={value}
+                          {...register(formLine.name, formLine.register)}
+                        ></input>
+                        <label
+                          style={{ cursor: "pointer" }}
+                          htmlFor={`${formLine.name}_${idx}`}
+                        >
+                          {label}
+                        </label>
+                      </>
+                    );
+                  })}
+                </div>
+              ) : formLine.type === "slider" ? (
+                <Slider
+                  key={`slider-${formId}-${formLine.name}`}
+                  formLine={formLine}
+                  errors={errors}
+                  {...formStates}
+                  {...props}
+                />
               ) : (
                 <StyledInput
                   type={formLine.type}

@@ -4,8 +4,10 @@ import styled from "styled-components";
 import Button from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { checkLoggedIn } from "lib/auth";
+import { useState } from "react";
 
 const Main = (props) => {
+  const [type, setType] = useState("center");
   const navigate = useNavigate();
   const handleReserve = () => {
     navigate("/reserve");
@@ -27,7 +29,9 @@ const Main = (props) => {
               gap: "5rem",
             }}
           >
-            <Button onClick={handleReserve}>예약하기</Button>
+            <Button onClick={handleReserve}>
+              {type === "member" ? "예약하기" : "예약 현황"}
+            </Button>
             <Button onClick={handleCenter}>헬스장 찾기</Button>
           </div>
         </TextBackground>
