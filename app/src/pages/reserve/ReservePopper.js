@@ -41,7 +41,7 @@ export default ({ name, type }) => {
     <Popper id={id} open={id === name} anchorEl={anchorEl}>
       <WrapperDiv>
         <Title>{MACHINE_NAME[type]}</Title>
-        <TimeColumn reservation={reservation}></TimeColumn>
+        <TimeColumn reservation={reservation} readOnly={true}></TimeColumn>
       </WrapperDiv>
     </Popper>
   );
