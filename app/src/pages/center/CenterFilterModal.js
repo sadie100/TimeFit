@@ -15,7 +15,7 @@ import { MACHINE_NAME } from "constants/center";
 const modalName = "CenterFilterModal";
 const formId = "CenterFilterForm";
 
-export default function CenterFilterModal({ center }) {
+export default function CenterFilterModal({ handleSearchCond }) {
   const [data, setData] = useState({});
   const navigate = useNavigate();
 
@@ -31,28 +31,10 @@ export default function CenterFilterModal({ center }) {
       price: "10만원",
     });
   }, []);
-  const handleSelect = () => {
-    //회원가입 로직 서버에 전달
-    const userInfo = window.sessionStorage.getItem("signup");
-    //todo : 서버 연결 시 아래 주석 풀기
-    navigate("/join/success");
-    // axios
-    //   .post(
-    //     "http://localhost:8080/signup/",
-    //     { ...userInfo, center: center, type: "member" },
-    //     { withCredentials: true }
-    //   )
-    //   .then((res) => {
-    //     console.log(res);
-    //     navigate("/join/success");
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //     alert("에러가 발생했습니다.");
-    //   });
-  };
 
-  const handleFilter = () => {};
+  const handleFilter = (data) => {
+    handleSearchCond(data);
+  };
 
   const formData = ({ watch }) =>
     [
@@ -88,14 +70,14 @@ export default function CenterFilterModal({ center }) {
         ? watch("equipment").map((equip) => ({
             label: `${MACHINE_NAME[equip]} 최소 배치 수`,
             type: "number",
-            name: `number_${MACHINE_NAME[equip]}`,
+            name: `number_${equip}`,
             placeholder: `${MACHINE_NAME[equip]} 최소 배치 수를 입력해 주세요.`,
           }))
         : []),
       {
         label: "가격",
         name: "price",
-        type: "text",
+        type: "slider",
       },
     ].filter((d) => !!d);
   return (
@@ -104,14 +86,14 @@ export default function CenterFilterModal({ center }) {
         필터
       </div>
       <ModalContent>
-        {/* 헬스장 사진(서버에서 가져올 것) */}
+        {/* todo: 헬스장 사진(서버에서 가져올 것) */}
         <FormMaker
           formData={formData}
           onSubmit={handleFilter}
           formId={formId}
         />
-        <Button onClick={handleSelect} fontSize="18px" padding="1rem 3rem">
-          선택하기
+        <Button form={formId} fontSize="18px" padding="1rem 3rem">
+          필터 적용하기
         </Button>
       </ModalContent>
     </Modal>

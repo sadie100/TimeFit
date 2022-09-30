@@ -7,21 +7,27 @@ import styled from "styled-components";
 import SubmitButton from "components/form/SubmitButton";
 import { useTheme } from "styled-components";
 import { useNavigate } from "react-router-dom";
-import CenterConfirmModal from "pages/join/CenterConfirmModal";
 import { ModalContext } from "contexts/modalContext";
 import TuneIcon from "@mui/icons-material/Tune";
 import CenterFilterModal from "pages/center/CenterFilterModal";
+import CenterInfoModal from "pages/center/CenterInfoModal";
 
 const Center = () => {
   const formId = "UserFindCenter";
   const theme = useTheme();
   const navigate = useNavigate();
+
+  const [searchCond, setSearchCond] = useState(null);
   const [centerList, setCenterList] = useState([]);
   const [center, setCenter] = useState("");
   const { handleOpen } = useContext(ModalContext);
 
-  //검색 handle function
+  const handleSearchCond = (data) => {
+    setSearchCond(data);
+  };
+  //todo : 검색 handle function
   const handleSearch = async (data) => {
+    let sendingData = { ...data, ...searchCond };
     // try {
     //   const result = await axios.post("url", data);
     //   const { data } = result;
@@ -66,7 +72,7 @@ const Center = () => {
 
   const handleClickCenter = (center) => {
     setCenter(center._id);
-    handleOpen("CenterConfirmModal");
+    handleOpen("CenterInfoModal");
   };
 
   const handleFilter = () => {
@@ -110,8 +116,8 @@ const Center = () => {
             );
           })}
         </ListWrapper>
-        <CenterConfirmModal center={center} />
-        <CenterFilterModal />
+        <CenterInfoModal center={center} />
+        <CenterFilterModal handleSearchCond={handleSearchCond} />
       </Background>
     </>
   );

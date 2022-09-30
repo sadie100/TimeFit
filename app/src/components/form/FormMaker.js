@@ -18,7 +18,6 @@ export default (props) => {
     watch,
   } = formStates;
 
-  console.log(watch());
   return (
     <>
       <StyledForm onSubmit={handleSubmit(onSubmit)} id={formId}>

@@ -2,6 +2,7 @@ import * as FormComponent from "components/form/StyledComponents";
 import Button from "components/common/Button";
 import DaumPostcode from "components/form/DaumPostcode";
 import { StyledSelect } from "components/form/StyledComponents";
+import Slider from "components/form/Slider";
 
 export default (props) => {
   const { formId, formLine, formStates, errors } = props;
@@ -95,7 +96,7 @@ export default (props) => {
                     justifyContent: "start",
                     flexGrow: 0,
                   }}
-                  key={`${formId}-${formLine.name}`}
+                  key={`radio-${formId}-${formLine.name}`}
                 >
                   {formLine.buttons.map((btn, idx) => {
                     return (
@@ -123,6 +124,7 @@ export default (props) => {
               ) : formLine.type === "select" ? (
                 <StyledSelect
                   name={formLine.name}
+                  key={`select-${formId}-${formLine.name}`}
                   {...register(formLine.name, formLine.register)}
                 >
                   {formLine.placeholder && (
@@ -150,7 +152,7 @@ export default (props) => {
                     flexGrow: 0,
                     flexWrap: "wrap",
                   }}
-                  key={`${formId}-${formLine.name}`}
+                  key={`checkbox-${formId}-${formLine.name}`}
                 >
                   {formLine.buttons.map(({ label, value }, idx) => {
                     return (
@@ -164,7 +166,7 @@ export default (props) => {
                         ></input>
                         <label
                           style={{ cursor: "pointer" }}
-                          for={`${formLine.name}_${idx}`}
+                          htmlFor={`${formLine.name}_${idx}`}
                         >
                           {label}
                         </label>
@@ -172,6 +174,14 @@ export default (props) => {
                     );
                   })}
                 </div>
+              ) : formLine.type === "slider" ? (
+                <Slider
+                  key={`slider-${formId}-${formLine.name}`}
+                  formLine={formLine}
+                  errors={errors}
+                  {...formStates}
+                  {...props}
+                />
               ) : (
                 <StyledInput
                   type={formLine.type}
