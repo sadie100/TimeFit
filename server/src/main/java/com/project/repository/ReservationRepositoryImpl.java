@@ -34,11 +34,11 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
         return false;
     }
     @Override
-    public List<Reservation> getReserve(Long id, LocalDate date, Long equipment){
+    public List<Reservation> getReserve(Long id, String date, Long equipment){
 
         LocalDate now = LocalDate.now();
         if(date != null){
-            now = date;
+            now = LocalDate.parse(date);
         }
         LocalDateTime st = LocalDateTime.parse(now+"T00:00:00");
         LocalDateTime end = LocalDateTime.parse(now+"T23:59:59");

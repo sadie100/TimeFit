@@ -10,7 +10,7 @@ import java.util.List;
 public interface ReservationRepositoryCustom {
     boolean check(Long id, ReservationRequest reservationRequest);
 
-    List<Reservation> getReserve(Long id, LocalDate date, Long equipment);
+    List<Reservation> getReserve(Long id, String date, Long equipment);
 
 //    void saveReservation(Long id, ReservationRequest request);
 }

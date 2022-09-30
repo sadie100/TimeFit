@@ -97,8 +97,9 @@ class ReservationControllerTest {
 //                .searchDate(LocalDate.parse("2022-09-25"))
                 .build();
 
-        mockMvc.perform(get("/center/{centerId}/reserve",1L,now)
-                        .content(objectMapper.writeValueAsString(request))
+        mockMvc.perform(get("/center/{centerId}/reserve?searchIds={1},{2}&searchDate={d}"
+                        ,requestCenter.get(0).getId(),requestEquip.get(1).getId(),requestEquip.get(2).getId(),now)
+//                        .content(objectMapper.writeValueAsString(request))
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

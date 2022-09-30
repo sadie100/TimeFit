@@ -27,7 +27,7 @@ public class ReservationController {
 
         @GetMapping("/center/{centerId}/reserve")
         public List<ReservationResponse> getReservation(@PathVariable Long centerId,
-                                                        @RequestBody ReservationSearch request){
+                                                        @ModelAttribute ReservationSearch request){
             return reservationService.getReservation(centerId,request);
         }
 

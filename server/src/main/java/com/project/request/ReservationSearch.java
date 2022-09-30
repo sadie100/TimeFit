@@ -13,6 +13,6 @@ import java.util.List;
 public class ReservationSearch {
 
     private final List<Long> searchIds;
-    private final LocalDate searchDate;
+    private final String searchDate;
 
 }

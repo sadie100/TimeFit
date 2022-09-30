@@ -98,24 +98,23 @@ public class ReservationControllerDocTest {
         ids.add(requestEquip.get(2).getId());
         ReservationSearch request = ReservationSearch.builder()
                 .searchIds(ids)
-                .searchDate(now)
+//                .searchDate(now)
                 .build();
 
 
-        this.mockMvc.perform(get("/center/{centerId}/reserve",requestCenter.get(0).getId())
+        this.mockMvc.perform(get("/center/{centerId}/reserve?searchDate={d}&searchIds={1},{2}"
+                        ,requestCenter.get(0).getId(),now,requestEquip.get(1).getId(),requestEquip.get(2).getId())
                         .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("reservation-list"
                         , pathParameters(
-                                parameterWithName("centerId").description("헬스장 ID"))
-                        , requestFields(
-                                fieldWithPath("searchIds").description("예약 내역 조회를 원하는 헬스장 기구 ID 리스트"),
-                                fieldWithPath("searchDate").description("예약 조회 날짜, 미입력시 현재 날짜 자동 입력").optional()
+                                parameterWithName("centerId").description("헬스장 ID"),
+                                parameterWithName("searchIds").description("예약 내역 조회를 원하는 헬스장 기구 ID 리스트").optional()
+                                        .attributes(key("constraint").value("여러 ID 입력 가능")),
+                                parameterWithName("searchDate").description("예약 조회 날짜, 미입력시 현재 날짜 자동 입력").optional()
                                         .attributes(key("constraint").value("YYYY-MM-DD"))
-
                         )
                         , responseFields(
                                 fieldWithPath("[].id").description("헬스장 기구 ID"),
