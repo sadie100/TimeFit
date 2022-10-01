@@ -1,6 +1,6 @@
 //회원 헬스장 선택(회원가입)
 
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import SearchForm from "components/form/FormMaker";
 import styled from "styled-components";
@@ -19,47 +19,51 @@ export default () => {
   const { handleOpen } = useContext(ModalContext);
 
   //검색 handle function
-  const handleSearch = async (data) => {
-    // try {
-    //   const result = await axios.post("url", data);
-    //   const { data } = result;
-    //   setCenterList(data);
-    // } catch (e) {
-    //   console.log(e);
-    //   alert("에러가 일어났습니다.");
-    // }
-    setCenterList([
-      {
-        _id: 1,
-        name: "11 헬스장",
-        address: "서울시 11구 11로 111-111",
-        image: "https://source.unsplash.com/random",
-      },
-      {
-        _id: 2,
-        name: "22 헬스장",
-        address: "서울시 22구 22로 222-222",
-        image: "https://source.unsplash.com/random",
-      },
-      {
-        _id: 3,
-        name: "33 헬스장",
-        address: "서울시 33구 33로 333-333",
-        image: "https://source.unsplash.com/random",
-      },
-      {
-        _id: 4,
-        name: "44 헬스장",
-        address: "서울시 44구 44로 444-444",
-        image: "https://source.unsplash.com/random",
-      },
-      {
-        _id: 5,
-        name: "55 헬스장",
-        address: "서울시 55구 55로 555-555",
-        image: "https://source.unsplash.com/random",
-      },
-    ]);
+  const handleSearch = async (formResult) => {
+    try {
+      const { data } = await axios.get("http://localhost:8080/centers", {
+        params: formResult,
+      });
+      if (data.length === 0) {
+        alert("검색 조건에 맞는 헬스장이 없습니다.");
+      }
+      setCenterList(data);
+    } catch (e) {
+      console.log(e);
+      alert("오류가 발생했습니다.");
+    }
+    // setCenterList([
+    //   {
+    //     _id: 1,
+    //     name: "11 헬스장",
+    //     address: "서울시 11구 11로 111-111",
+    //     image: "https://source.unsplash.com/random",
+    //   },
+    //   {
+    //     _id: 2,
+    //     name: "22 헬스장",
+    //     address: "서울시 22구 22로 222-222",
+    //     image: "https://source.unsplash.com/random",
+    //   },
+    //   {
+    //     _id: 3,
+    //     name: "33 헬스장",
+    //     address: "서울시 33구 33로 333-333",
+    //     image: "https://source.unsplash.com/random",
+    //   },
+    //   {
+    //     _id: 4,
+    //     name: "44 헬스장",
+    //     address: "서울시 44구 44로 444-444",
+    //     image: "https://source.unsplash.com/random",
+    //   },
+    //   {
+    //     _id: 5,
+    //     name: "55 헬스장",
+    //     address: "서울시 55구 55로 555-555",
+    //     image: "https://source.unsplash.com/random",
+    //   },
+    // ]);
   };
 
   const handleClickCenter = (center) => {
