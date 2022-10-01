@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 export default () => {
   const [isMailSend, setIsMailSend] = useState(false);
   const [certified, setCertified] = useState(false);
+
   const formId = "UserJoin";
   const theme = useTheme();
   const navigate = useNavigate();

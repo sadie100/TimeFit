@@ -21,7 +21,7 @@ export default () => {
   //검색 handle function
   const handleSearch = async (formResult) => {
     try {
-      const { data } = await axios.get("http://localhost:8080/centers", {
+      const { data } = await axios.get("/centers", {
         params: formResult,
       });
       if (data.length === 0) {
