@@ -18,7 +18,7 @@ export default function CenterConfirmModal({ center }) {
   useEffect(() => {
     setData({
       name: "11 헬스장",
-      phone: "02-111-1111",
+      phoneNumber: "02-111-1111",
       image: "https://source.unsplash.com/random",
       address: "서울시 광진구 아차산로 123-232",
       trainers: "홍길동, 홍길길",
@@ -58,7 +58,7 @@ export default function CenterConfirmModal({ center }) {
           <DialogTitle sx={{ fontWeight: "bold", padding: 0, margin: 0 }}>
             {data.name}
           </DialogTitle>
-          <div>{data.phone}</div>
+          <div>{data.phoneNumber}</div>
         </div>
         <DialogContent sx={{ padding: 0, margin: 0 }}>
           <InfoDiv>

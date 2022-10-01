@@ -11,32 +11,28 @@ import { useNavigate } from "react-router-dom";
 export default () => {
   const [isMailSend, setIsMailSend] = useState(false);
   const [certified, setCertified] = useState(false);
+
   const formId = "UserJoin";
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (!certified) return alert("이메일 인증을 진행해 주세요.");
 
-    //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
-    window.sessionStorage.setItem("signup", data);
+    //이메일 체크 진행
+    try {
+      await axios.get("http://localhost:8080/signup/check-email", {
+        params: { email: data.email },
+      });
+      //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
+      window.sessionStorage.setItem("signup", data);
 
-    //헬스장 선택 페이지로 이동
-    navigate("/join/find-center");
-    // axios
-    //   .post(
-    //     "http://localhost:8080/signup/",
-    //     { ...data, type: "member" },
-    //     { withCredentials: true }
-    //   )
-    //   .then((res) => {
-    //     console.log(res);
-    //     navigate("/join/success");
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //     alert("에러가 발생했습니다.");
-    //   });
+      //헬스장 선택 페이지로 이동
+      navigate("/join/find-center");
+    } catch (e) {
+      console.log(e);
+      alert("중복된 이메일입니다. 이메일을 변경해 주세요.");
+    }
   };
 
   // const checkEmailHandler = (e) => {
@@ -121,7 +117,7 @@ export default () => {
       },
       {
         type: "number",
-        name: "phone",
+        name: "phoneNumber",
         label: "휴대전화",
         placeholder: "휴대전화 번호를 입력해 주세요.",
       },

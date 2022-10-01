@@ -1,5 +1,4 @@
 //헬스장 배치도
-import { render } from "react-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styled from "styled-components";
@@ -11,6 +10,18 @@ import Button from "components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { Layout, Entrance } from "components/Center";
 import { useTheme } from "styled-components";
+import FormMaker from "components/form/FormMaker";
+import axios from "axios";
+import Machines from "pages/join/Machines";
+import { useForm } from "react-hook-form";
+import {
+  StyledForm,
+  Line,
+  LineContent,
+} from "components/form/StyledComponents";
+
+const formId = "CenterLayout";
+const fieldName = "equipments";
 
 export default (props) => {
   const {
@@ -25,37 +36,61 @@ export default (props) => {
     ],
   } = props;
 
+  //머신 리스트
+  const [machines, setMachines] = useState([]);
   //처음 헬스장 모음
   const [fromItems, setFromItems] = useState([]);
+
+  //머신 가져오기
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await axios.get("/equipment");
+      setMachines(data);
+    }
+    fetchData();
+  }, []);
+
+  const formStates = useForm();
+  const { watch } = formStates;
 
   //이전 페이지에서 machine 데이터 가져와서 그 수만큼 아이콘 배치하기
   useEffect(() => {
     const machineArr = [];
-    machineList.map(({ name, count }, idx) => {
-      for (let i = 0; i < count; i++) {
-        machineArr.push({
-          name: `${name}_${i}`,
-          top: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
-          left: parseInt(machineArr.length / 2) * (iconSize + 20),
-          component: (
-            <img
-              src={machines[name]}
-              height={`${iconSize}px`}
-              width={`${iconSize}px`}
-              style={{ cursor: "pointer" }}
-            ></img>
-          ),
-        });
-      }
-    });
+    const selectedField = watch(fieldName);
+    console.log(selectedField);
+    watch(fieldName)
+      .filter((d) => !!d.equipment)
+      .map(({ equipment, count }, idx) => {
+        const machine = machines.find((element) => element.name === equipment);
+        const { id, img } = machine;
+        for (let i = 0; i < count; i++) {
+          machineArr.push({
+            center: "센터ID",
+            equipment: id,
+            name: `${id}_${i}`,
+            yloc: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
+            xloc: parseInt(machineArr.length / 2) * (iconSize + 20),
+            img: img,
+            // component: (
+            //   <img
+            //     src={img}
+            //     height={`${iconSize}px`}
+            //     width={`${iconSize}px`}
+            //     style={{ cursor: "pointer" }}
+            //   ></img>
+            // ),
+          });
+        }
+      });
+
     machineArr.push({
       name: "entrance",
-      top: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
-      left: parseInt(machineArr.length / 2) * (iconSize + 20),
+      yloc: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
+      xloc: parseInt(machineArr.length / 2) * (iconSize + 20),
       component: <Entrance>입구</Entrance>,
     });
     setFromItems(machineArr);
-  }, []);
+  }, [watch(fieldName)]);
 
   //헬스장 배치도 모음
   const [toItems, setToItems] = useState([]);
@@ -65,9 +100,9 @@ export default (props) => {
     if (!window.confirm("배치도를 저장하시겠습니까?")) return;
     //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
     const data = window.sessionStorage.getItem("signup");
-    const layoutData = toItems.map(({ left, top, name }) => ({
-      left,
-      top,
+    const layoutData = toItems.map(({ xloc, yloc, name }) => ({
+      xloc,
+      yloc,
       name,
     }));
     console.log(layoutData);
@@ -83,6 +118,17 @@ export default (props) => {
     <>
       <Background>
         <div className="title">헬스장 배치도 설정</div>
+        <StyledForm formId={formId}>
+          <Line>
+            <LineContent>
+              <Machines
+                formStates={formStates}
+                machines={machines}
+                name={fieldName}
+              />
+            </LineContent>
+          </Line>
+        </StyledForm>
         <DndProvider backend={HTML5Backend}>
           <MachineBox>
             <DraggableFromContainer
@@ -109,6 +155,7 @@ export default (props) => {
 
 const Background = styled.div`
   padding: 10vh 0;
+  min-width: 1000px;
   width: 100%;
   background-color: white;
   display: flex;

@@ -1,6 +1,8 @@
 import { memo, useEffect } from "react";
 import { useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
+import { useTheme } from "styled-components";
+import { Entrance } from "components/Center";
 
 function getStyles(left, top, isDragging) {
   // const transform = `translate3d(${left}px, ${top}px, 0)`;
@@ -17,16 +19,19 @@ function getStyles(left, top, isDragging) {
   };
 }
 export const DraggableItem = memo(function DraggableItem(props) {
-  const { id, left, top, component, type, name } = props;
+  const { id, xloc, yloc, img, type, name } = props;
+  const {
+    center: { iconSize },
+  } = useTheme();
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: type,
-      item: { id, left, top, component, name },
+      item: { id, xloc, yloc, img, name },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
     }),
-    [id, left, top, component, name]
+    [id, xloc, yloc, img, name]
   );
   // useEffect(() => {
   //   preview(getEmptyImage(), { captureDraggingState: true });
@@ -34,13 +39,23 @@ export const DraggableItem = memo(function DraggableItem(props) {
   if (isDragging) {
     return <div ref={drag} />;
   }
+  console.log(img);
   return (
     <div
       ref={drag}
-      style={getStyles(left, top, isDragging)}
+      style={getStyles(xloc, yloc, isDragging)}
       role="DraggableBox"
     >
-      {component}
+      {name === "entrance" ? (
+        <Entrance>입구</Entrance>
+      ) : (
+        <img
+          src={img}
+          height={`${iconSize}px`}
+          width={`${iconSize}px`}
+          style={{ cursor: "pointer" }}
+        ></img>
+      )}
     </div>
   );
 });

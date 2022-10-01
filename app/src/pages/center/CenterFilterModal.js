@@ -23,7 +23,7 @@ export default function CenterFilterModal({ handleSearchCond }) {
   useEffect(() => {
     setData({
       name: "11 헬스장",
-      phone: "02-111-1111",
+      phoneNumber: "02-111-1111",
       image: "https://source.unsplash.com/random",
       address: "서울시 광진구 아차산로 123-232",
       trainers: "홍길동, 홍길길",

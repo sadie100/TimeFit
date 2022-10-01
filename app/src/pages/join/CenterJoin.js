@@ -1,6 +1,6 @@
 //센터 회원가입
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import FormMaker from "components/form/FormMaker";
 import styled from "styled-components";
@@ -15,20 +15,71 @@ const formId = "CenterJoin";
 export default () => {
   const [isMailSend, setIsMailSend] = useState(false);
   const [certified, setCertified] = useState(false);
+  const [centerNumCertified, setCenterNumCertified] = useState(false);
+
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
+  //회원가입 로직
+  const onSubmit = async (data) => {
     if (!certified) return alert("이메일 인증을 진행해 주세요.");
+    try {
+      console.log(data);
+      data.address = data.basic + " " + data.detail;
+      //센터 회원가입 요청
+      const respond = await axios.post("/signup-center", data);
+      console.log(respond);
+      return;
+      //respond에서 센터 번호가 와야 함
+      const id = respond.data.id;
+      if (respond.status !== 200) {
+        return alert("오류가 일어났습니다. 다시 시도해 주세요.");
+      }
+      //센터 트레이너 추가
+      await axios.post(`/add-trainer/${respond.data.id}`, data.trainers);
 
-    //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
-    window.sessionStorage.setItem("signup", data);
+      //센터 이미지 추가
+      let formData = new FormData();
+      formData.append("centerId", id);
+      data.image.map((img) => {
+        formData.append("file", img);
+      });
+      await axios.post("/upload-center", formData, {
+        "Content-Type": "multipart/form-data",
+      });
 
-    //헬스장 배치도 페이지로 이동
-    navigate("/join/center/layout");
+      // //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
+      // window.sessionStorage.setItem("signup", JSON.stringify(data));
+
+      //헬스장 배치도 페이지로 이동
+      navigate("/join/center/layout");
+    } catch (e) {
+      console.log(e);
+      alert("에러가 일어났습니다.");
+    }
   };
 
-  const formData = () =>
+  //사업자등록번호 인증 로직
+  const handleStoreNumCheck = async (watch) => {
+    const num = watch("storeNumber");
+    try {
+      const respond = await axios({
+        method: "get",
+        url: "/signup/check-storeNumber",
+        params: {
+          number: num,
+        },
+      });
+      if (respond.status === 200) {
+        setCenterNumCertified(true);
+      }
+    } catch (e) {
+      console.log(e);
+      alert("오류가 일어났습니다.");
+    }
+  };
+
+  const formData = ({ watch }) =>
     [
       {
         type: "email",
@@ -79,7 +130,7 @@ export default () => {
       },
       {
         type: "number",
-        name: "phone",
+        name: "phoneNumber",
         label: "헬스장 연락처",
         placeholder: "헬스장 연락처를 입력해 주세요.",
         register: {
@@ -87,13 +138,14 @@ export default () => {
         },
       },
       {
+        //todo : 서버랑 필드명 맞추기
         type: "address",
         label: "헬스장 주소",
         get: {
           //다음 api에서 가져올 데이터와 가져올 이름을 짝지어 둔 객체
           zonecode: "zonecode", //우편번호
-          address: "address", //기본 주소(ex: 경기 성남시 분당구 판교역로 235)
-          sido: "sido", //도/시 이름(ex:경기도,서울특별시)
+          address: "basic", //기본 주소(ex: 경기 성남시 분당구 판교역로 235)
+          sido: "region", //도/시 이름(ex:경기도,서울특별시)
           sigungu: "sigungu", //시,군,구 이름
           bname: "bname", //법정동/법정리 이름
         },
@@ -103,12 +155,11 @@ export default () => {
       {
         type: "text",
         label: "사업자등록번호",
-        name: "companyNum",
-        button: "인증",
-        buttonOnClick: () => {
-          //todo : 인증 로직 구현하기
-          alert("사업자등록번호 인증 로직 구현 필요");
-        },
+        name: "storeNumber",
+        button: centerNumCertified ? "인증완료" : "인증",
+        buttonOnClick: () => handleStoreNumCheck(watch),
+        buttonDisabled: centerNumCertified,
+        disabled: centerNumCertified,
         placeholder: "사업자등록번호를 입력해 주세요.",
         register: {
           required: "사업자등록번호를 입력해 주세요.",
@@ -119,18 +170,13 @@ export default () => {
         type: "file",
         label: "헬스장 사진",
         name: "image",
+        multiple: true,
       },
       {
         type: "custom",
         label: "보유 트레이너",
         name: "trainers",
         render: (props) => <Trainers {...props} />,
-      },
-      {
-        type: "custom",
-        label: "보유 운동기구",
-        name: "machines",
-        render: (props) => <Machines {...props} />,
       },
       {
         type: "number",
