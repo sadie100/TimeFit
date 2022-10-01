@@ -10,7 +10,11 @@ const Main = (props) => {
   const [type, setType] = useState("center");
   const navigate = useNavigate();
   const handleReserve = () => {
-    navigate("/reserve");
+    if (type === "center") {
+      navigate("/reserve/center");
+    } else {
+      navigate("/reserve");
+    }
   };
   const handleCenter = () => {
     //헬스장찾기 버튼 눌렀을 때
@@ -30,7 +34,7 @@ const Main = (props) => {
             }}
           >
             <Button onClick={handleReserve}>
-              {type === "member" ? "예약하기" : "예약 현황"}
+              {type === "center" ? "예약 현황" : "예약하기"}
             </Button>
             <Button onClick={handleCenter}>헬스장 찾기</Button>
           </div>

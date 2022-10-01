@@ -9,7 +9,6 @@ const closeAt = 22;
 
 const ReservationTable = ({ reservation = [] }) => {
   const [reservedTime, setReservedTime] = useState([]);
-
   useEffect(() => {
     const reserved = reservation.map((one, idx) => {
       const column = one.map(({ reservationId, start, end }) => {
@@ -27,7 +26,7 @@ const ReservationTable = ({ reservation = [] }) => {
       };
     });
     setReservedTime(reserved);
-  }, []);
+  }, [reservation]);
 
   return reservedTime.map(({ id, column }, idx) => {
     return (
