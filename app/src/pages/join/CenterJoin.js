@@ -21,19 +21,45 @@ export default () => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
+  //회원가입 로직
+  const onSubmit = async (data) => {
     if (!certified) return alert("이메일 인증을 진행해 주세요.");
+    try {
+      //센터 회원가입 요청
+      const respond = await axios.post("/signup-center", data);
 
-    //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
-    window.sessionStorage.setItem("signup", data);
+      //respond에서 센터 번호가 와야 함
+      const id = respond.data.id;
+      if (respond.status !== 200) {
+        return alert("오류가 일어났습니다. 다시 시도해 주세요.");
+      }
+      //센터 트레이너 추가
+      await axios.post(`/add-trainer/${respond.data.id}`, data.trainers);
 
-    //헬스장 배치도 페이지로 이동
-    navigate("/join/center/layout");
+      //센터 이미지 추가
+      let formData = new FormData();
+      formData.append("centerId", id);
+      data.image.map((img) => {
+        formData.append("file", img);
+      });
+      await axios.post("/upload-center", formData, {
+        "Content-Type": "form-data",
+      });
+
+      // //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
+      // window.sessionStorage.setItem("signup", JSON.stringify(data));
+
+      //헬스장 배치도 페이지로 이동
+      navigate("/join/center/layout");
+    } catch (e) {
+      console.log(e);
+      alert("에러가 일어났습니다.");
+    }
   };
 
   //사업자등록번호 인증 로직
   const handleStoreNumCheck = async (watch) => {
-    const num = watch("companyNum");
+    const num = watch("storeNumber");
     try {
       const respond = await axios({
         method: "get",
@@ -111,7 +137,7 @@ export default () => {
       },
       {
         type: "number",
-        name: "phone",
+        name: "phoneNumber",
         label: "헬스장 연락처",
         placeholder: "헬스장 연락처를 입력해 주세요.",
         register: {
@@ -119,6 +145,7 @@ export default () => {
         },
       },
       {
+        //todo : 서버랑 필드명 맞추기
         type: "address",
         label: "헬스장 주소",
         get: {
@@ -135,7 +162,7 @@ export default () => {
       {
         type: "text",
         label: "사업자등록번호",
-        name: "companyNum",
+        name: "storeNumber",
         button: centerNumCertified ? "인증완료" : "인증",
         buttonOnClick: () => handleStoreNumCheck(watch),
         buttonDisabled: centerNumCertified,
@@ -146,10 +173,11 @@ export default () => {
         },
       },
       {
-        //todo : 사진 컴포넌트 예쁜 걸로 변경 필요, 다중사진 다룰 수 있게 변경 필요
+        //todo : 사진 컴포넌트 예쁜 걸로 변경 필요
         type: "file",
         label: "헬스장 사진",
         name: "image",
+        multiple: true,
       },
       {
         type: "custom",
