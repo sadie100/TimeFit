@@ -38,7 +38,6 @@ export default (props) => {
 
   //머신 리스트
   const [machines, setMachines] = useState([]);
-
   //처음 헬스장 모음
   const [fromItems, setFromItems] = useState([]);
 
@@ -57,28 +56,37 @@ export default (props) => {
   //이전 페이지에서 machine 데이터 가져와서 그 수만큼 아이콘 배치하기
   useEffect(() => {
     const machineArr = [];
-    watch(fieldName).map(({ name, count }, idx) => {
-      for (let i = 0; i < count; i++) {
-        machineArr.push({
-          name: `${name}_${i}`,
-          top: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
-          left: parseInt(machineArr.length / 2) * (iconSize + 20),
-          component: (
-            <img
-              src={machines[name]}
-              height={`${iconSize}px`}
-              width={`${iconSize}px`}
-              style={{ cursor: "pointer" }}
-            ></img>
-          ),
-        });
-      }
-    });
+    const selectedField = watch(fieldName);
+    console.log(selectedField);
+    watch(fieldName)
+      .filter((d) => !!d.equipment)
+      .map(({ equipment, count }, idx) => {
+        const machine = machines.find((element) => element.name === equipment);
+        const { id, img } = machine;
+        for (let i = 0; i < count; i++) {
+          machineArr.push({
+            center: "센터ID",
+            equipment: id,
+            name: `${id}_${i}`,
+            yloc: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
+            xloc: parseInt(machineArr.length / 2) * (iconSize + 20),
+            img: img,
+            // component: (
+            //   <img
+            //     src={img}
+            //     height={`${iconSize}px`}
+            //     width={`${iconSize}px`}
+            //     style={{ cursor: "pointer" }}
+            //   ></img>
+            // ),
+          });
+        }
+      });
 
     machineArr.push({
       name: "entrance",
-      top: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
-      left: parseInt(machineArr.length / 2) * (iconSize + 20),
+      yloc: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
+      xloc: parseInt(machineArr.length / 2) * (iconSize + 20),
       component: <Entrance>입구</Entrance>,
     });
     setFromItems(machineArr);
@@ -92,9 +100,9 @@ export default (props) => {
     if (!window.confirm("배치도를 저장하시겠습니까?")) return;
     //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
     const data = window.sessionStorage.getItem("signup");
-    const layoutData = toItems.map(({ left, top, name }) => ({
-      left,
-      top,
+    const layoutData = toItems.map(({ xloc, yloc, name }) => ({
+      xloc,
+      yloc,
       name,
     }));
     console.log(layoutData);
@@ -147,6 +155,7 @@ export default (props) => {
 
 const Background = styled.div`
   padding: 10vh 0;
+  min-width: 1000px;
   width: 100%;
   background-color: white;
   display: flex;
