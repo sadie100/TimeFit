@@ -1,6 +1,6 @@
 //센터 회원가입
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import FormMaker from "components/form/FormMaker";
 import styled from "styled-components";
@@ -15,6 +15,9 @@ const formId = "CenterJoin";
 export default () => {
   const [isMailSend, setIsMailSend] = useState(false);
   const [certified, setCertified] = useState(false);
+  const [centerNumCertified, setCenterNumCertified] = useState(false);
+  const [machines, setMachines] = useState([]);
+
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -28,7 +31,36 @@ export default () => {
     navigate("/join/center/layout");
   };
 
-  const formData = () =>
+  //사업자등록번호 인증 로직
+  const handleStoreNumCheck = async (watch) => {
+    const num = watch("companyNum");
+    try {
+      const respond = await axios({
+        method: "get",
+        url: "/signup/check-storeNumber",
+        params: {
+          number: num,
+        },
+      });
+      if (respond.status === 200) {
+        setCenterNumCertified(true);
+      }
+    } catch (e) {
+      console.log(e);
+      alert("오류가 일어났습니다.");
+    }
+  };
+
+  //머신 가져오기
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await axios.get("/equipment");
+      setMachines(data);
+    }
+    fetchData();
+  }, []);
+
+  const formData = ({ watch }) =>
     [
       {
         type: "email",
@@ -104,18 +136,17 @@ export default () => {
         type: "text",
         label: "사업자등록번호",
         name: "companyNum",
-        button: "인증",
-        buttonOnClick: () => {
-          //todo : 인증 로직 구현하기
-          alert("사업자등록번호 인증 로직 구현 필요");
-        },
+        button: centerNumCertified ? "인증완료" : "인증",
+        buttonOnClick: () => handleStoreNumCheck(watch),
+        buttonDisabled: centerNumCertified,
+        disabled: centerNumCertified,
         placeholder: "사업자등록번호를 입력해 주세요.",
         register: {
           required: "사업자등록번호를 입력해 주세요.",
         },
       },
       {
-        //todo : 사진 컴포넌트 예쁜 걸로 변경 필요
+        //todo : 사진 컴포넌트 예쁜 걸로 변경 필요, 다중사진 다룰 수 있게 변경 필요
         type: "file",
         label: "헬스장 사진",
         name: "image",
@@ -130,7 +161,7 @@ export default () => {
         type: "custom",
         label: "보유 운동기구",
         name: "machines",
-        render: (props) => <Machines {...props} />,
+        render: (props) => <Machines {...props} machines={machines} />,
       },
       {
         type: "number",
