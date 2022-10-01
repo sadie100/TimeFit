@@ -4,24 +4,24 @@ import axios from "axios";
 export const ReservePopperContext = createContext({
   id: "",
   anchorEl: null,
-  handleOpen: (event) => {
-    console.log("작동");
-    console.log(event);
-  },
-  handleClose: () => {},
+  handleOpen: () => {},
+  handleClose: null,
 });
 
 const ReservePopperContextProvider = (props) => {
   const [id, setId] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleOpen = (event) => {
-    console.log("작동");
-    console.log(event);
+  const handleOpen = (event, name, imgName) => {
+    if (name === id) {
+      setId("");
+      setAnchorEl(null);
+    } else {
+      setAnchorEl(event.currentTarget);
+      setId(name);
+    }
   };
-  const handleClose = () => {
-    // setNowOpenModal("");
-  };
+  const handleClose = () => {};
 
   return (
     <ReservePopperContext.Provider

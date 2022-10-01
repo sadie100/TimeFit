@@ -42,7 +42,6 @@ public class SignController {
         return;
     }
 
-
     @PostMapping("/signup-center")
     public void signUpCenter(@RequestBody @Valid CenterSignUp request) {
         System.out.println(request);
@@ -152,7 +151,6 @@ public class SignController {
         String password = signService.makeNewPassword(email);
         return password;
     }
-
 
     @PostMapping("/signup/add-trainer/{centerId}")
     public void addTrainer(@PathVariable Long centerId, @RequestBody TrainerRequest trainer ) {

@@ -6,9 +6,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiController from "lib/AxiosInterceptor";
-import { Layout, SampleData, MakeItems } from "components/Center";
+import { Layout, SampleData } from "components/Center";
 import styled from "styled-components";
 import ReservePopperContextProvider from "contexts/reservePopperContext";
+import SetItems from "pages/reserve/SetItems";
+import ReserveModal from "pages/reserve/ReserveModal";
 
 const Reserve = () => {
   const navigate = useNavigate();
@@ -40,22 +42,23 @@ const Reserve = () => {
   // };
 
   return (
-    <ReservePopperContextProvider>
-      <Background>
-        <div className="title">운동기구 예약하기</div>
-        <Layout>
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              position: "relative",
-            }}
-          >
-            {MakeItems(itemData)}
-          </div>
-        </Layout>
-      </Background>
-    </ReservePopperContextProvider>
+    <Background>
+      <div className="title">운동기구 예약하기</div>
+      <Layout>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "relative",
+          }}
+        >
+          <ReservePopperContextProvider>
+            <SetItems itemData={itemData} />
+          </ReservePopperContextProvider>
+        </div>
+      </Layout>
+      <ReserveModal></ReserveModal>
+    </Background>
   );
 };
 export default Reserve;

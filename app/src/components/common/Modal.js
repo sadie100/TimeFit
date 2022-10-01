@@ -7,13 +7,14 @@ import styled from "styled-components";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-export default function Modal({ modalName, children, ...rest }) {
+export default function Modal({ modalName, children, style, ...rest }) {
   const { nowOpenModal, handleOpen, handleClose } = useContext(ModalContext);
 
   return (
     <StyledDialog
       open={nowOpenModal === modalName}
       onClose={handleClose}
+      maxWidth="500px"
       {...rest}
     >
       <DialogTitle sx={{ m: 0, p: 2 }}>
@@ -38,5 +39,6 @@ export default function Modal({ modalName, children, ...rest }) {
 const StyledDialog = styled(Dialog)`
   & .MuiDialog-paper {
     border-radius: 20px;
+    padding: 10px;
   }
 `;

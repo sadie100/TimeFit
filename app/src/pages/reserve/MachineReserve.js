@@ -1,5 +1,5 @@
 //
-// 기구 선택 후 예약 화면
+// 기구 선택 후 예약 화면 1
 //
 
 import axios from "axios";
