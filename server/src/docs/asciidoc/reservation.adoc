@@ -9,42 +9,43 @@
 == 예약 조회
 
 === 요청
-include::{snippets}/reservation-list/http-request.adoc[]
-include::{snippets}/reservation-list/path-parameters.adoc[]
+include::{snippets}/reservation/list/http-request.adoc[]
+include::{snippets}/reservation/list/path-parameters.adoc[]
 
 === 응답
-include::{snippets}/reservation-list/http-response.adoc[]
+include::{snippets}/reservation/list/http-response.adoc[]
 
-include::{snippets}/reservation-list/response-fields.adoc[]
+include::{snippets}/reservation/list/response-fields.adoc[]
 
 === CURL
-include::{snippets}/reservation-list/curl-request.adoc[]
+include::{snippets}/reservation/list/curl-request.adoc[]
 
 
 == 예약 신청
 
 === 요청
-include::{snippets}/reservation-request/http-request.adoc[]
-include::{snippets}/reservation-request/path-parameters.adoc[]
+include::{snippets}/reservation/request/http-request.adoc[]
+include::{snippets}/reservation/request/path-parameters.adoc[]
 
 === 응답
-include::{snippets}/reservation-request/http-response.adoc[]
-include::{snippets}/reservation-request/response-fields.adoc[]
+include::{snippets}/reservation/request/http-response.adoc[]
+
 
 === 응답 (예약 실패)
-include::{snippets}/reservation-request-fail/http-response.adoc[]
-include::{snippets}/reservation-request-fail/response-fields.adoc[]
+include::{snippets}/reservation/request_fail/http-response.adoc[]
+include::{snippets}/reservation/request_fail/response-fields.adoc[]
 === CURL
-include::{snippets}/reservation-request/curl-request.adoc[]
+
+include::{snippets}/reservation/request_fail/curl-request.adoc[]
 
 
 == 예약 취소
 
 === 요청
-include::{snippets}/reservation-cancel/http-request.adoc[]
-include::{snippets}/reservation-cancel/path-parameters.adoc[]
+include::{snippets}/reservation/cancel/http-request.adoc[]
+include::{snippets}/reservation/cancel/path-parameters.adoc[]
 
 === 응답
-include::{snippets}/reservation-cancel/http-response.adoc[]
+include::{snippets}/reservation/cancel/http-response.adoc[]
 
 === CURL

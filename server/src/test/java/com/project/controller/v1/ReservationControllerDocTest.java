@@ -108,7 +108,7 @@ public class ReservationControllerDocTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("reservation-list"
+                .andDo(document("reservation/list"
                         , pathParameters(
                                 parameterWithName("centerId").description("헬스장 ID"),
                                 parameterWithName("searchIds").description("예약 내역 조회를 원하는 헬스장 기구 ID 리스트").optional()
@@ -171,7 +171,7 @@ public class ReservationControllerDocTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("reservation-request"
+                .andDo(document("reservation/request"
                         , pathParameters(
                                 parameterWithName("centerId").description("헬스장 ID"))
                         , requestFields(
@@ -226,7 +226,7 @@ public class ReservationControllerDocTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isMethodNotAllowed())
                 .andDo(print())
-                .andDo(document("reservation-request-fail",
+                .andDo(document("reservation/request_fail",
                         pathParameters(
                             parameterWithName("centerId").description("헬스장 ID")),
                         requestFields(
@@ -268,7 +268,7 @@ public class ReservationControllerDocTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("reservation-cancel"
+                .andDo(document("reservation/cancel"
                         , pathParameters(
                                 parameterWithName("centerId").description("헬스장 ID"),
                                 parameterWithName("reservationId").description("예약 ID"))

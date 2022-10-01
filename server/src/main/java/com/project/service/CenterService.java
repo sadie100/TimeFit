@@ -7,6 +7,7 @@ import com.project.repository.CenterImgRepository;
 import com.project.repository.CenterRepository;
 import com.project.request.CenterSearch;
 import com.project.response.CenterDetailResponse;
+import com.project.response.CenterEquipmentNumber;
 import com.project.response.CenterImgResponse;
 import com.project.response.CenterResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,20 +32,22 @@ public class CenterService {
                 .collect(Collectors.toList());
     }
 
-    public CenterDetailResponse get(Long itemId) {
-        Center item = centerRepository.findById(itemId)
+    public CenterDetailResponse get(Long centerId) {
+        Center item = centerRepository.findById(centerId)
                 .orElseThrow(CenterNotFound::new);
-        CenterDetailResponse itemDetailResponse = new CenterDetailResponse(item);
-        return itemDetailResponse;
+        List<CenterEquipmentNumber> equipNumber = centerRepository.getEquipNumber(centerId);
+        CenterDetailResponse centerDetailResponse = new CenterDetailResponse(item, equipNumber);
+        return centerDetailResponse;
     }
 
-    public List<CenterImgResponse> getImg(Long itemId){
-        Center item = centerRepository.findById(itemId)
-                .orElseThrow(CenterNotFound::new);
-        return centerImgRepository.findByItem(item).stream()
-                .map(CenterImgResponse::new)
-                .collect(Collectors.toList());
-    }
+//    public List<CenterImgResponse> getImg(Long itemId){
+//        Center item = centerRepository.findById(itemId)
+//                .orElseThrow(CenterNotFound::new);
+//        return centerImgRepository.findByItem(item).stream()
+//                .map(CenterImgResponse::new)
+//                .collect(Collectors.toList());
+//    }
+
 
     public void updateView(Long itemId) {
         centerRepository.updateView(itemId);
