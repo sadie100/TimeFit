@@ -8,17 +8,23 @@ const SetEquip = () => {
       if (respond.status !== 200) {
         return alert("오류가 일어났습니다. 다시 시도해 주세요.");
       }
-      console.log(respond);
-      const id = respond.data.id;
+      const id = respond.data;
+      const fileList = data.file;
 
       //센터 이미지 추가
       let formData = new FormData();
-      formData.append("equipmentId", 3);
-      formData.append("file", data.file);
-      console.log("eid", formData.get("equipmentId"));
-      console.log("efile", formData.get("file"));
-      await axios.post("/upload-equipment", formData, {
-        "Content-Type": "multipart/form-data",
+      formData.append("equipmentId", id);
+      for (let i = 0; i < fileList.length; i++) {
+        formData.append("file", fileList[i]);
+      }
+
+      await axios({
+        method: "post",
+        url: "/upload-equipment",
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
     } catch (e) {
       console.log(e);
