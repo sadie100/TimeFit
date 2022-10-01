@@ -13,7 +13,8 @@ import java.util.Set;
 @Getter  //getter 자동 선언
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)  //인자없는 생성자를 자동 생성
-@TypeDef(name = "json", typeClass = JsonType.class)
+//@TypeDef(name = "json", typeClass = JsonType.class)
+@Table(name="center")
 public class Center {
 
     @Id
@@ -26,13 +27,17 @@ public class Center {
     private String address;
     private Integer price;
 
+    private String phoneNumber;
     private String storeNumber;
 
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
 
-    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy ="item", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @OrderBy("id asc")
-    private Set<CenterImages> images;
+    private Set<CenterImages> centerImages;
+
+    @OneToMany(mappedBy ="center", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private Set<Trainer> trainers;
 
 }

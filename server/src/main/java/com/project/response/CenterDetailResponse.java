@@ -1,6 +1,7 @@
 package com.project.response;
 
 import com.project.domain.Center;
+import com.project.domain.Trainer;
 import lombok.Getter;
 
 import java.util.List;
@@ -12,24 +13,26 @@ public class CenterDetailResponse {
 
     private final Long id;
     private final String name;
+    private final String phoneNumber;
+    private final String address;
 
+    private final List<String> trainers;
     private List<CenterImgResponse> images;
+    private List<CenterEquipmentNumber> equipmentNumbers;
 
-    private final int view;
 
-//    private List<ItemNotesList> notes;
 
-    public CenterDetailResponse(Center item) {
-        this.id = item.getId();
-        this.name = item.getName();
-
-        this.images = item.getImages().stream()
+    public CenterDetailResponse(Center center, List<CenterEquipmentNumber> eq) {
+        this.id = center.getId();
+        this.name = center.getName();
+        this.phoneNumber = center.getPhoneNumber();
+        this.address = center.getAddress();
+        this.trainers = center.getTrainers().stream()
+                .map(o -> o.getName())
+                .collect(Collectors.toList());
+        this.equipmentNumbers = eq;
+        this.images = center.getCenterImages().stream()
                 .map(CenterImgResponse::new)
                 .collect(Collectors.toList());
-        this.view = item.getView();
-
-//        this.notes = item.getTmpNotes().stream()
-//                .map(ItemNotesList::new)
-//                .collect(Collectors.toList());
     }
 }

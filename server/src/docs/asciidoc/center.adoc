@@ -8,14 +8,26 @@
 
 == 헬스장 조회
 === 요청
-include::{snippets}/center-search/http-request.adoc[]
-include::{snippets}/center-search/path-parameters.adoc[
+include::{snippets}/center/search/http-request.adoc[]
+include::{snippets}/center/search/path-parameters.adoc[]
 
 === 응답
-include::{snippets}/center-search/http-response.adoc[]
+include::{snippets}/center/search/http-response.adoc[]
 
-include::{snippets}/center-search/response-fields.adoc[]
+include::{snippets}/center/search/response-fields.adoc[]
 
 === CURL
-include::{snippets}/center-search/curl-request.adoc[]
+include::{snippets}/center/search/curl-request.adoc[]
 
+== 헬스장 상세페이지
+=== 요청
+include::{snippets}/center/detail/http-request.adoc[]
+include::{snippets}/center/detail/path-parameters.adoc[]
+
+=== 응답
+include::{snippets}/center/detail/http-response.adoc[]
+
+include::{snippets}/center/detail/response-fields.adoc[]
+
+=== CURL
+include::{snippets}/center/detail/curl-request.adoc[]

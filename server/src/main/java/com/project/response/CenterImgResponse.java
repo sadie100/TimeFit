@@ -6,11 +6,12 @@ import lombok.Getter;
 @Getter
 public class CenterImgResponse {
 
-    private String newFileName;
-//    private final String path = "src/main/resources/static/img/";
+//    private String newFileName;
+    private final String path;
 
-    public CenterImgResponse(CenterImages itemImages){
-        this.newFileName = itemImages.getNewFileName();
+    public CenterImgResponse(CenterImages centerImages){
+//        this.newFileName = centerImages.getNewFileName();
+        this.path = centerImages.getFilePath();
     }
 
 

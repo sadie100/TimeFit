@@ -1,10 +1,7 @@
 package com.project.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.domain.Center;
-import com.project.domain.CenterEquipment;
-import com.project.domain.CenterImages;
-import com.project.domain.Equipment;
+import com.project.domain.*;
 import com.project.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -45,15 +42,18 @@ class CenterControllerTest {
     @Autowired
     private EquipmentRepository equipmentRepository;
     @Autowired
+    private TrainerRepository trainerRepository;
+    @Autowired
     private UserRepository userRepository;
 
     @BeforeEach
     void clean(){
-        centerRepository.deleteAll();
         centerImgRepository.deleteAll();
         userRepository.deleteAll();
         centerEquipmentRepository.deleteAll();
         equipmentRepository.deleteAll();
+        trainerRepository.deleteAll();
+        centerRepository.deleteAll();
     }
 
     @Test
@@ -123,9 +123,41 @@ class CenterControllerTest {
         //given
         Center center = Center.builder()
                 .name("센터")
+                .region("서울")
+                .address("서울시 마포구 신수동")
+                .phoneNumber("010-1234-5678")
                 .build();
-
         centerRepository.save(center);
+
+        List<Equipment> equipments = IntStream.range(0,5)
+                .mapToObj(i -> Equipment.builder()
+                        .name("장비"+i)
+                        .build()).collect(Collectors.toList());
+        equipmentRepository.saveAll(equipments);
+
+        List<CenterEquipment> requestEquip = IntStream.range(0,20)
+                .mapToObj(i -> CenterEquipment.builder()
+                        .center(center)
+                        .equipment(equipments.get(i%3))
+                        .build()).collect(Collectors.toList());
+        centerEquipmentRepository.saveAll(requestEquip);
+
+        List<Trainer> trainers = IntStream.range(1,4)
+                .mapToObj(i -> Trainer.builder()
+                        .center(center)
+                        .name("아무개"+i)
+                        .gender("성별")
+                        .build()).collect(Collectors.toList());
+        trainerRepository.saveAll(trainers);
+
+        List<CenterImages> images =  IntStream.range(0,3)
+                .mapToObj(i -> CenterImages.builder()
+                        .item(center)
+                        .originFileName("origin_name"+i)
+                        .newFileName("new_name"+i)
+                        .filePath("경로/"+i)
+                        .build()).collect(Collectors.toList());
+        centerImgRepository.saveAll(images);
 
         //expected
         mockMvc.perform(get("/centers/{centerId}",center.getId())
@@ -159,7 +191,7 @@ class CenterControllerTest {
         centerEquipmentRepository.saveAll(requestEquip);
 
         //expected
-        mockMvc.perform(get("/centers?equipmentId=1")
+        mockMvc.perform(get("/centers?equipmentId={id}",requestCenter.get(0).getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

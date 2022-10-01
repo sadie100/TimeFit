@@ -1,8 +1,12 @@
 package com.project.repository;
 
 import com.project.domain.Center;
+import com.project.domain.CenterEquipment;
 import com.project.domain.QCenter;
 import com.project.domain.QCenterEquipment;
+import com.project.response.CenterEquipmentNumber;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.project.request.CenterSearch;
@@ -11,6 +15,7 @@ import lombok.ToString;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.project.domain.QCenter.center;
 import static com.project.domain.QCenterEquipment.centerEquipment;
@@ -72,6 +77,17 @@ public class CenterRepositoryImpl implements CenterRepositoryCustom {
                 .fetch();
         return center.id.in(ids);
     }
+    @Override
+    public List<CenterEquipmentNumber> getEquipNumber(Long centerId){
+         return jpaQueryFactory.select(Projections.constructor(CenterEquipmentNumber.class,
+                 centerEquipment.equipment.name.as("equipment"),
+                         centerEquipment.equipment.count().as("number")))
+                .from(centerEquipment)
+                .where(centerEquipment.center.id.eq(centerId))
+                .groupBy(centerEquipment.equipment)
+                .fetch();
+    }
+
     @Override
     @Transactional
     public void updateView(Long itemId){
