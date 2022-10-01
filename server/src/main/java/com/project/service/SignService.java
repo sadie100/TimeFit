@@ -2,6 +2,7 @@ package com.project.service;
 
 import com.project.config.security.JwtTokenProvider;
 import com.project.domain.Center;
+import com.project.domain.Equipment;
 import com.project.domain.Trainer;
 import com.project.domain.User;
 import com.project.exception.EmailSigninFailed;
@@ -10,6 +11,7 @@ import com.project.repository.CenterRepository;
 import com.project.repository.TrainerRepository;
 import com.project.repository.UserRepository;
 import com.project.request.*;
+import com.project.response.CenterSignResponse;
 import com.project.response.KakaoAuth;
 import com.project.response.KakaoProfile;
 import com.project.response.TokenResponse;
@@ -66,7 +68,7 @@ public class SignService  {
         userRepository.save(user);
     }
 
-    public void joinCenter(CenterSignUp request){
+    public CenterSignResponse joinCenter(CenterSignUp request){
         Center center= Center.builder()
                 .name(request.getName())
                 .region(request.getRegion())
@@ -74,8 +76,7 @@ public class SignService  {
 //                .storeNumber(request.getStoreNumber())
                 .build();
 
-        centerRepository.save(center);
-
+        Center newCenter = centerRepository.saveAndFlush(center);
         User user= User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -84,8 +85,11 @@ public class SignService  {
                 .center(center)
                 .roles(Collections.singletonList("ROLE_CENTER"))
                 .build();
-        userRepository.save(user);
-
+        User newUser = userRepository.saveAndFlush(user);
+        return CenterSignResponse
+                .builder().centerId(newCenter.getId())
+                .userId(newUser.getMsrl())
+                .build();
 
     }
 

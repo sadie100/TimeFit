@@ -4,6 +4,7 @@ import com.project.domain.Center;
 import com.project.domain.User;
 import com.project.exception.CookieNotFound;
 import com.project.request.*;
+import com.project.response.CenterSignResponse;
 import com.project.response.CommonResult;
 import com.project.response.TokenResponse;
 
@@ -43,11 +44,10 @@ public class SignController {
     }
 
     @PostMapping("/signup-center")
-    public void signUpCenter(@RequestBody @Valid CenterSignUp request) {
+    public CenterSignResponse signUpCenter(@RequestBody @Valid CenterSignUp request) {
         System.out.println(request);
 //        request.setPassword(passwordEncoder.encode(request.getPassword()));
-        signService.joinCenter(request);
-        return ;
+        return signService.joinCenter(request);
     }
 
     @PostMapping("/signin")
