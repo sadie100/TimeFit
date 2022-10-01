@@ -21,10 +21,9 @@ public class EquipmentController {
     }
 
     @PostMapping("/equipment/add")
-    public void addEquipmentCategory(@RequestBody EquipmentCategory request){
+    public Long addEquipmentCategory(@RequestBody EquipmentCategory request){
         System.out.println(request);
-        equipmentService.add(request);
-        return;
+        return equipmentService.add(request);
     }
 
     @PostMapping("/equipment/add-center")
