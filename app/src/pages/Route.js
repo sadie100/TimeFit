@@ -12,6 +12,7 @@ import Help from "pages/help/Help";
 import MyPage from "pages/mypage/MyPage";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LoadingContext } from "contexts/loadingContext";
+import SetEquip from "./SetEquip";
 
 const App = () => {
   const { loading } = useContext(LoadingContext);
@@ -46,6 +47,8 @@ const App = () => {
           <Route path="/reserve/*" element={<Reserve />}></Route>
           {/* 마이페이지 화면 */}
           <Route path="/mypage/*" element={<MyPage />}></Route>
+          {/* 기구 등록 화면 */}
+          <Route path="/set-equip" element={<SetEquip />}></Route>
         </Routes>
       )}
     </Background>
