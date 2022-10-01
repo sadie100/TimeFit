@@ -135,9 +135,9 @@ class EquipmentControllerTest {
                 )
                 .andExpect(status().isOk());
         Assertions.assertEquals(1, centerEquipmentRepository.count());
-//        centerEquipmentRepository.deleteAll();
-//        equipmentRepository.deleteAll();
-//        centerRepository.deleteAll();
+        centerEquipmentRepository.deleteAll();
+        equipmentRepository.deleteAll();
+        centerRepository.deleteAll();
 
     }
 
@@ -162,9 +162,9 @@ class EquipmentControllerTest {
         mockMvc.perform(get("/equipment/{centerId}",center.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
-//        centerEquipmentRepository.deleteAll();
-//        equipmentRepository.deleteAll();
-//        centerRepository.deleteAll();
+        centerEquipmentRepository.deleteAll();
+        equipmentRepository.deleteAll();
+        centerRepository.deleteAll();
 
     }
 }
