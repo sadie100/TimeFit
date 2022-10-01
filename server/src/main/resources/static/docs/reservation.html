@@ -479,7 +479,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="_요청"><a class="link" href="#_요청">요청</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /center/45/reserve?searchDate=2022-09-30&amp;searchIds=26,27 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /center/86/reserve?searchDate=2022-10-02&amp;searchIds=46,47 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Host: api.timefit.com</code></pre>
@@ -538,9 +538,9 @@ Pragma: no-cache
 Expires: 0
 Strict-Transport-Security: max-age=31536000 ; includeSubDomains
 X-Frame-Options: DENY
-Content-Length: 669
+Content-Length: 671
 
-[{"id":26,"times":[{"reservationId":2,"start":"2022-09-30T10:15:11","end":"2022-09-30T10:25:11"},{"reservationId":7,"start":"2022-09-30T10:15:16","end":"2022-09-30T10:25:16"},{"reservationId":12,"start":"2022-09-30T10:15:21","end":"2022-09-30T10:25:21"},{"reservationId":17,"start":"2022-09-30T10:15:26","end":"2022-09-30T10:25:26"}]},{"id":27,"times":[{"reservationId":3,"start":"2022-09-30T10:15:12","end":"2022-09-30T10:25:12"},{"reservationId":8,"start":"2022-09-30T10:15:17","end":"2022-09-30T10:25:17"},{"reservationId":13,"start":"2022-09-30T10:15:22","end":"2022-09-30T10:25:22"},{"reservationId":18,"start":"2022-09-30T10:15:27","end":"2022-09-30T10:25:27"}]}]</code></pre>
+[{"id":46,"times":[{"reservationId":5,"start":"2022-10-02T10:15:11","end":"2022-10-02T10:25:11"},{"reservationId":10,"start":"2022-10-02T10:15:16","end":"2022-10-02T10:25:16"},{"reservationId":15,"start":"2022-10-02T10:15:21","end":"2022-10-02T10:25:21"},{"reservationId":20,"start":"2022-10-02T10:15:26","end":"2022-10-02T10:25:26"}]},{"id":47,"times":[{"reservationId":6,"start":"2022-10-02T10:15:12","end":"2022-10-02T10:25:12"},{"reservationId":11,"start":"2022-10-02T10:15:17","end":"2022-10-02T10:25:17"},{"reservationId":16,"start":"2022-10-02T10:15:22","end":"2022-10-02T10:25:22"},{"reservationId":21,"start":"2022-10-02T10:15:27","end":"2022-10-02T10:25:27"}]}]</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -589,7 +589,7 @@ Content-Length: 669
 <h3 id="_curl"><a class="link" href="#_curl">CURL</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/center/45/reserve?searchDate=2022-09-30&amp;searchIds=26,27' -i -X GET \
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/center/86/reserve?searchDate=2022-10-02&amp;searchIds=46,47' -i -X GET \
     -H 'Content-Type: application/json;charset=UTF-8' \
     -H 'Accept: application/json'</code></pre>
 </div>
@@ -604,13 +604,13 @@ Content-Length: 669
 <h3 id="_요청_2"><a class="link" href="#_요청_2">요청</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /center/66/reserve HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /center/107/reserve HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 82
 Host: api.timefit.com
 
-{"centerEquipmentId":46,"start":"2022-09-30T10:45:30","end":"2022-09-30T10:55:30"}</code></pre>
+{"centerEquipmentId":66,"start":"2022-10-02T10:45:30","end":"2022-10-02T10:55:30"}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -713,10 +713,10 @@ Content-Length: 76
 <h3 id="_curl_2"><a class="link" href="#_curl_2">CURL</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/center/66/reserve' -i -X POST \
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/center/127/reserve' -i -X POST \
     -H 'Content-Type: application/json;charset=UTF-8' \
     -H 'Accept: application/json' \
-    -d '{"centerEquipmentId":46,"start":"2022-09-30T10:45:30","end":"2022-09-30T10:55:30"}'</code></pre>
+    -d '{"centerEquipmentId":86,"start":"2022-10-02T10:15:30","end":"2022-10-02T10:20:30"}'</code></pre>
 </div>
 </div>
 </div>
@@ -729,7 +729,7 @@ Content-Length: 76
 <h3 id="_요청_3"><a class="link" href="#_요청_3">요청</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /center/105/reserve/62 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /center/146/reserve/65 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Host: api.timefit.com</code></pre>
@@ -794,7 +794,7 @@ X-Frame-Options: DENY</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-09-30 17:50:05 +0900
+Last updated 2022-10-02 01:16:10 +0900
 </div>
 </div>
 </body>

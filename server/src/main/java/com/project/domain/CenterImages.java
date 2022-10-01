@@ -19,6 +19,6 @@ public class CenterImages {
     private String filePath;
 
     @ManyToOne
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "center_id")
     private Center item;
 }
