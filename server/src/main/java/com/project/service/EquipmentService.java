@@ -39,6 +39,7 @@ public class EquipmentService {
                         .yLoc(request.getYLoc())
                         .build());
 //        }
+
     }
 
     public void setEquipmentImage(long equipmentId, String img){
@@ -56,11 +57,12 @@ public class EquipmentService {
         List<Equipment> equipment = equipmentRepository.findAll();
         return equipment;
     }
-    public void add(EquipmentCategory request) {
+    public Long add(EquipmentCategory request) {
         Equipment equipment = Equipment.builder()
                 .name(request.getName())
                 .img(request.getImg())
                 .build();
-        equipmentRepository.save(equipment);
+        Equipment newEquipment = equipmentRepository.saveAndFlush(equipment);
+        return newEquipment.getId();
     }
 }

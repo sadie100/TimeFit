@@ -11,6 +11,8 @@ const Header = () => {
       <div style={{ display: "flex", gap: "10px" }}>
         <Link to="/login">로그인</Link>
         <div>|</div>
+        <Link to="/mypage">마이페이지</Link>
+        <div>|</div>
         <Link to="/join">회원가입</Link>
       </div>
     </StyledHeader>

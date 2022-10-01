@@ -7,20 +7,26 @@ import * as FormComponent from "components/form/StyledComponents";
 import LineMaker from "components/form/LineMaker";
 
 export default (props) => {
-  const { formData, onSubmit, formDownside = () => {}, formId } = props;
-  const { StyledForm, Line, StyledInput, Label, LineContent, ErrorDiv } =
-    FormComponent;
-  const formStates = useForm();
+  const {
+    formData,
+    onSubmit,
+    formDownside = () => {},
+    formId,
+    defaultValues = {},
+  } = props;
+  const { StyledForm } = FormComponent;
+  const formStates = useForm({ defaultValues });
   const {
     handleSubmit,
     formState: { errors },
     register,
+    watch,
   } = formStates;
 
   return (
     <>
       <StyledForm onSubmit={handleSubmit(onSubmit)} id={formId}>
-        {formData().map((formLine) => {
+        {formData(formStates).map((formLine) => {
           return (
             <LineMaker
               formLine={formLine}

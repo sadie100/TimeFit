@@ -24,8 +24,7 @@ export const Line = styled.div`
   gap: 3px;
 `;
 export const StyledInput = styled.input`
-  // border: ${({ error }) => `1px solid ${error ? "red" : "lightgray"}`};
-  border: 1px solid lightgray;
+  border: ${({ disabled }) => (disabled ? "none" : `1px solid lightgray`)};
   border-radius: 10px;
   padding: ${({ theme }) => theme.form.padding};
   color: black;
@@ -38,6 +37,7 @@ export const StyledInput = styled.input`
   :-ms-input-placeholder {
     color: lightgray;
   }
+  width: ${({ width }) => width};
 `;
 export const ErrorDiv = styled.div`
   border: none;
