@@ -24,9 +24,12 @@ export default () => {
   const onSubmit = async (data) => {
     if (!certified) return alert("이메일 인증을 진행해 주세요.");
     try {
+      console.log(data);
+      data.address = data.basic + " " + data.detail;
       //센터 회원가입 요청
       const respond = await axios.post("/signup-center", data);
-
+      console.log(respond);
+      return;
       //respond에서 센터 번호가 와야 함
       const id = respond.data.id;
       if (respond.status !== 200) {
@@ -42,7 +45,7 @@ export default () => {
         formData.append("file", img);
       });
       await axios.post("/upload-center", formData, {
-        "Content-Type": "form-data",
+        "Content-Type": "multipart/form-data",
       });
 
       // //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
@@ -141,8 +144,8 @@ export default () => {
         get: {
           //다음 api에서 가져올 데이터와 가져올 이름을 짝지어 둔 객체
           zonecode: "zonecode", //우편번호
-          address: "address", //기본 주소(ex: 경기 성남시 분당구 판교역로 235)
-          sido: "sido", //도/시 이름(ex:경기도,서울특별시)
+          address: "basic", //기본 주소(ex: 경기 성남시 분당구 판교역로 235)
+          sido: "region", //도/시 이름(ex:경기도,서울특별시)
           sigungu: "sigungu", //시,군,구 이름
           bname: "bname", //법정동/법정리 이름
         },
