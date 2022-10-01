@@ -1,7 +1,24 @@
 import FormMaker from "components/form/FormMaker";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 const SetEquip = () => {
+  const [equips, setEquips] = useState([]);
+
+  const getEquip = async (data) => {
+    try {
+      const { data } = await axios.get("/equipment");
+      setEquips(data);
+    } catch (e) {
+      console.log(e);
+      alert("에러가 발생했습니다.");
+    }
+  };
+
+  useEffect(() => {
+    getEquip();
+  }, []);
+
   const onSubmit = async (data) => {
     try {
       const respond = await axios.post("/equipment/add", data);
@@ -26,6 +43,8 @@ const SetEquip = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      alert("저장되었습니다.");
+      getEquip();
     } catch (e) {
       console.log(e);
       alert("에러가 일어났습니다.");
@@ -59,7 +78,10 @@ const SetEquip = () => {
   ];
 
   return (
-    <FormMaker formId="SetEquip" formData={formData} onSubmit={onSubmit} />
+    <>
+      <div>{equips.map((d) => d.name).join()}</div>
+      <FormMaker formId="SetEquip" formData={formData} onSubmit={onSubmit} />
+    </>
   );
 };
 
