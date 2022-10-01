@@ -20,7 +20,7 @@ const formData = () => [
   {
     type: "text",
     label: "휴대폰 번호",
-    name: "phone",
+    name: "phoneNumber",
     register: { required: "휴대폰 번호를 입력해 주세요." },
     placeholder: "휴대폰 번호를 입력해 주세요.",
   },

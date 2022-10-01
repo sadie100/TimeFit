@@ -11,7 +11,7 @@ const dictionary = {
   name: "이름",
   birthday: "생년월일",
   gender: "성별",
-  phone: "연락처",
+  phoneNumber: "연락처",
 };
 
 export default (props) => {

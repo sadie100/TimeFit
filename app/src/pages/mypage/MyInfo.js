@@ -65,7 +65,7 @@ const MyInfo = () => {
       },
       {
         type: "number",
-        name: "phone",
+        name: "phoneNumber",
         label: "휴대전화",
         placeholder: "휴대전화 번호를 입력해 주세요.",
       },
