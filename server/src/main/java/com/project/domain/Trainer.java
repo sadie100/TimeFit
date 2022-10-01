@@ -17,7 +17,7 @@ public class Trainer {
     private String name;
     private String gender;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="center_id")
     private Center center;
 }
