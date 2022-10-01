@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default (props) => {
-  const { formStates, name, formId, machines } = props;
+  const { formStates, name, machines } = props;
   const { control, register, watch } = formStates;
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {

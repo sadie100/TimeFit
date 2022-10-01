@@ -16,7 +16,6 @@ export default () => {
   const [isMailSend, setIsMailSend] = useState(false);
   const [certified, setCertified] = useState(false);
   const [centerNumCertified, setCenterNumCertified] = useState(false);
-  const [machines, setMachines] = useState([]);
 
   const theme = useTheme();
   const navigate = useNavigate();
@@ -76,15 +75,6 @@ export default () => {
       alert("오류가 일어났습니다.");
     }
   };
-
-  //머신 가져오기
-  useEffect(() => {
-    async function fetchData() {
-      const { data } = await axios.get("/equipment");
-      setMachines(data);
-    }
-    fetchData();
-  }, []);
 
   const formData = ({ watch }) =>
     [
@@ -184,12 +174,6 @@ export default () => {
         label: "보유 트레이너",
         name: "trainers",
         render: (props) => <Trainers {...props} />,
-      },
-      {
-        type: "custom",
-        label: "보유 운동기구",
-        name: "machines",
-        render: (props) => <Machines {...props} machines={machines} />,
       },
       {
         type: "number",

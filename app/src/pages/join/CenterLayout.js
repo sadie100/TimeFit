@@ -1,5 +1,4 @@
 //헬스장 배치도
-import { render } from "react-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styled from "styled-components";
@@ -11,6 +10,18 @@ import Button from "components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { Layout, Entrance } from "components/Center";
 import { useTheme } from "styled-components";
+import FormMaker from "components/form/FormMaker";
+import axios from "axios";
+import Machines from "pages/join/Machines";
+import { useForm } from "react-hook-form";
+import {
+  StyledForm,
+  Line,
+  LineContent,
+} from "components/form/StyledComponents";
+
+const formId = "CenterLayout";
+const fieldName = "equipments";
 
 export default (props) => {
   const {
@@ -25,13 +36,28 @@ export default (props) => {
     ],
   } = props;
 
+  //머신 리스트
+  const [machines, setMachines] = useState([]);
+
   //처음 헬스장 모음
   const [fromItems, setFromItems] = useState([]);
+
+  //머신 가져오기
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await axios.get("/equipment");
+      setMachines(data);
+    }
+    fetchData();
+  }, []);
+
+  const formStates = useForm();
+  const { watch } = formStates;
 
   //이전 페이지에서 machine 데이터 가져와서 그 수만큼 아이콘 배치하기
   useEffect(() => {
     const machineArr = [];
-    machineList.map(({ name, count }, idx) => {
+    watch(fieldName).map(({ name, count }, idx) => {
       for (let i = 0; i < count; i++) {
         machineArr.push({
           name: `${name}_${i}`,
@@ -48,6 +74,7 @@ export default (props) => {
         });
       }
     });
+
     machineArr.push({
       name: "entrance",
       top: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
@@ -55,7 +82,7 @@ export default (props) => {
       component: <Entrance>입구</Entrance>,
     });
     setFromItems(machineArr);
-  }, []);
+  }, [watch(fieldName)]);
 
   //헬스장 배치도 모음
   const [toItems, setToItems] = useState([]);
@@ -83,6 +110,17 @@ export default (props) => {
     <>
       <Background>
         <div className="title">헬스장 배치도 설정</div>
+        <StyledForm formId={formId}>
+          <Line>
+            <LineContent>
+              <Machines
+                formStates={formStates}
+                machines={machines}
+                name={fieldName}
+              />
+            </LineContent>
+          </Line>
+        </StyledForm>
         <DndProvider backend={HTML5Backend}>
           <MachineBox>
             <DraggableFromContainer
