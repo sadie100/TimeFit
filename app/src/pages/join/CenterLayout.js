@@ -28,18 +28,20 @@ export default (props) => {
     center: { iconSize },
   } = useTheme();
   const navigate = useNavigate();
-  const {
-    machineList = [
-      { name: "barbell", count: 3 },
-      { name: "treadmill", count: 3 },
-      { name: "benchpress", count: 3 },
-    ],
-  } = props;
+  // const {
+  //   machineList = [
+  //     { name: "barbell", count: 3 },
+  //     { name: "treadmill", count: 3 },
+  //     { name: "benchpress", count: 3 },
+  //   ],
+  // } = props;
 
   //머신 리스트
   const [machines, setMachines] = useState([]);
   //처음 헬스장 모음
   const [fromItems, setFromItems] = useState([]);
+  //헬스장 배치도 모음
+  const [toItems, setToItems] = useState([]);
 
   //머신 가져오기
   useEffect(() => {
@@ -55,17 +57,19 @@ export default (props) => {
 
   //이전 페이지에서 machine 데이터 가져와서 그 수만큼 아이콘 배치하기
   useEffect(() => {
+    setToItems([]);
+    setFromItems([]);
     const machineArr = [];
     const selectedField = watch(fieldName);
-    console.log(selectedField);
-    watch(fieldName)
+    selectedField
       .filter((d) => !!d.equipment)
       .map(({ equipment, count }, idx) => {
         const machine = machines.find((element) => element.name === equipment);
         const { id, img } = machine;
+        console.log(img);
         for (let i = 0; i < count; i++) {
           machineArr.push({
-            center: "센터ID",
+            //todo : 센터id 가져오는 걸로 변경
             equipment: id,
             name: `${id}_${i}`,
             yloc: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
@@ -85,33 +89,37 @@ export default (props) => {
 
     machineArr.push({
       name: "entrance",
+      equipment: "entrance",
       yloc: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
       xloc: parseInt(machineArr.length / 2) * (iconSize + 20),
-      component: <Entrance>입구</Entrance>,
     });
     setFromItems(machineArr);
   }, [watch(fieldName)]);
 
-  //헬스장 배치도 모음
-  const [toItems, setToItems] = useState([]);
-
   //회원가입 로직
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (!window.confirm("배치도를 저장하시겠습니까?")) return;
-    //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
-    const data = window.sessionStorage.getItem("signup");
-    const layoutData = toItems.map(({ xloc, yloc, name }) => ({
-      xloc,
-      yloc,
-      name,
-    }));
-    console.log(layoutData);
-    data.layout = layoutData;
 
-    //서버 로직 하기
+    try {
+      await Promise.all(
+        toItems.map(async ({ xloc, yloc, equipment }) => {
+          const item = {
+            //todo : 센터 id 연결
+            center: "센터ID",
+            equipment,
+            xloc,
+            yloc,
+          };
+          await axios.post("add-center", item);
+        })
+      );
 
-    //성공 시 페이지 이동
-    navigate("/join/success");
+      //성공 시 페이지 이동
+      navigate("/join/success");
+    } catch (e) {
+      console.log(e);
+      alert("에러가 발생했습니다.");
+    }
   };
 
   return (
@@ -147,7 +155,7 @@ export default (props) => {
             />
           </Layout>
         </DndProvider>
-        <Button onClick={onSubmit}>저장하기</Button>
+        <Button onClick={async () => await onSubmit()}>저장하기</Button>
       </Background>
     </>
   );

@@ -39,7 +39,6 @@ export const DraggableItem = memo(function DraggableItem(props) {
   if (isDragging) {
     return <div ref={drag} />;
   }
-  console.log(img);
   return (
     <div
       ref={drag}
