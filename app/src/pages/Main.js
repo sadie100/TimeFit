@@ -53,7 +53,7 @@ const Background = styled.div`
     content: "";
     background-image: url(${treadmill});
     background-repeat: no-repeat;
-    background-size: auto;
+    background-size: cover;
     background-position: center;
     opacity: 0.5;
     position: absolute;
