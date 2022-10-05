@@ -4,9 +4,14 @@ import styled from "styled-components";
 import FormMaker from "components/form/FormMaker";
 import SubmitButton from "components/form/SubmitButton";
 import kakaoButton from "assets/image/img-login-kakao.svg";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useLoading } from "hooks/useLoadingContext";
+import { useAuth } from "hooks/useAuthContext";
 
 export default () => {
+  const navigate = useNavigate();
+  const { startLoading, endLoading } = useLoading();
+  const { checkToken } = useAuth();
   const handleKakao = async () => {
     // try {
     //   if (window.Kakao) {
@@ -27,13 +32,20 @@ export default () => {
     // }
   };
   const onSubmit = (data) => {
+    startLoading();
     axios
-      .post("http://localhost:8080/signin/", data, { withCredentials: true })
-      .then((res) => console.log(res))
+      .post("/signin", data, { withCredentials: true })
+      .then((res) => {
+        if (res.status === 200) {
+          checkToken();
+          navigate("/");
+        }
+      })
       .catch((err) => {
         console.log(err);
         alert("오류가 발생했습니다. 다시 시도해 주세요.");
       });
+    endLoading();
   };
   const formData = () => [
     {
