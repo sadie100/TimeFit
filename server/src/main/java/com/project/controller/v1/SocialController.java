@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.project.domain.User;
 import com.project.response.KakaoAuth;
 import com.project.response.KakaoProfile;
+import com.project.response.TokenResponse;
 import com.project.service.KakaoService;
 import com.project.service.SignService;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
@@ -60,7 +64,7 @@ public class SocialController {
                 .append("&response_type=code")
                 .append("&redirect_uri=").append(baseUrl).append(kakaoRedirect);
         mav.addObject("loginUrl", loginUrl);
-//        mav.setViewName("social/login");
+        mav.setViewName("social/login");
         return mav;
     }
 
@@ -68,11 +72,30 @@ public class SocialController {
      * 카카오 인증 완료 후 리다이렉트 화면
      */
     @GetMapping(value = "/kakao")
-    public @ResponseBody String redirectKakao(@RequestParam String code, HttpServletResponse response) throws IOException {
+    public @ResponseBody void redirectKakao(@RequestParam String code, HttpServletResponse response) throws IOException {
         KakaoAuth kakaoAuth = kakaoService.getKakaoTokenInfo(code);
         KakaoProfile profile =kakaoService.getKakaoProfile(kakaoAuth.getAccess_token());
-        User user = kakaoService.getByKakao(profile);
-        return code;
+        String email = profile.getKakao_account().getEmail();
+        Optional<User> user= kakaoService.getByKakao(profile);
+//         이후 만약 empty일 경우, 회원가입으로 이동 아닐 경우 로그인 진행
+//        if(user.isEmpty()){
+//            response.sendRedirect("http://localhost:3000/join?email="+email);
+//        }
+//        else{
+            TokenResponse tokenResponse = signService.signInByKakao(email);
+            Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
+            accessCookie.setPath("/");
+////        accessCookie.setHttpOnly(true);
+////        accessCookie.setSecure(true);
+            response.addCookie(accessCookie);
+            Cookie refreshCookie = new Cookie("RefreshToken", tokenResponse.getAccessToken());
+            refreshCookie.setPath("/");
+//        cookie.setHttpOnly(true);
+//        cookie.setSecure(true);
+            response.addCookie(refreshCookie);
+            response.sendRedirect("http://localhost:3000/");
+//        }
+
     }
 
 }

@@ -7,6 +7,7 @@ import com.project.exception.UserExist;
 import com.project.request.*;
 import com.project.response.CenterSignResponse;
 import com.project.response.TokenResponse;
+import com.project.response.UserInfoResponse;
 import com.project.service.CenterService;
 import com.project.service.SignService;
 import com.project.service.UserInfoService;
@@ -29,20 +30,41 @@ public class UserController {
     private final UserInfoService userInfoService;
 
     @GetMapping("/user/{msrl}")
-    public User get(@PathVariable Long msrl) {
+    public UserInfoResponse get(@PathVariable Long msrl) {
         User user = userInfoService.get(msrl);
-        return user;
+        return UserInfoResponse.builder().email(user.getEmail())
+                .gender(user.getGender())
+                .birth(user.getBirth())
+                .name(user.getName())
+                .center(user.getCenter())
+                .msrl(user.getMsrl())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
     }
     @PostMapping("/user/change-password")
-    public User changePassword(@RequestBody UserInfoRequest userInfoRequest ) {
+    public UserInfoResponse changePassword(@RequestBody UserInfoRequest userInfoRequest ) {
         User user = userInfoService.changePassword(userInfoRequest);
-        return user;
+        return UserInfoResponse.builder().email(user.getEmail())
+                .gender(user.getGender())
+                .birth(user.getBirth())
+                .name(user.getName())
+                .center(user.getCenter())
+                .msrl(user.getMsrl())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
     }
 
     @PostMapping("/user/change-center")
-    public User changeCenter(@RequestBody UserInfoRequest userInfoRequest ) {
+    public UserInfoResponse changeCenter(@RequestBody UserInfoRequest userInfoRequest ) {
         User user = userInfoService.changeCenter(userInfoRequest);
-        return user;
+        return UserInfoResponse.builder().email(user.getEmail())
+                .gender(user.getGender())
+                .birth(user.getBirth())
+                .name(user.getName())
+                .center(user.getCenter())
+                .msrl(user.getMsrl())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
     }
 
 }

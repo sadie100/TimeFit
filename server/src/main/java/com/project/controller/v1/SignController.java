@@ -116,29 +116,11 @@ public class SignController {
 
     @PostMapping("/signup/kakao")
     public void signUpByProvider(
-            @RequestParam String email, String code) {
-        signService.joinByKakao(email,code);
+            @RequestBody KakaoSignUp kakaoSignUp) {
+        signService.joinByKakao(kakaoSignUp);
         return ;
     }
-    @PostMapping("/signin/kakao")
-    public TokenResponse signInByProvider(
-            @RequestParam String code,
-            HttpServletResponse response) {
-        TokenResponse tokenResponse = signService.signInByKakao(code);
-//        response.setHeader("Set-Cookie", String.format("AccessToken=%s; Secure; SameSite=None",tokenResponse.getAccessToken()));
-//        response.addHeader("Set-Cookie", String.format("RefreshToken=%s; Secure; SameSite=None",tokenResponse.getRefreshToken()));
-        Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
-        accessCookie.setPath("/");
-////        accessCookie.setHttpOnly(true);
-////        accessCookie.setSecure(true);
-        response.addCookie(accessCookie);
-        Cookie refreshCookie = new Cookie("RefreshToken", tokenResponse.getAccessToken());
-        refreshCookie.setPath("/");
-//        cookie.setHttpOnly(true);
-//        cookie.setSecure(true);
-        response.addCookie(refreshCookie);
-        return tokenResponse;
-    }
+
 
     @GetMapping("/signin/find-email")
     public String findEmail(@RequestParam String phoneNumber) {
@@ -158,6 +140,25 @@ public class SignController {
         signService.addTrainer(center, trainer);
     }
 
+    //    @PostMapping("/signin/kakao")
+//    public TokenResponse signInByProvider(
+//            @RequestBody String code,
+//            HttpServletResponse response) {
+//        TokenResponse tokenResponse = signService.signInByKakao(code);
+////        response.setHeader("Set-Cookie", String.format("AccessToken=%s; Secure; SameSite=None",tokenResponse.getAccessToken()));
+////        response.addHeader("Set-Cookie", String.format("RefreshToken=%s; Secure; SameSite=None",tokenResponse.getRefreshToken()));
+//        Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
+//        accessCookie.setPath("/");
+//////        accessCookie.setHttpOnly(true);
+//////        accessCookie.setSecure(true);
+//        response.addCookie(accessCookie);
+//        Cookie refreshCookie = new Cookie("RefreshToken", tokenResponse.getAccessToken());
+//        refreshCookie.setPath("/");
+////        cookie.setHttpOnly(true);
+////        cookie.setSecure(true);
+//        response.addCookie(refreshCookie);
+//        return tokenResponse;
+//    }
 }
 
 

@@ -10,17 +10,13 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Getter
 @ToString
-public class KakaoSignIn {
+public class KakaoSignUp {
     @NotBlank(message = "아이디를 입력해주세요")
     private String email;
 
-    @NotBlank(message = "소셜 제공자를 입력해주세요")
-    private String provider;
-
 
     @Builder
-    public KakaoSignIn(String email, String provider) {
+    public KakaoSignUp(String email, String code) {
         this.email = email;
-        this.provider = provider;
     }
 }
