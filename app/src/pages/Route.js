@@ -31,10 +31,7 @@ const App = () => {
         {/* 로그인 화면 */}
         <Route path="/login" element={<Login />}></Route>
         {/* 카카오 로그인 redirect uri 화면 */}
-        <Route
-          path={`${process.env.REACT_APP_KAKAO_REDIRECT}`}
-          element={<KakaoLogin />}
-        ></Route>
+        <Route path="/social/login/kakao" element={<KakaoLogin />}></Route>
         {/* 이메일/비밀번호 찾기 화면 */}
         <Route path="/help/*" element={<Help />}></Route>
         {/* 헬스장찾기 화면 */}
