@@ -7,26 +7,25 @@ import kakaoButton from "assets/image/img-login-kakao.svg";
 import { Link } from "react-router-dom";
 
 export default () => {
-  // const handleKakao = async () => {
-  //   try {
-  //     if (window.Kakao) {
-  //       const kakao = window.Kakao;
-
-  //       // 중복 initialization 방지
-  //       if (!kakao.isInitialized()) {
-  //         // 두번째 step 에서 가져온 javascript key 를 이용하여 initialize
-  //         kakao.init(process.env.REACT_APP_KAKAO_KEY);
-  //       }
-  //       const result = await kakao.Auth.authorize({
-  //         redirectUri: process.env.REACT_APP_KAKAO_REDIRECT,
-  //       });
-  //       console.log(result);
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //     alert("에러가 발생했습니다.");
-  //   }
-  // };
+  const handleKakao = async () => {
+    // try {
+    //   if (window.Kakao) {
+    //     const kakao = window.Kakao;
+    //     // 중복 initialization 방지
+    //     if (!kakao.isInitialized()) {
+    //       // 두번째 step 에서 가져온 javascript key 를 이용하여 initialize
+    //       kakao.init(process.env.REACT_APP_KAKAO_KEY);
+    //     }
+    //     const result = await kakao.Auth.authorize({
+    //       redirectUri: process.env.REACT_APP_KAKAO_REDIRECT,
+    //     });
+    //     console.log(result);
+    //   }
+    // } catch (e) {
+    //   console.log(e);
+    //   alert("에러가 발생했습니다.");
+    // }
+  };
   const onSubmit = (data) => {
     axios
       .post("http://localhost:8080/signin/", data, { withCredentials: true })
@@ -70,13 +69,15 @@ export default () => {
           }}
         >
           다른 계정으로 로그인 하기
-          <a href={`${process.env.REACT_APP_KAKAO_LOGIN}`}>
+          <a
+            href={`${process.env.REACT_APP_KAKAO_LOGIN}?client_id=${process.env.REACT_APP_KAKAO_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT}&response_type=code`}
+          >
             <img
               src={kakaoButton}
               width="50px"
               height="50px"
               style={{ cursor: "pointer" }}
-              //onClick={handleKakao}
+              // onClick={handleKakao}
             />
           </a>
           <div style={{ display: "flex", gap: "10px" }}>

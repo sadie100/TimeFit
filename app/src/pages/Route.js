@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from "./Main";
 import Login from "./Login";
+import KakaoLogin from "./KakaoLogin";
 import Join from "./join/Join";
 import Header from "components/base/Header";
 import Sample from "./Sample";
@@ -39,6 +40,11 @@ const App = () => {
           <Route path="/join/*" element={<Join />}></Route>
           {/* 로그인 화면 */}
           <Route path="/login" element={<Login />}></Route>
+          {/* 카카오 로그인 redirect uri 화면 */}
+          <Route
+            path={`${process.env.REACT_APP_KAKAO_REDIRECT}`}
+            element={<KakaoLogin />}
+          ></Route>
           {/* 이메일/비밀번호 찾기 화면 */}
           <Route path="/help/*" element={<Help />}></Route>
           {/* 헬스장찾기 화면 */}
