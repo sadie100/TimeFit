@@ -28,10 +28,14 @@ export default () => {
       });
       //res에 가입한 user id 받아와야 함
       const res = await axios.post("/signup", data);
-      window.sessionStorage.setItem("userId", res.data);
       endLoading();
-      //헬스장 선택 페이지로 이동
-      navigate("/join/find-center");
+      if (res.status === 200) {
+        //회원가입 완료 처리
+        navigate("/join/success");
+      }
+      // window.sessionStorage.setItem("userId", res.data);
+      // //헬스장 선택 페이지로 이동
+      // navigate("/join/find-center");
     } catch (e) {
       console.log(e);
       alert("중복된 이메일입니다. 이메일을 변경해 주세요.");
