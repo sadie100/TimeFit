@@ -78,10 +78,10 @@ public class SocialController {
         String email = profile.getKakao_account().getEmail();
         Optional<User> user= kakaoService.getByKakao(profile);
 //         이후 만약 empty일 경우, 회원가입으로 이동 아닐 경우 로그인 진행
-//        if(user.isEmpty()){
-//            response.sendRedirect("http://localhost:3000/join?email="+email);
-//        }
-//        else{
+        if(user.isEmpty()){
+            response.sendRedirect("http://localhost:3000/join?email="+email);
+        }
+        else{
             TokenResponse tokenResponse = signService.signInByKakao(email);
             Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
             accessCookie.setPath("/");
@@ -94,7 +94,7 @@ public class SocialController {
 //        cookie.setSecure(true);
             response.addCookie(refreshCookie);
             response.sendRedirect("http://localhost:3000/");
-//        }
+        }
 
     }
 
