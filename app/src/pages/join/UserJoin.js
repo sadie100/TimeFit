@@ -1,16 +1,18 @@
 //회원 회원가입
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import FormMaker from "components/form/FormMaker";
 import styled from "styled-components";
 import SubmitButton from "components/form/SubmitButton";
 import { useTheme } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { LoadingContext } from "contexts/loadingContext";
 
 export default () => {
   const [isMailSend, setIsMailSend] = useState(false);
   const [certified, setCertified] = useState(false);
+  const { startLoading, endLoading } = useContext(LoadingContext);
 
   const formId = "UserJoin";
   const theme = useTheme();
@@ -18,15 +20,16 @@ export default () => {
 
   const onSubmit = async (data) => {
     if (!certified) return alert("이메일 인증을 진행해 주세요.");
-
+    startLoading();
     //이메일 체크 진행
     try {
-      await axios.get("http://localhost:8080/signup/check-email", {
+      await axios.get("/signup/check-email", {
         params: { email: data.email },
       });
-      //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
-      window.sessionStorage.setItem("signup", data);
-
+      //res에 가입한 user id 받아와야 함
+      const res = await axios.post("/signup", data);
+      window.sessionStorage.setItem("userId", res.data);
+      endLoading();
       //헬스장 선택 페이지로 이동
       navigate("/join/find-center");
     } catch (e) {
