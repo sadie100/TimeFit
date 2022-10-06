@@ -43,7 +43,6 @@ const Slider = ({ formLine, setValue, ...rest }) => {
         valueLabelDisplay="off"
         valueLabelFormat={(x) => `${x}만원`}
         onChange={handleChange}
-        onDragEnd={() => console.log("df")}
         min={0}
         max={50}
         disableSwap

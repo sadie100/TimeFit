@@ -47,7 +47,6 @@ export default () => {
       const centerId = respond.data.centerId;
 
       if (!!state?.kakaoId) {
-        console.log(state.kakaoId);
         //만약 카카오에서 리다이렉트됐을 경우, 카카오 회원가입 요청
         await axios.post("/signup/kakao", {
           email: data.email,
