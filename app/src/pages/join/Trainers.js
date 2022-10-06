@@ -56,7 +56,6 @@ export default (props) => {
               <Controller
                 control={control}
                 name={`${name}.${index}.gender`}
-                key={`${formId}-gender`}
                 render={({ field }) => (
                   <div
                     style={{
@@ -70,7 +69,7 @@ export default (props) => {
                       <input
                         type="radio"
                         id={`${index}_male`}
-                        value="male"
+                        value="남"
                         {...field}
                       />
                       <label
@@ -84,7 +83,7 @@ export default (props) => {
                       <input
                         type="radio"
                         id={`${index}_female`}
-                        value="female"
+                        value="여"
                         {...field}
                       />
                       <label

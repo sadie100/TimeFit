@@ -20,7 +20,9 @@ export default () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
+    console.log(data);
     if (!certified) return alert("이메일 인증을 진행해 주세요.");
+    if (!window.confirm("회원가입을 진행하시겠습니까?")) return;
     startLoading();
     try {
       //이메일 체크 진행
@@ -124,8 +126,8 @@ export default () => {
         name: "gender",
         label: "성별",
         buttons: [
-          { label: "남성", value: "man" },
-          { label: "여성", value: "woman" },
+          { label: "남성", value: "남" },
+          { label: "여성", value: "여" },
         ],
         register: {
           required: "생년월일을 입력해 주세요.",
