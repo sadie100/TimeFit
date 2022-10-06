@@ -219,7 +219,7 @@ export default () => {
       {
         type: "number",
         label: "1개월 회원권 가격",
-        name: "memberFee",
+        name: "price",
         placeholder: "1개월 회원권 가격을 입력해 주세요.",
         unit: "원",
       },
