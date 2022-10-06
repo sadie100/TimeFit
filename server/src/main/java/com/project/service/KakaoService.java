@@ -93,6 +93,6 @@ public class KakaoService {
     }
 
     public Optional<User> getByKakao(KakaoProfile profile){
-        return userRepository.findByKakao(String.valueOf(profile.getId()));
+        return userRepository.findByKakao(profile.getId());
     }
 }

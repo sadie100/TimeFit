@@ -4,6 +4,7 @@ import com.project.domain.CenterEquipment;
 import com.project.domain.Equipment;
 import com.project.request.CenterEquipmentAdd;
 import com.project.request.EquipmentCategory;
+import com.project.response.EquipmentResponse;
 import com.project.service.EquipmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class EquipmentController {
     private final EquipmentService equipmentService;
 
     @GetMapping("/equipment")
-    public List<Equipment> getEquipments(){
+    public List<EquipmentResponse> getEquipments(){
         return equipmentService.getAllEquipment();
     }
 

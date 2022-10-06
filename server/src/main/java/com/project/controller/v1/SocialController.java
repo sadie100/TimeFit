@@ -75,14 +75,14 @@ public class SocialController {
     public @ResponseBody void redirectKakao(@RequestParam String code, HttpServletResponse response) throws IOException {
         KakaoAuth kakaoAuth = kakaoService.getKakaoTokenInfo(code);
         KakaoProfile profile =kakaoService.getKakaoProfile(kakaoAuth.getAccess_token());
-        String email = profile.getKakao_account().getEmail();
+//        String email = profile.getKakao_account().getEmail();
         Optional<User> user= kakaoService.getByKakao(profile);
 //         이후 만약 empty일 경우, 회원가입으로 이동 아닐 경우 로그인 진행
         if(user.isEmpty()){
             response.sendRedirect("http://localhost:3000/join/kakao?kakaoId="+profile.getId());
         }
         else{
-            TokenResponse tokenResponse = signService.signInByKakao(email);
+            TokenResponse tokenResponse = signService.signInByKakao(profile.getId());
             Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
             accessCookie.setPath("/");
 ////        accessCookie.setHttpOnly(true);

@@ -33,7 +33,7 @@ public class User implements UserDetails {
     private String email;
 
     @Column(unique = true, length = 30)
-    private String kakao;
+    private long kakao;
 
     @Column( length = 100)
     private String password;

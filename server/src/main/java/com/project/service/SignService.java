@@ -120,8 +120,8 @@ public class SignService  {
     }
 
 
-    public TokenResponse signInByKakao(String email){
-        User user = userRepository.findByKakao(String.valueOf(email)).orElseThrow(UserNotFound::new);
+    public TokenResponse signInByKakao(long kakaoId){
+        User user = userRepository.findByKakao(kakaoId).orElseThrow(UserNotFound::new);
         String accessToken = jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles(), ACCESS_TOKEN_EXPIRE_TIME);
         String refreshToken = jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles(), REFRESH_TOKEN_EXPIRE_TIME);
         return TokenResponse
@@ -136,7 +136,7 @@ public class SignService  {
     //회원가입 이후 카카오 ID 설정
     public void joinByKakao(KakaoSignUp kakaoSignUp){
         User user = userRepository.findByEmail(kakaoSignUp.getEmail()).orElseThrow(UserNotFound::new);
-        user.setKakao(kakaoSignUp.getEmail());
+        user.setKakao(kakaoSignUp.getKakaoId());
         userRepository.save(user);
     }
 
