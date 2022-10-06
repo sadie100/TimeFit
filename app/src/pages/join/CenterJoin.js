@@ -45,6 +45,15 @@ export default () => {
       //센터 회원가입 요청
       const respond = await axios.post("/signup-center", data);
       const centerId = respond.data.centerId;
+
+      if (!!state?.kakaoId) {
+        //만약 카카오에서 리다이렉트됐을 경우, 카카오 회원가입 요청
+        await axios.post("/signup/kakao", {
+          email: data.email,
+          kakaoId: state.kakaoId,
+        });
+      }
+
       if (data.trainers.length > 0) {
         //센터 트레이너 추가
         await Promise.all(
@@ -156,12 +165,13 @@ export default () => {
         },
       },
       {
-        type: "number",
+        type: "text",
         name: "phoneNumber",
         label: "헬스장 연락처",
         placeholder: "헬스장 연락처를 입력해 주세요.",
         register: {
           required: "헬스장 연락처를 입력해 주세요.",
+          maxLength: 11,
         },
       },
       {
@@ -208,7 +218,7 @@ export default () => {
       {
         type: "number",
         label: "1개월 회원권 가격",
-        name: "memberFee",
+        name: "price",
         placeholder: "1개월 회원권 가격을 입력해 주세요.",
         unit: "원",
       },

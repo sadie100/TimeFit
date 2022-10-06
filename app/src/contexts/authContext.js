@@ -40,7 +40,9 @@ const AuthContextProvider = (props) => {
   }, [cookies.get("AccessToken")]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      return setType("user");
+    }
     if (user?.roles.includes(ROLE.center)) {
       setType("center");
     } else if (user.roles.includes(ROLE.user)) {

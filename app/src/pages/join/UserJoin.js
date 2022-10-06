@@ -35,8 +35,15 @@ export default () => {
       return endLoading();
     }
     try {
-      //res에 가입한 user id 받아와야 함
+      //회원가입 요청
       const res = await axios.post("/signup", data);
+      if (!!state?.kakaoId) {
+        //만약 카카오에서 리다이렉트됐을 경우, 카카오 회원가입 요청
+        await axios.post("/signup/kakao", {
+          email: data.email,
+          kakaoId: state.kakaoId,
+        });
+      }
       endLoading();
       if (res.status === 200) {
         //회원가입 완료 처리

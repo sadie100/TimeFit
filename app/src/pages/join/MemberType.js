@@ -8,6 +8,7 @@ export default () => {
   const [type, setType] = useState("");
   const navigate = useNavigate();
   const { state } = useLocation();
+
   const handleType = () => {
     if (type === "") return alert("회원 유형을 선택해 주세요.");
     if (!!state) {
