@@ -9,6 +9,7 @@ import com.project.response.KakaoProfile;
 import com.project.exception.CommunicationException;
 import com.project.response.KakaoAuth;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -89,9 +92,7 @@ public class KakaoService {
         throw new CommunicationException();
     }
 
-    public User getByKakao(KakaoProfile profile){
-        User user = userRepository.findByKakao(String.valueOf(profile.getId())).orElseThrow(UserNotFound::new);
-        return user;
-
+    public Optional<User> getByKakao(KakaoProfile profile){
+        return userRepository.findByKakao(String.valueOf(profile.getId()));
     }
 }

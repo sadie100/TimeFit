@@ -1,19 +1,19 @@
 package com.project.response;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
 @ToString
+@Getter
+@NoArgsConstructor
 public class KakaoProfile {
     private Long id;
     private Properties properties;
     private KakaoAccount kakao_account;
+
     @Getter
-    @Setter
-    @ToString
     private static class Properties {
         private String nickname;
         private String thumbnail_image;
@@ -21,9 +21,8 @@ public class KakaoProfile {
     }
 
     @Getter
-    @Setter
-    @ToString
-    private class KakaoAccount {
+    @NoArgsConstructor
+    public class KakaoAccount {
         public Boolean profile_needs_agreement;
         public Boolean has_email;
         public Boolean email_needs_agreement;
@@ -32,3 +31,5 @@ public class KakaoProfile {
         public String email;
     }
 }
+
+
