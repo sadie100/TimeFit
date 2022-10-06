@@ -32,7 +32,7 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true, length = 30)
     private String email;
 
-    @Column(unique = true, length = 30)
+    @Column(length = 30)
     private long kakao;
 
     @Column( length = 100)
@@ -41,7 +41,7 @@ public class User implements UserDetails {
     @Column(length = 100)
     private String name;
 
-    @Column(unique = true,length = 15)
+    @Column(nullable = false, unique = true,length = 15)
     private String phoneNumber;
 
     @Column(length = 2)
