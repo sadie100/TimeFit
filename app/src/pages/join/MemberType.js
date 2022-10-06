@@ -11,7 +11,7 @@ export default () => {
   const handleType = () => {
     if (type === "") return alert("회원 유형을 선택해 주세요.");
     if (!!state) {
-      navigate(`/join/${type}/form`, state);
+      navigate(`/join/${type}/form`, { state });
     } else {
       navigate(`/join/${type}/form`);
     }

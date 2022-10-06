@@ -13,6 +13,7 @@ import { useLoading } from "hooks/useLoadingContext";
 const formId = "CenterJoin";
 
 export default () => {
+  const { state } = useLocation();
   const [isMailSend, setIsMailSend] = useState(false);
   const [certified, setCertified] = useState(false);
   const [centerNumCertified, setCenterNumCertified] = useState(false);
