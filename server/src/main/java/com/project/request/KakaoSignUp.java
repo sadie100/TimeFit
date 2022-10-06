@@ -13,10 +13,10 @@ import javax.validation.constraints.NotBlank;
 public class KakaoSignUp {
     @NotBlank(message = "아이디를 입력해주세요")
     private String email;
-
-
+    private long kakaoId;
     @Builder
-    public KakaoSignUp(String email, String code) {
+    public KakaoSignUp(String email, long kakaoId) {
         this.email = email;
+        this.kakaoId = kakaoId;
     }
 }

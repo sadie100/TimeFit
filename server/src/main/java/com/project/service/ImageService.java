@@ -1,23 +1,21 @@
 package com.project.service;
 
 import com.project.domain.Center;
+import com.project.domain.CenterEquipment;
 import com.project.domain.CenterImages;
-import com.project.exception.CenterNotFound;
+import com.project.repository.CenterEquipmentRepository;
 import com.project.repository.CenterImgRepository;
-import com.project.repository.CenterRepository;
 import com.project.request.FileDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class FileService {
+public class ImageService {
     private CenterImgRepository centerImgRepository;
-
-    public FileService(CenterImgRepository fileRepository) {
+    public ImageService(CenterImgRepository fileRepository) {
         this.centerImgRepository = fileRepository;
     }
 
@@ -31,9 +29,6 @@ public class FileService {
         centerImgRepository.save(centerImages).getId();
         return;
     }
-
-
-    @Transactional
     public List<FileDto> getFile(Center center) {
         List<CenterImages> centerImages = centerImgRepository.findByItem(center);
         List<FileDto> fileDtos = new ArrayList<>();
@@ -42,10 +37,9 @@ public class FileService {
                     .id(img.getId())
                     .originFileName(img.getOriginFileName())
                     .newFileName(img.getNewFileName())
-                    .filePath(img.getFilePath())
+                    .filePath("http://localhost:8080/image/"+img.getFilePath())
                     .build());
         }
-        centerImgRepository.findByItem(center);
         return fileDtos;
     }
 }

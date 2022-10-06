@@ -12,12 +12,10 @@ import javax.persistence.*;
 public class UserInfoResponse {
     private String email;
 
-
     private long msrl;
 
     private String kakao;
 
-    private String password;
 
     private String name;
 
@@ -30,11 +28,10 @@ public class UserInfoResponse {
     private Center center;
 
     @Builder
-    public UserInfoResponse(String email, long msrl, String kakao, String password, String name, String phoneNumber, String gender, String birth, Center center) {
+    public UserInfoResponse(String email, long msrl, String kakao,  String name, String phoneNumber, String gender, String birth, Center center) {
         this.email = email;
         this.msrl = msrl;
         this.kakao = kakao;
-        this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
