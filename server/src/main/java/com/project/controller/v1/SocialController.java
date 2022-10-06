@@ -79,7 +79,7 @@ public class SocialController {
         Optional<User> user= kakaoService.getByKakao(profile);
 //         이후 만약 empty일 경우, 회원가입으로 이동 아닐 경우 로그인 진행
         if(user.isEmpty()){
-            response.sendRedirect("http://localhost:3000/join?kakaoId="+profile.getId());
+            response.sendRedirect("http://localhost:3000/join/membertype?kakaoId="+profile.getId());
         }
         else{
             TokenResponse tokenResponse = signService.signInByKakao(profile.getId());
