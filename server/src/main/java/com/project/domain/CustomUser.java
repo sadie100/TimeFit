@@ -7,8 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +20,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor // 인자없는 생성자를 자동으로 생성합니다.
 @AllArgsConstructor // 인자를 모두 갖춘 생성자를 자동으로 생성합니다.
 @Table(name = "user") // 'user' 테이블과 매핑됨을 명시
-public class User implements UserDetails {
+public class CustomUser implements UserDetails {
 
 
     @Id // pk
@@ -32,7 +30,7 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true, length = 30)
     private String email;
 
-    @Column(unique = true, length = 30)
+    @Column(length = 30)
     private long kakao;
 
     @Column( length = 100)

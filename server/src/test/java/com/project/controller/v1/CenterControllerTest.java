@@ -3,7 +3,6 @@ package com.project.controller.v1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.domain.Center;
 import com.project.domain.CenterEquipment;
-import com.project.domain.CenterImages;
 import com.project.domain.Equipment;
 import com.project.repository.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +44,7 @@ class CenterControllerTest {
     @Autowired
     private EquipmentRepository equipmentRepository;
     @Autowired
-    private UserRepository userRepository;
+    private CustomeUserRepository userRepository;
 
     @BeforeEach
     void clean(){

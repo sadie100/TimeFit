@@ -25,14 +25,28 @@ public class Center {
     private String region;
     private String address;
     private Integer price;
-
+    private String phoneNumber;
     private String storeNumber;
 
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
 
-    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @OrderBy("id asc")
-    private Set<CenterImages> images;
+    //센터 정보 변경용 에디터
+    public CenterEditor.CenterEditorBuilder toEditor(){
+        return CenterEditor
+                .builder()
+                .phoneNumber(phoneNumber)
+                .price(price)
+                .address(address)
+                .region(region)
+                .name(name);
+    }
 
+    public void edit(CenterEditor centerEditor){
+        price = centerEditor.getPrice();
+        region = centerEditor.getRegion();
+        address = centerEditor.getAddress();
+        name =centerEditor.getName();
+        phoneNumber = centerEditor.getPhoneNumber();
+    }
 }

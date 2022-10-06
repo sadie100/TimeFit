@@ -1,7 +1,7 @@
 package com.project.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.repository.UserRepository;
+import com.project.repository.CustomeUserRepository;
 import com.project.request.UserSignIn;
 import com.project.request.UserSignUp;
 import com.project.service.SignService;
@@ -33,7 +33,7 @@ class SignControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
+    private CustomeUserRepository userRepository;
 
     @Autowired
     private SignService signService;

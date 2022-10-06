@@ -2,14 +2,12 @@ package com.project.service;
 
 
 import com.google.gson.Gson;
-import com.project.domain.User;
-import com.project.exception.UserNotFound;
-import com.project.repository.UserRepository;
+import com.project.domain.CustomUser;
+import com.project.repository.CustomeUserRepository;
 import com.project.response.KakaoProfile;
 import com.project.exception.CommunicationException;
 import com.project.response.KakaoAuth;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
@@ -24,7 +22,7 @@ import java.util.Optional;
 @Service
 public class KakaoService {
 
-    private final UserRepository userRepository;
+    private final CustomeUserRepository userRepository;
     private final RestTemplate restTemplate;
     private final Environment env;
     private final Gson gson;
@@ -92,7 +90,7 @@ public class KakaoService {
         throw new CommunicationException();
     }
 
-    public Optional<User> getByKakao(KakaoProfile profile){
+    public Optional<CustomUser> getByKakao(KakaoProfile profile){
         return userRepository.findByKakao(profile.getId());
     }
 }

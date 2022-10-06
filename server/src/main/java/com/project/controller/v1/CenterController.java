@@ -2,6 +2,7 @@ package com.project.controller.v1;
 
 
 import com.project.domain.Center;
+import com.project.request.CenterInfo;
 import com.project.request.CenterSearch;
 import com.project.request.ReservationRequest;
 import com.project.response.CenterDetailResponse;
@@ -35,6 +36,12 @@ public class CenterController {
     @GetMapping("/get-centers")
     public List<Center> getCenterId(){
         return centerService.findAllCenter();
+    }
+
+
+    @PostMapping("/center/update")
+    public void update(@RequestBody CenterInfo request){
+        centerService.update(request);
     }
 
 }

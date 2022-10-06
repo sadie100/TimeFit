@@ -22,10 +22,6 @@ public class CenterDetailResponse {
     public CenterDetailResponse(Center item) {
         this.id = item.getId();
         this.name = item.getName();
-
-        this.images = item.getImages().stream()
-                .map(CenterImgResponse::new)
-                .collect(Collectors.toList());
         this.view = item.getView();
 
 //        this.notes = item.getTmpNotes().stream()

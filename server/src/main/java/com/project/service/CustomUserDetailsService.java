@@ -1,7 +1,7 @@
 package com.project.service;
 
 import com.project.exception.UserNotFound;
-import com.project.repository.UserRepository;
+import com.project.repository.CustomeUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final CustomeUserRepository userRepository;
 
     @Override
     @Transactional

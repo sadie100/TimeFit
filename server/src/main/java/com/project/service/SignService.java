@@ -2,18 +2,15 @@ package com.project.service;
 
 import com.project.config.security.JwtTokenProvider;
 import com.project.domain.Center;
-import com.project.domain.Equipment;
+import com.project.domain.CustomUser;
 import com.project.domain.Trainer;
-import com.project.domain.User;
 import com.project.exception.EmailSigninFailed;
 import com.project.exception.UserNotFound;
 import com.project.repository.CenterRepository;
 import com.project.repository.TrainerRepository;
-import com.project.repository.UserRepository;
+import com.project.repository.CustomeUserRepository;
 import com.project.request.*;
 import com.project.response.CenterSignResponse;
-import com.project.response.KakaoAuth;
-import com.project.response.KakaoProfile;
 import com.project.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 public class SignService  {
 //public class SignService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final CustomeUserRepository userRepository;
 
     private final CenterRepository centerRepository;
 
@@ -56,7 +53,7 @@ public class SignService  {
 //    }
     // 현재는 여기서 loadUserByUsername를 구현하지 않음
     public void join(UserSignUp request){
-        User user= User.builder()
+        CustomUser user= CustomUser.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .phoneNumber(request.getPhoneNumber())
@@ -73,19 +70,21 @@ public class SignService  {
                 .name(request.getName())
                 .region(request.getRegion())
                 .address(request.getAddress())
-//                .storeNumber(request.getStoreNumber())
+                .price(request.getPrice())
+                .phoneNumber(request.getPhoneNumber())
+                .storeNumber(request.getStoreNumber())
                 .build();
-
         Center newCenter = centerRepository.saveAndFlush(center);
-        User user= User.builder()
+
+        CustomUser user= CustomUser.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .phoneNumber(request.getPhoneNumber())
                 .name(request.getName())
                 .center(center)
-                .roles(Collections.singletonList("ROLE_CENTER"))
+//                .roles(Collections.singletonList("ROLE_CENTER"))
                 .build();
-        User newUser = userRepository.saveAndFlush(user);
+        CustomUser newUser = userRepository.saveAndFlush(user);
         return CenterSignResponse
                 .builder().centerId(newCenter.getId())
                 .userId(newUser.getMsrl())
@@ -93,15 +92,15 @@ public class SignService  {
 
     }
 
-    public Optional<User> getByEmail(String request){
+    public Optional<CustomUser> getByEmail(String request){
         return userRepository.findByEmail(request);
     }
-    public Optional<User> getByPhoneNumber(String request){
+    public Optional<CustomUser> getByPhoneNumber(String request){
         return userRepository.findByPhoneNumber(request);
     }
 
     public TokenResponse signIn(UserSignIn request){
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(EmailSigninFailed::new);
+        CustomUser user = userRepository.findByEmail(request.getEmail()).orElseThrow(EmailSigninFailed::new);
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new EmailSigninFailed();
@@ -121,7 +120,7 @@ public class SignService  {
 
 
     public TokenResponse signInByKakao(long kakaoId){
-        User user = userRepository.findByKakao(kakaoId).orElseThrow(UserNotFound::new);
+        CustomUser user = userRepository.findByKakao(kakaoId).orElseThrow(UserNotFound::new);
         String accessToken = jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles(), ACCESS_TOKEN_EXPIRE_TIME);
         String refreshToken = jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles(), REFRESH_TOKEN_EXPIRE_TIME);
         return TokenResponse
@@ -135,7 +134,7 @@ public class SignService  {
 
     //회원가입 이후 카카오 ID 설정
     public void joinByKakao(KakaoSignUp kakaoSignUp){
-        User user = userRepository.findByEmail(kakaoSignUp.getEmail()).orElseThrow(UserNotFound::new);
+        CustomUser user = userRepository.findByEmail(kakaoSignUp.getEmail()).orElseThrow(UserNotFound::new);
         user.setKakao(kakaoSignUp.getKakaoId());
         userRepository.save(user);
     }
@@ -159,7 +158,7 @@ public class SignService  {
         }
         System.out.println("refreshToken");
         System.out.println( refreshToken);
-        User principal = (User) authentication.getPrincipal();
+        CustomUser principal = (CustomUser) authentication.getPrincipal();
 //        System.out.println( principal.getRoles());
 
         // 4. Refresh Token 일치하는지 검사
@@ -175,7 +174,7 @@ public class SignService  {
     }
 
     public String makeNewPassword(String request){
-        User user= userRepository.findByEmail(request).orElseThrow(UserNotFound::new);
+        CustomUser user= userRepository.findByEmail(request).orElseThrow(UserNotFound::new);
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
         int targetStringLength = 10;
