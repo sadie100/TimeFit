@@ -49,8 +49,12 @@ export default (props) => {
                 <Label>기구 선택</Label>
                 <StyledSelect
                   name="equipment"
+                  defaultValue={""}
                   {...register(`${name}.${index}.equipment`)}
                 >
+                  <option value="" disabled style={{ display: "none" }}>
+                    기구를 선택해 주세요.
+                  </option>
                   {machines.map(({ name, id }) => (
                     <option key={id} value={name}>
                       {MACHINE_NAME[name]}

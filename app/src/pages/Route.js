@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from "./Main";
 import Login from "./Login";
+import KakaoLogin from "./KakaoLogin";
 import Join from "./join/Join";
 import Header from "components/base/Header";
 import Sample from "./Sample";
@@ -18,39 +19,30 @@ const App = () => {
   const { loading } = useContext(LoadingContext);
   return (
     <Background>
+      <LoadingBackground loading={loading}>
+        <CircularProgress style={{ color: "black" }} />
+      </LoadingBackground>
       <Header />
-      {loading ? (
-        <div
-          style={{
-            width: "100vw",
-            height: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CircularProgress />
-        </div>
-      ) : (
-        <Routes>
-          {/* 메인 화면 */}
-          <Route path="/" element={<Main />}></Route>
-          {/* 회원가입 화면 */}
-          <Route path="/join/*" element={<Join />}></Route>
-          {/* 로그인 화면 */}
-          <Route path="/login" element={<Login />}></Route>
-          {/* 이메일/비밀번호 찾기 화면 */}
-          <Route path="/help/*" element={<Help />}></Route>
-          {/* 헬스장찾기 화면 */}
-          <Route path="/center" element={<Center />}></Route>
-          {/* 예약 화면 */}
-          <Route path="/reserve/*" element={<Reserve />}></Route>
-          {/* 마이페이지 화면 */}
-          <Route path="/mypage/*" element={<MyPage />}></Route>
-          {/* 기구 등록 화면 */}
-          <Route path="/set-equip" element={<SetEquip />}></Route>
-        </Routes>
-      )}
+      <Routes>
+        {/* 메인 화면 */}
+        <Route path="/" element={<Main />}></Route>
+        {/* 회원가입 화면 */}
+        <Route path="/join/*" element={<Join />}></Route>
+        {/* 로그인 화면 */}
+        <Route path="/login" element={<Login />}></Route>
+        {/* 카카오 로그인 redirect uri 화면 */}
+        <Route path="/social/login/kakao" element={<KakaoLogin />}></Route>
+        {/* 이메일/비밀번호 찾기 화면 */}
+        <Route path="/help/*" element={<Help />}></Route>
+        {/* 헬스장찾기 화면 */}
+        <Route path="/center" element={<Center />}></Route>
+        {/* 예약 화면 */}
+        <Route path="/reserve/*" element={<Reserve />}></Route>
+        {/* 마이페이지 화면 */}
+        <Route path="/mypage/*" element={<MyPage />}></Route>
+        {/* 기구 등록 화면 */}
+        <Route path="/set-equip" element={<SetEquip />}></Route>
+      </Routes>
     </Background>
   );
 };
@@ -59,6 +51,23 @@ const Background = styled.div`
   height: 100%;
   width: 100%;
   background-color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+const LoadingBackground = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: gray;
+  z-index: 100;
+  display: ${({ loading }) => (loading ? "flex" : "none")};
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0.5;
+  position: absolute;
+  left: 0;
+  top: 0;
 `;
 
 export default App;

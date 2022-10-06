@@ -3,16 +3,19 @@ import treadmill from "../assets/image/treadmill.jpg";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
-import { checkLoggedIn } from "lib/auth";
 import { useState } from "react";
+import axios from "axios";
+import { useAuth } from "hooks/useAuthContext";
 
 const Main = (props) => {
-  const [type, setType] = useState("center");
+  const { type, user } = useAuth();
   const navigate = useNavigate();
   const handleReserve = () => {
     if (type === "center") {
       navigate("/reserve/center");
     } else {
+      //todo : 유저가 선택한 헬스장 찾는 api 불러오기
+      //const center = axios.get(`/user/${}`)
       navigate("/reserve");
     }
   };
@@ -53,7 +56,7 @@ const Background = styled.div`
     content: "";
     background-image: url(${treadmill});
     background-repeat: no-repeat;
-    background-size: auto;
+    background-size: cover;
     background-position: center;
     opacity: 0.5;
     position: absolute;
