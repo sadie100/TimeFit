@@ -6,7 +6,7 @@ import FormMaker from "components/form/FormMaker";
 import styled from "styled-components";
 import SubmitButton from "components/form/SubmitButton";
 import { useTheme } from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Trainers from "pages/join/Trainers";
 import { useLoading } from "hooks/useLoadingContext";
 
