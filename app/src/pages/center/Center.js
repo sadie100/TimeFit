@@ -30,6 +30,7 @@ const Center = () => {
     let sendingData = { ...data, ...searchCond };
     try {
       const { data } = await axios.get("/centers", sendingData);
+      if (data.length === 0) alert("등록된 헬스장이 없습니다.");
       setCenterList(
         data.map((one) => ({
           ...one,

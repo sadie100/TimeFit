@@ -45,18 +45,18 @@ export default function CenterFilterModal({ handleSearchCond }) {
         items: [{ label: "서울시", value: "서울시" }],
         placeholder: "시 선택",
       },
-      !!watch("city") && {
-        type: "select",
-        name: "gu",
-        items: [{ label: "노원구", value: "노원구" }],
-        placeholder: "구 선택",
-      },
-      !!watch("gu") && {
-        type: "select",
-        name: "dong",
-        items: [{ label: "상계동", value: "상계동" }],
-        placeholder: "동 선택",
-      },
+      // !!watch("city") && {
+      //   type: "select",
+      //   name: "gu",
+      //   items: [{ label: "노원구", value: "노원구" }],
+      //   placeholder: "구 선택",
+      // },
+      // !!watch("gu") && {
+      //   type: "select",
+      //   name: "dong",
+      //   items: [{ label: "상계동", value: "상계동" }],
+      //   placeholder: "동 선택",
+      // },
       {
         label: "기구",
         type: "checkbox",
