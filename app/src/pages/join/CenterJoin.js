@@ -45,6 +45,15 @@ export default () => {
       //센터 회원가입 요청
       const respond = await axios.post("/signup-center", data);
       const centerId = respond.data.centerId;
+
+      if (!!state?.kakaoId) {
+        //만약 카카오에서 리다이렉트됐을 경우, 카카오 회원가입 요청
+        await axios.post("/signup/kakao", {
+          email: data.email,
+          kakaoId: state.kakaoId,
+        });
+      }
+
       if (data.trainers.length > 0) {
         //센터 트레이너 추가
         await Promise.all(

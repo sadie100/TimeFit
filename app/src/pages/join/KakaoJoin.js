@@ -10,14 +10,13 @@ import QueryString from "qs";
 export default () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { email } = QueryString.parse(location.search, {
+  const { kakaoId } = QueryString.parse(location.search, {
     ignoreQueryPrefix: true,
   });
 
-  console.log(email);
   useEffect(() => {
     alert("유저 정보가 없어 회원가입 페이지로 이동합니다.");
-    navigate("/join/membertype", { state: { email: email } });
+    navigate("/join/membertype", { state: { kakaoId: kakaoId } });
   }, []);
 
   return (
