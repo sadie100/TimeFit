@@ -67,7 +67,12 @@ export default (props) => {
                     }}
                   >
                     <div>
-                      <input type="radio" id={`${index}_male`} {...field} />
+                      <input
+                        type="radio"
+                        id={`${index}_male`}
+                        value="male"
+                        {...field}
+                      />
                       <label
                         style={{ cursor: "pointer", flex: "1 0 auto" }}
                         htmlFor={`${index}_male`}
@@ -76,7 +81,12 @@ export default (props) => {
                       </label>
                     </div>
                     <div>
-                      <input type="radio" id={`${index}_female`} {...field} />
+                      <input
+                        type="radio"
+                        id={`${index}_female`}
+                        value="female"
+                        {...field}
+                      />
                       <label
                         style={{ cursor: "pointer" }}
                         htmlFor={`${index}_female`}

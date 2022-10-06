@@ -105,6 +105,7 @@ export default (props) => {
                         <input
                           type="radio"
                           id={btn.value}
+                          value={btn.value}
                           name={formLine.name}
                           error={errors[formLine.name]}
                           {...formLine}
