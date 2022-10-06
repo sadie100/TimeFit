@@ -6,10 +6,11 @@ import FormMaker from "components/form/FormMaker";
 import styled from "styled-components";
 import SubmitButton from "components/form/SubmitButton";
 import { useTheme } from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { LoadingContext } from "contexts/loadingContext";
 
 export default () => {
+  const { state } = useLocation();
   const [isMailSend, setIsMailSend] = useState(false);
   const [certified, setCertified] = useState(false);
   const { startLoading, endLoading } = useContext(LoadingContext);
@@ -21,11 +22,17 @@ export default () => {
   const onSubmit = async (data) => {
     if (!certified) return alert("이메일 인증을 진행해 주세요.");
     startLoading();
-    //이메일 체크 진행
     try {
+      //이메일 체크 진행
       await axios.get("/signup/check-email", {
         params: { email: data.email },
       });
+    } catch (e) {
+      console.log(e);
+      alert("중복된 이메일입니다. 이메일을 변경해 주세요.");
+      return endLoading();
+    }
+    try {
       //res에 가입한 user id 받아와야 함
       const res = await axios.post("/signup", data);
       endLoading();
@@ -38,7 +45,8 @@ export default () => {
       // navigate("/join/find-center");
     } catch (e) {
       console.log(e);
-      alert("중복된 이메일입니다. 이메일을 변경해 주세요.");
+      endLoading();
+      alert("오류가 일어났습니다. 다시 시도해 주세요.");
     }
   };
 
@@ -67,6 +75,7 @@ export default () => {
         placeholder: "이메일을 입력해 주세요.",
         register: {
           required: "이메일을 입력해 주세요.",
+          value: state?.email || "",
         },
       },
       isMailSend && {
