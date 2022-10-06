@@ -2,14 +2,19 @@ import React, { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Button from "components/common/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default () => {
   const [type, setType] = useState("");
   const navigate = useNavigate();
+  const { state } = useLocation();
   const handleType = () => {
     if (type === "") return alert("회원 유형을 선택해 주세요.");
-    navigate(`/join/${type}/form`);
+    if (!!state) {
+      navigate(`/join/${type}/form`, state);
+    } else {
+      navigate(`/join/${type}/form`);
+    }
   };
   return (
     <>
