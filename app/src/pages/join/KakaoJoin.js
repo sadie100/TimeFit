@@ -17,7 +17,7 @@ export default () => {
   console.log(email);
   useEffect(() => {
     alert("유저 정보가 없어 회원가입 페이지로 이동합니다.");
-    navigate("/join/membertype", { email: email });
+    navigate("/join/membertype", { state: { email: email } });
   }, []);
 
   return (
