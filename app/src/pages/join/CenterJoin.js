@@ -8,7 +8,7 @@ import SubmitButton from "components/form/SubmitButton";
 import { useTheme } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Trainers from "pages/join/Trainers";
-import Machines from "pages/join/Machines";
+import { useLoading } from "hooks/useLoadingContext";
 
 const formId = "CenterJoin";
 
@@ -16,6 +16,7 @@ export default () => {
   const [isMailSend, setIsMailSend] = useState(false);
   const [certified, setCertified] = useState(false);
   const [centerNumCertified, setCenterNumCertified] = useState(false);
+  const { startLoading, endLoading } = useLoading();
 
   const theme = useTheme();
   const navigate = useNavigate();
@@ -23,40 +24,65 @@ export default () => {
   //회원가입 로직
   const onSubmit = async (data) => {
     if (!certified) return alert("이메일 인증을 진행해 주세요.");
+    console.log(data);
+    if (!window.confirm("회원가입을 진행하시겠습니까?")) return;
+    startLoading();
+
     try {
-      console.log(data);
+      //이메일 체크 진행
+      await axios.get("/signup/check-email", {
+        params: { email: data.email },
+      });
+    } catch (e) {
+      console.log(e);
+      alert("중복된 이메일입니다. 이메일을 변경해 주세요.");
+      return endLoading();
+    }
+
+    try {
       data.address = data.basic + " " + data.detail;
       //센터 회원가입 요청
       const respond = await axios.post("/signup-center", data);
-      console.log(respond);
-      return;
-      //respond에서 센터 번호가 와야 함
-      const id = respond.data.id;
-      if (respond.status !== 200) {
-        return alert("오류가 일어났습니다. 다시 시도해 주세요.");
+      const centerId = respond.data.centerId;
+      if (data.trainers.length > 0) {
+        //센터 트레이너 추가
+        await Promise.all(
+          data.trainers.map(async (trainer) => {
+            await axios.post(`/signup/add-trainer/${centerId}`, trainer);
+          })
+        );
       }
-      //센터 트레이너 추가
-      await axios.post(`/add-trainer/${respond.data.id}`, data.trainers);
 
-      //센터 이미지 추가
-      let formData = new FormData();
-      formData.append("centerId", id);
-      data.image.map((img) => {
-        formData.append("file", img);
-      });
-      await axios.post("/upload-center", formData, {
-        "Content-Type": "multipart/form-data",
-      });
+      const fileList = data.image;
 
-      // //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
-      // window.sessionStorage.setItem("signup", JSON.stringify(data));
+      if (fileList.length > 0) {
+        //센터 이미지 추가
+        let formData = new FormData();
+        formData.append("centerId", centerId);
+        for (let i = 0; i < fileList.length; i++) {
+          formData.append("file", fileList[i]);
+        }
 
+        await axios.post("/upload-center", formData, {
+          "Content-Type": "multipart/form-data",
+        });
+      }
+
+      alert("회원가입이 완료되었습니다. 헬스장 배치도 페이지로 이동합니다.");
       //헬스장 배치도 페이지로 이동
-      navigate("/join/center/layout");
+      navigate("/join/center/layout", { state: { centerId: centerId } });
     } catch (e) {
       console.log(e);
-      alert("에러가 일어났습니다.");
+      if (
+        e.response.status === 400 &&
+        e.response.data.path === "/signup-center"
+      ) {
+        alert("헬스장 주소를 우편번호 검색을 통해 받아 주세요.");
+      } else {
+        alert("오류가 발생했습니다. 새로고침 후 다시 시도해 주세요.");
+      }
     }
+    endLoading();
   };
 
   //사업자등록번호 인증 로직

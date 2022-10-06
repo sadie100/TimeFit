@@ -5,12 +5,10 @@ import styled from "styled-components";
 import DraggableFromContainer from "components/common/dnd/DraggableFromContainer";
 import DraggableToContainer from "components/common/dnd/DraggableToContainer";
 import { useState, useRef, useEffect } from "react";
-import machines from "assets/machines";
 import Button from "components/common/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Layout, Entrance } from "components/Center";
 import { useTheme } from "styled-components";
-import FormMaker from "components/form/FormMaker";
 import axios from "axios";
 import Machines from "pages/join/Machines";
 import { useForm } from "react-hook-form";
@@ -28,6 +26,7 @@ export default (props) => {
     center: { iconSize },
   } = useTheme();
   const navigate = useNavigate();
+  const { state } = useLocation();
   // const {
   //   machineList = [
   //     { name: "barbell", count: 3 },
@@ -43,8 +42,13 @@ export default (props) => {
   //헬스장 배치도 모음
   const [toItems, setToItems] = useState([]);
 
-  //머신 가져오기
   useEffect(() => {
+    //centerId 없으면 리다이렉트
+    if (!state?.centerId) {
+      alert("센터 id가 없습니다. 회원가입 페이지로 이동합니다.");
+      navigate("/join");
+    }
+    //머신 가져오기
     async function fetchData() {
       const { data } = await axios.get("/equipment");
       setMachines(data);
@@ -104,8 +108,7 @@ export default (props) => {
       await Promise.all(
         toItems.map(async ({ xloc, yloc, equipment }) => {
           const item = {
-            //todo : 센터 id 연결
-            center: "센터ID",
+            center: state.centerId,
             equipment,
             xloc,
             yloc,
