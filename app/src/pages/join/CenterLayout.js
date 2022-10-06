@@ -91,12 +91,13 @@ export default (props) => {
         }
       });
 
-    machineArr.push({
-      name: "entrance",
-      equipment: "entrance",
-      yloc: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
-      xloc: parseInt(machineArr.length / 2) * (iconSize + 20),
-    });
+    //입구 일단 빼둠
+    // machineArr.push({
+    //   name: "entrance",
+    //   equipment: "entrance",
+    //   yloc: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
+    //   xloc: parseInt(machineArr.length / 2) * (iconSize + 20),
+    // });
     setFromItems(machineArr);
   }, [watch(fieldName)]);
 
@@ -113,7 +114,7 @@ export default (props) => {
             xloc,
             yloc,
           };
-          await axios.post("add-center", item);
+          await axios.post("/equipment/add-center", item);
         })
       );
 
