@@ -73,7 +73,9 @@ public class SignService  {
                 .name(request.getName())
                 .region(request.getRegion())
                 .address(request.getAddress())
-//                .storeNumber(request.getStoreNumber())
+                .price(request.getPrice())
+                .phoneNumber(request.getPhoneNumber())
+                .storeNumber(request.getStoreNumber())
                 .build();
 
         Center newCenter = centerRepository.saveAndFlush(center);
