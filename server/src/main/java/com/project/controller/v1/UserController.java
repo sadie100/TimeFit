@@ -13,6 +13,7 @@ import com.project.service.SignService;
 import com.project.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
 
@@ -28,6 +29,18 @@ public class UserController {
 
     @Autowired
     private final UserInfoService userInfoService;
+
+    @GetMapping("/user")
+    public UserInfoResponse get(@AuthenticationPrincipal User user) {
+        return UserInfoResponse.builder().email(user.getEmail())
+                .gender(user.getGender())
+                .birth(user.getBirth())
+                .name(user.getName())
+                .center(user.getCenter())
+                .msrl(user.getMsrl())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
+    }
 
     @GetMapping("/user/{msrl}")
     public UserInfoResponse get(@PathVariable Long msrl) {
