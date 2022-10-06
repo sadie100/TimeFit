@@ -11,6 +11,7 @@ import { ModalContext } from "contexts/modalContext";
 import TuneIcon from "@mui/icons-material/Tune";
 import CenterFilterModal from "pages/center/CenterFilterModal";
 import CenterInfoModal from "pages/center/CenterInfoModal";
+import blank_image from "assets/image/blank_image.png";
 
 const Center = () => {
   const formId = "UserFindCenter";
@@ -20,16 +21,18 @@ const Center = () => {
   const [searchCond, setSearchCond] = useState(null);
   const [centerList, setCenterList] = useState([]);
   const [center, setCenter] = useState("");
-  const { handleOpen } = useContext(ModalContext);
+  const { handleOpen, handleClose } = useContext(ModalContext);
 
   const handleSearchCond = (data) => {
     setSearchCond(data);
+    handleClose();
   };
 
   const handleSearch = async (data) => {
     let sendingData = { ...data, ...searchCond };
+    console.log(sendingData);
     try {
-      const { data } = await axios.get("/centers", sendingData);
+      const { data } = await axios.get("/centers", { params: sendingData });
       if (data.length === 0) {
         alert("등록된 헬스장이 없습니다.");
         return setCenterList([]);
@@ -38,7 +41,7 @@ const Center = () => {
       const centerList = await Promise.all(
         data.map(async (one) => {
           const { data: imageList } = await axios.get(`/get-center/${one.id}`);
-          const mainImage = imageList?.[0].filePath || "";
+          const mainImage = imageList?.[0]?.filePath || "";
           return {
             ...one,
             image: mainImage,
@@ -66,7 +69,7 @@ const Center = () => {
     [
       {
         type: "text",
-        name: "search",
+        name: "name",
         button: "검색",
         buttonType: "submit",
         placeholder: "헬스장 이름으로 헬스장을 검색해 보세요.",
@@ -93,7 +96,13 @@ const Center = () => {
                 onClick={() => handleClickCenter(center)}
                 key={idx}
               >
-                <img width="50%" height="100%" src={center.image} />
+                <img
+                  style={{
+                    maxWidth: "50%",
+                    height: "100%",
+                  }}
+                  src={center.image || blank_image}
+                />
                 <TextWrapper>
                   <CenterName>{center.name}</CenterName>
                   <div style={{ fontFamily: "Noto Sans KR" }}>
@@ -105,7 +114,10 @@ const Center = () => {
           })}
         </ListWrapper>
         <CenterInfoModal center={center} />
-        <CenterFilterModal handleSearchCond={handleSearchCond} />
+        <CenterFilterModal
+          handleSearchCond={handleSearchCond}
+          searchCond={searchCond}
+        />
       </Background>
     </>
   );
@@ -136,7 +148,6 @@ const FilterDiv = styled.div`
   align-items: center;
 `;
 const ListWrapper = styled.div`
-  //border: 1px solid blue;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 200px;
@@ -158,8 +169,11 @@ const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  flex-wrap: wrap;
+  width: 100%;
 `;
-const CenterName = styled.span`
+const CenterName = styled.div`
   font-family: Noto Sans KR;
   font-weight: bold;
+  width: 100%;
 `;
