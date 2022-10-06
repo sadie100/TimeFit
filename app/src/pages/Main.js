@@ -3,11 +3,11 @@ import treadmill from "../assets/image/treadmill.jpg";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
-import { checkLoggedIn } from "lib/auth";
 import { useState } from "react";
+import { useAuth } from "hooks/useAuthContext";
 
 const Main = (props) => {
-  const [type, setType] = useState("center");
+  const { type } = useAuth();
   const navigate = useNavigate();
   const handleReserve = () => {
     if (type === "center") {

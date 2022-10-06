@@ -11,3 +11,8 @@ export const MACHINE_NAME = {
   barbell: "바벨",
   stepper: "스텝퍼",
 };
+
+export const ROLE = {
+  center: "ROLE_CENTER",
+  user: "ROLE_USER",
+};
