@@ -17,6 +17,7 @@ import {
   Line,
   LineContent,
 } from "components/form/StyledComponents";
+import { useLoading } from "hooks/useLoadingContext";
 
 const formId = "CenterLayout";
 const fieldName = "equipments";
@@ -27,6 +28,7 @@ export default (props) => {
   } = useTheme();
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { startLoading, endLoading } = useLoading();
   // const {
   //   machineList = [
   //     { name: "barbell", count: 3 },
@@ -70,7 +72,6 @@ export default (props) => {
       .map(({ equipment, count }, idx) => {
         const machine = machines.find((element) => element.name === equipment);
         const { id, img } = machine;
-        console.log(img);
         for (let i = 0; i < count; i++) {
           machineArr.push({
             //todo : 센터id 가져오는 걸로 변경
@@ -104,7 +105,7 @@ export default (props) => {
   //회원가입 로직
   const onSubmit = async () => {
     if (!window.confirm("배치도를 저장하시겠습니까?")) return;
-
+    startLoading();
     try {
       await Promise.all(
         toItems.map(async ({ xloc, yloc, equipment }) => {
@@ -117,12 +118,13 @@ export default (props) => {
           await axios.post("/equipment/add-center", item);
         })
       );
-
+      endLoading();
       //성공 시 페이지 이동
       navigate("/join/success");
     } catch (e) {
       console.log(e);
       alert("에러가 발생했습니다.");
+      endLoading();
     }
   };
 
