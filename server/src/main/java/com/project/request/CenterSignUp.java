@@ -35,9 +35,12 @@ public class CenterSignUp {
     @NotBlank(message = "사업장등록번호를 입력해주세요")
     private String storeNumber;
 
+    private Integer price;
+
     @Builder
-    public CenterSignUp(String email, String name, String password,String region, String address, String phoneNumber, String storeNumber) {
+    public CenterSignUp(String email, Integer price, String name, String password,String region, String address, String phoneNumber, String storeNumber) {
         this.email = email;
+        this.price = price;
         this.name = name;
         this.password = password;
         this.region = region;

@@ -5,7 +5,7 @@ package com.project.controller.v1;
 
 
 import com.google.gson.Gson;
-import com.project.domain.User;
+import com.project.domain.CustomUser;
 import com.project.response.KakaoAuth;
 import com.project.response.KakaoProfile;
 import com.project.response.TokenResponse;
@@ -25,7 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -76,7 +75,7 @@ public class SocialController {
         KakaoAuth kakaoAuth = kakaoService.getKakaoTokenInfo(code);
         KakaoProfile profile =kakaoService.getKakaoProfile(kakaoAuth.getAccess_token());
 //        String email = profile.getKakao_account().getEmail();
-        Optional<User> user= kakaoService.getByKakao(profile);
+        Optional<CustomUser> user= kakaoService.getByKakao(profile);
 //         이후 만약 empty일 경우, 회원가입으로 이동 아닐 경우 로그인 진행
         if(user.isEmpty()){
             response.sendRedirect("http://localhost:3000/join/kakao?kakaoId="+profile.getId());

@@ -26,7 +26,7 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name="msrl")
-    private User user;
+    private CustomUser user;
 
     private LocalDateTime start;
     private LocalDateTime end;

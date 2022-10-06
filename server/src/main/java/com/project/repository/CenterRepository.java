@@ -1,7 +1,6 @@
 package com.project.repository;
 
 import com.project.domain.Center;
-import com.project.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

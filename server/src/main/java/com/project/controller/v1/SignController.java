@@ -1,14 +1,12 @@
 package com.project.controller.v1;
 
 import com.project.domain.Center;
-import com.project.domain.User;
+import com.project.domain.CustomUser;
 import com.project.exception.CookieNotFound;
 import com.project.request.*;
 import com.project.response.CenterSignResponse;
-import com.project.response.CommonResult;
 import com.project.response.TokenResponse;
 
-import com.project.response.SingleResult;
 import com.project.service.CenterService;
 import com.project.service.SignService;
 import lombok.RequiredArgsConstructor;
@@ -16,15 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.project.exception.UserExist;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.File;
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -84,7 +79,7 @@ public class SignController {
     public void checkEmail(@RequestParam String email) {
 //        request.setPassword(passwordEncoder.encode(request.getPassword()));
         System.out.println(email);
-        Optional<User> user =signService.getByEmail(email);
+        Optional<CustomUser> user =signService.getByEmail(email);
         System.out.println(user);
         if(user.isEmpty()==false) throw new UserExist();
         //1. 인증번호 전송 로직
@@ -124,7 +119,7 @@ public class SignController {
 
     @GetMapping("/signin/find-email")
     public String findEmail(@RequestParam String phoneNumber) {
-        User user = signService.getByPhoneNumber(phoneNumber).orElseThrow();
+        CustomUser user = signService.getByPhoneNumber(phoneNumber).orElseThrow();
         return user.getEmail();
     }
 
