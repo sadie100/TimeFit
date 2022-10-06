@@ -25,55 +25,32 @@ const Center = () => {
   const handleSearchCond = (data) => {
     setSearchCond(data);
   };
-  //todo : 검색 handle function
+
   const handleSearch = async (data) => {
     let sendingData = { ...data, ...searchCond };
     try {
       const { data } = await axios.get("/centers", sendingData);
-      if (data.length === 0) alert("등록된 헬스장이 없습니다.");
-      setCenterList(
-        data.map((one) => ({
-          ...one,
-          image: one.images.length > 0 ? one.images[0].path : "",
-        }))
+      if (data.length === 0) {
+        alert("등록된 헬스장이 없습니다.");
+        return setCenterList([]);
+      }
+
+      const centerList = await Promise.all(
+        data.map(async (one) => {
+          const { data: imageList } = await axios.get(`/get-center/${one.id}`);
+          const mainImage = imageList?.[0].filePath || "";
+          return {
+            ...one,
+            image: mainImage,
+          };
+        })
       );
+
+      setCenterList(centerList);
     } catch (e) {
       console.log(e);
       alert("에러가 일어났습니다.");
     }
-
-    // setCenterList([
-    //   {
-    //     _id: 1,
-    //     name: "11 헬스장",
-    //     address: "서울시 11구 11로 111-111",
-    //     image: "https://source.unsplash.com/random",
-    //   },
-    //   {
-    //     _id: 2,
-    //     name: "22 헬스장",
-    //     address: "서울시 22구 22로 222-222",
-    //     image: "https://source.unsplash.com/random",
-    //   },
-    //   {
-    //     _id: 3,
-    //     name: "33 헬스장",
-    //     address: "서울시 33구 33로 333-333",
-    //     image: "https://source.unsplash.com/random",
-    //   },
-    //   {
-    //     _id: 4,
-    //     name: "44 헬스장",
-    //     address: "서울시 44구 44로 444-444",
-    //     image: "https://source.unsplash.com/random",
-    //   },
-    //   {
-    //     _id: 5,
-    //     name: "55 헬스장",
-    //     address: "서울시 55구 55로 555-555",
-    //     image: "https://source.unsplash.com/random",
-    //   },
-    // ]);
   };
 
   const handleClickCenter = (center) => {
@@ -139,6 +116,7 @@ export default Center;
 const Background = styled.div`
   padding: 10vh 0;
   width: 100%;
+  min-width: 500px;
   background-color: white;
   display: flex;
   align-items: center;
