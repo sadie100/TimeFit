@@ -2,6 +2,7 @@ package com.project.service;
 
 import com.project.config.security.JwtTokenProvider;
 import com.project.domain.Center;
+import com.project.domain.Equipment;
 import com.project.domain.Trainer;
 import com.project.domain.User;
 import com.project.exception.EmailSigninFailed;
@@ -10,6 +11,7 @@ import com.project.repository.CenterRepository;
 import com.project.repository.TrainerRepository;
 import com.project.repository.UserRepository;
 import com.project.request.*;
+import com.project.response.CenterSignResponse;
 import com.project.response.KakaoAuth;
 import com.project.response.KakaoProfile;
 import com.project.response.TokenResponse;
@@ -66,7 +68,7 @@ public class SignService  {
         userRepository.save(user);
     }
 
-    public void joinCenter(CenterSignUp request){
+    public CenterSignResponse joinCenter(CenterSignUp request){
         Center center= Center.builder()
                 .name(request.getName())
                 .region(request.getRegion())
@@ -74,8 +76,7 @@ public class SignService  {
 //                .storeNumber(request.getStoreNumber())
                 .build();
 
-        centerRepository.save(center);
-
+        Center newCenter = centerRepository.saveAndFlush(center);
         User user= User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -84,8 +85,11 @@ public class SignService  {
                 .center(center)
                 .roles(Collections.singletonList("ROLE_CENTER"))
                 .build();
-        userRepository.save(user);
-
+        User newUser = userRepository.saveAndFlush(user);
+        return CenterSignResponse
+                .builder().centerId(newCenter.getId())
+                .userId(newUser.getMsrl())
+                .build();
 
     }
 
@@ -116,10 +120,8 @@ public class SignService  {
     }
 
 
-    public TokenResponse signInByKakao(String code){
-        KakaoAuth kakaoAuth = kakaoService.getKakaoTokenInfo(code);
-        KakaoProfile profile = kakaoService.getKakaoProfile(kakaoAuth.getAccess_token());
-        User user = userRepository.findByKakao(String.valueOf(profile.getId())).orElseThrow(UserNotFound::new);
+    public TokenResponse signInByKakao(String email){
+        User user = userRepository.findByKakao(String.valueOf(email)).orElseThrow(UserNotFound::new);
         String accessToken = jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles(), ACCESS_TOKEN_EXPIRE_TIME);
         String refreshToken = jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles(), REFRESH_TOKEN_EXPIRE_TIME);
         return TokenResponse
@@ -132,11 +134,9 @@ public class SignService  {
     }
 
     //회원가입 이후 카카오 ID 설정
-    public void joinByKakao(String email, String code){
-        KakaoAuth kakaoAuth = kakaoService.getKakaoTokenInfo(code);
-        KakaoProfile profile = kakaoService.getKakaoProfile(kakaoAuth.getAccess_token());
-        User user = userRepository.findByEmail(email).orElseThrow(UserNotFound::new);
-        user.setKakao(String.valueOf(profile.getId()));
+    public void joinByKakao(KakaoSignUp kakaoSignUp){
+        User user = userRepository.findByEmail(kakaoSignUp.getEmail()).orElseThrow(UserNotFound::new);
+        user.setKakao(kakaoSignUp.getEmail());
         userRepository.save(user);
     }
 
