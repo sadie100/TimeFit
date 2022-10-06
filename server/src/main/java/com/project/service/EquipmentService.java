@@ -11,9 +11,13 @@ import com.project.repository.CenterRepository;
 import com.project.repository.EquipmentRepository;
 import com.project.request.CenterEquipmentAdd;
 import com.project.request.EquipmentCategory;
+import com.project.response.EquipmentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -53,9 +57,20 @@ public class EquipmentService {
         return centerEquipmentRepository.findByCenter(center);
     }
 
-    public List<Equipment> getAllEquipment() {
+    public List<EquipmentResponse> getAllEquipment() {
         List<Equipment> equipment = equipmentRepository.findAll();
-        return equipment;
+        List<EquipmentResponse> response = new ArrayList();
+        for (Equipment equip : equipment){
+            response.add(
+                    EquipmentResponse
+                            .builder()
+                            .id(equip.getId())
+                            .name(equip.getName())
+                            .img("http://localhost:8080/image/"+equip.getImg())
+                            .build()
+            );
+        }
+        return response;
     }
     public Long add(EquipmentCategory request) {
         Equipment equipment = Equipment.builder()
