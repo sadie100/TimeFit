@@ -43,7 +43,11 @@ export default () => {
       })
       .catch((err) => {
         console.log(err);
-        alert("오류가 발생했습니다. 다시 시도해 주세요.");
+        if (err.response.status === 404) {
+          alert("존재하지 않는 계정입니다.");
+        } else {
+          alert("오류가 발생했습니다. 다시 시도해 주세요.");
+        }
       });
     endLoading();
   };
