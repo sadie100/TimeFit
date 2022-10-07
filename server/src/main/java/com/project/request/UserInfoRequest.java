@@ -17,9 +17,10 @@ public class UserInfoRequest {
     private Long centerId;
 
     @Builder
-    public UserInfoRequest(String email, String password) {
+    public UserInfoRequest(String email, String password, Long centerId) {
         this.email = email;
         this.password = password;
+        this.centerId = centerId;
     }
 }
 
