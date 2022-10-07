@@ -36,8 +36,12 @@ const AuthContextProvider = (props) => {
         const tokenInfo = jwt_decode(cookies.get("AccessToken"));
         // setUser(tokenInfo);
         //유저정보 가져오기
-        const { data: userInfo } = await axios.get("/user");
-        setUser({ ...userInfo, ...tokenInfo });
+        const { data } = await axios.get("/user");
+        if (!data) {
+          return setUser(tokenInfo);
+        }
+        const { email, name, phoneNumber, gender, center } = data;
+        setUser({ ...tokenInfo, email, name, phoneNumber, gender, center });
       } else {
         setAccessToken("");
         setRefreshToken("");
@@ -45,7 +49,10 @@ const AuthContextProvider = (props) => {
       }
     } catch (e) {
       console.log(e);
-      alert("유저 정보 조회 과정에서 에러가 발생했습니다.");
+      alert("유효하지 않은 계정 정보입니다. 다시 로그인해 주세요.");
+      cookies.remove("AccessToken");
+      cookies.remove("RefreshToken");
+      handleCheck();
     }
   };
 
