@@ -61,7 +61,7 @@ const Center = () => {
   };
 
   const handleClickCenter = (center) => {
-    setCenter(center._id);
+    setCenter(center.id);
     handleOpen("CenterInfoModal");
   };
 

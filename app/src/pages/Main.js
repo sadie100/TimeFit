@@ -9,7 +9,6 @@ import axios from "axios";
 
 const Main = (props) => {
   const { type, isLogin, user } = useAuth();
-  console.log(user);
   const navigate = useNavigate();
   const handleReserve = async () => {
     if (!isLogin) {

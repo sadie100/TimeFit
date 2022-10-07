@@ -30,6 +30,7 @@ const AuthContextProvider = (props) => {
         setRefreshToken(cookies.get("RefreshToken"));
 
         const tokenInfo = jwt_decode(cookies.get("AccessToken"));
+        // setUser(tokenInfo);
         //유저정보 가져오기
         const { data: userInfo } = await axios.get("/user");
         setUser({ ...userInfo, ...tokenInfo });
