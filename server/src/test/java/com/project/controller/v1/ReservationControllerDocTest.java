@@ -1,18 +1,16 @@
 package com.project.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.domain.Center;
-import com.project.domain.CenterEquipment;
-import com.project.domain.Reservation;
+import com.project.domain.*;
+import com.project.exception.CenterNotFound;
 import com.project.exception.ReservationExist;
-import com.project.repository.CenterEquipmentRepository;
-import com.project.repository.CenterRepository;
-import com.project.repository.ReservationRepository;
+import com.project.repository.*;
 import com.project.request.ReservationRequest;
 import com.project.request.ReservationSearch;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.project.request.UserSignIn;
+import com.project.request.UserSignUp;
+import com.project.service.SignService;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -22,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
@@ -45,6 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(uriScheme = "https", uriHost = "api.timefit.com",uriPort = 443)
 @ExtendWith(RestDocumentationExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ReservationControllerDocTest {
     @Autowired
     private ObjectMapper objectMapper;
@@ -57,12 +57,31 @@ public class ReservationControllerDocTest {
     private CenterRepository centerRepository;
     @Autowired
     private CenterEquipmentRepository centerEquipmentRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private EquipmentRepository equipmentRepository;
+    @Autowired
+    private SignService signService;
     @BeforeEach
     void clean(){
         reservationRepository.deleteAll();
         centerEquipmentRepository.deleteAll();
+        reservationRepository.deleteAll();
+        centerEquipmentRepository.deleteAll();
+        userRepository.deleteAll();
         centerRepository.deleteAll();
     }
+    @AfterAll
+    void clean2(){
+        reservationRepository.deleteAll();
+        centerEquipmentRepository.deleteAll();
+        reservationRepository.deleteAll();
+        centerEquipmentRepository.deleteAll();
+        userRepository.deleteAll();
+        centerRepository.deleteAll();
+    }
+
 
     @Test
     @DisplayName("예약 확인")
@@ -132,6 +151,29 @@ public class ReservationControllerDocTest {
     @DisplayName("예약 신청")
     void test2() throws Exception{
         //given
+        UserSignUp user = UserSignUp
+                .builder()
+                .email("id@naver.com")
+                .password("1234")
+                .name("이름")
+                .phoneNumber("010-2323-3333")
+                .build();
+        signService.join(user);
+        Assertions.assertEquals(1, userRepository.count());
+        UserSignIn request = UserSignIn
+                .builder()
+                .email("id@naver.com")
+                .password("1234")
+                .build();
+        String json = objectMapper.writeValueAsString(request);
+        //로그인
+        MvcResult result = mockMvc .perform(post("/signin")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
         List<Center> requestCenter = IntStream.range(0,20)
                 .mapToObj(i -> Center.builder()
                         .name("센터" +i)
@@ -156,9 +198,7 @@ public class ReservationControllerDocTest {
                         .build()).collect(Collectors.toList());
         reservationRepository.saveAll(requestReserve);
 
-        List<Long> ids = new ArrayList<>();
-        ids.add(requestEquip.get(1).getId());
-        ReservationRequest request = ReservationRequest.builder()
+        ReservationRequest request1 = ReservationRequest.builder()
                 .centerEquipmentId(requestEquip.get(1).getId())
                 .start(LocalDateTime.parse(now+"T10:45:30"))
                 .end(LocalDateTime.parse(now+"T10:55:30"))
@@ -167,7 +207,8 @@ public class ReservationControllerDocTest {
 
         this.mockMvc.perform(post("/center/{centerId}/reserve",requestCenter.get(1).getId())
                         .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
+                        .cookie(result.getResponse().getCookies())
+                        .content(objectMapper.writeValueAsString(request1))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -275,4 +316,77 @@ public class ReservationControllerDocTest {
                 ));
     }
 
+    @Test
+    @DisplayName("내 예약 내역 조회")
+    void test5() throws Exception{
+        //given
+        UserSignUp user = UserSignUp
+                .builder()
+                .email("id@naver.com")
+                .password("1234")
+                .name("이름")
+                .phoneNumber("010-2323-3333")
+                .build();
+        signService.join(user);
+        Assertions.assertEquals(1, userRepository.count());
+        UserSignIn request = UserSignIn
+                .builder()
+                .email("id@naver.com")
+                .password("1234")
+                .build();
+        String json = objectMapper.writeValueAsString(request);
+        //로그인
+        MvcResult result = mockMvc .perform(post("/signin")
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Center center = Center.builder()
+                .name("센터")
+                .region("서울")
+                .price(10000).build();
+        centerRepository.save(center);
+
+        List<Equipment> equipments = IntStream.range(0,5)
+                .mapToObj(i -> Equipment.builder()
+                        .name("헬스 기구"+i)
+                        .build()).collect(Collectors.toList());
+        equipmentRepository.saveAll(equipments);
+
+        List<CenterEquipment> requestEquip = IntStream.range(0,20)
+                .mapToObj(i -> CenterEquipment.builder()
+                        .center(center)
+                        .equipment(equipments.get(i%5))
+                        .build()).collect(Collectors.toList());
+        centerEquipmentRepository.saveAll(requestEquip);
+
+        User user1 = userRepository.findByEmail(user.getEmail()).orElseThrow(CenterNotFound::new);
+        LocalDate now = LocalDate.now();
+        List<Reservation> requestReserve = IntStream.range(0,5)
+                .mapToObj(i -> Reservation.builder()
+                        .center(center)
+                        .centerEquipment(requestEquip.get(i%5))
+                        .user(user1)
+                        .start(LocalDateTime.parse(now+"T19:15:30"))
+                        .end(LocalDateTime.parse(now+"T19:25:30"))
+                        .build()).collect(Collectors.toList());
+        reservationRepository.saveAll(requestReserve);
+
+        this.mockMvc.perform(get("/my-reserve")
+                        .contentType(APPLICATION_JSON)
+                        .cookie(result.getResponse().getCookies())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("reservation/myReservation"
+                        , responseFields(
+                                fieldWithPath("[].reservationId").description("예약 ID"),
+                                fieldWithPath("[].centerEquipId").description("예약하려는 기구 ID"),
+                                fieldWithPath("[].equipName").description("기구 이름"),
+                                fieldWithPath("[].start").description("예약 시작 시간"),
+                                fieldWithPath("[].end").description("예약 종료 시간")
+                        )
+                ));
+    }
 }

@@ -36,24 +36,24 @@ public class CenterService {
     }
 
     public CenterDetailResponse get(Long centerId) {
-        Center item = centerRepository.findById(centerId)
+        Center center = centerRepository.findById(centerId)
                 .orElseThrow(CenterNotFound::new);
         List<CenterEquipmentNumber> equipNumber = centerRepository.getEquipNumber(centerId);
-        CenterDetailResponse centerDetailResponse = new CenterDetailResponse(item, equipNumber);
+        CenterDetailResponse centerDetailResponse = new CenterDetailResponse(center, equipNumber);
         return centerDetailResponse;
     }
 
-//    public List<CenterImgResponse> getImg(Long itemId){
-//        Center item = centerRepository.findById(itemId)
+//    public List<CenterImgResponse> getImg(Long centerId){
+//        Center center = centerRepository.findById(centerId)
 //                .orElseThrow(CenterNotFound::new);
-//        return centerImgRepository.findByItem(item).stream()
+//        return centerImgRepository.findBycenter(center).stream()
 //                .map(CenterImgResponse::new)
 //                .collect(Collectors.toList());
 //    }
 
 
-    public void updateView(Long itemId) {
-        centerRepository.updateView(itemId);
+    public void updateView(Long centerId) {
+        centerRepository.updateView(centerId);
     }
 
     public List<Center> findAllCenter(){

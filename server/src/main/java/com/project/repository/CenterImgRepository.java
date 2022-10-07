@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface CenterImgRepository extends JpaRepository<CenterImages, Long> {
-    List<CenterImages> findByItem(Center center);
+    List<CenterImages> findBycenter(Center center);
 
 }

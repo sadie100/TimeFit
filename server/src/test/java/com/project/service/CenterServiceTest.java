@@ -45,37 +45,37 @@ class CenterServiceTest {
     @Test
     @DisplayName("아이템 등록")
     void test1(){
-        Center requestItem = Center.builder()
+        Center requestcenter = Center.builder()
                 .name("상품")
                 .build();
 
-        centerRepository.save(requestItem);
+        centerRepository.save(requestcenter);
 
         Assertions.assertEquals(1L,centerRepository.count());
-        Center item = centerRepository.findAll().get(0);
-        assertEquals("상품", item.getName());
+        Center center = centerRepository.findAll().get(0);
+        assertEquals("상품", center.getName());
     }
 
     @Test
     @DisplayName("페이지 불러오기")
     void test2(){
         //given
-        List<Center> requestItems = IntStream.range(0,20)
+        List<Center> requestcenters = IntStream.range(0,20)
                 .mapToObj(i -> Center.builder()
                         .name("상품 " +i)
                         .build()).collect(Collectors.toList());
-        centerRepository.saveAll(requestItems);
-        CenterSearch itemSearch = CenterSearch.builder()
+        centerRepository.saveAll(requestcenters);
+        CenterSearch centerSearch = CenterSearch.builder()
                 .page(1)
                 .build();
 
         //when
-        List<CenterResponse> items = centerService.getList(itemSearch);
+        List<CenterResponse> centers = centerService.getList(centerSearch);
 
         //then
-        assertEquals(10L, items.size());
-        assertEquals("상품 19", items.get(0).getName());
-        assertEquals("상품 15", items.get(4).getName());
+        assertEquals(10L, centers.size());
+        assertEquals("상품 19", centers.get(0).getName());
+        assertEquals("상품 15", centers.get(4).getName());
 
 
     }
@@ -83,30 +83,30 @@ class CenterServiceTest {
 //    @DisplayName("아이템 이미지 불러오기")
 //    void test3(){
 //        //given
-//        Center requestItem = Center.builder()
+//        Center requestcenter = Center.builder()
 //                .name("상품")
 //                .build();
 //
-//        centerRepository.save(requestItem);
+//        centerRepository.save(requestcenter);
 //
 //
 //
 //        CenterImages images1 = CenterImages.builder()
 //                .originFileName("123")
 //                .newFileName("123")
-//                .item(requestItem).build();
+//                .center(requestcenter).build();
 //        centerImgRepository.save(images1);
 //
 //        CenterImages images2 = CenterImages.builder()
 //                .originFileName("456")
 //                .newFileName("444")
-//                .item(requestItem).build();
+//                .center(requestcenter).build();
 //        centerImgRepository.save(images2);
 //
-//        Center item = centerRepository.findAll().get(0);
-//        assertEquals("상품", item.getName());
-//        Set<CenterImages> itemImages = item.getImages();
-//        System.out.println(item.getImages());
+//        Center center = centerRepository.findAll().get(0);
+//        assertEquals("상품", center.getName());
+//        Set<CenterImages> centerImages = center.getImages();
+//        System.out.println(center.getImages());
 //    }
 
 

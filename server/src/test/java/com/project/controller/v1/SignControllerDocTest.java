@@ -1,6 +1,7 @@
 package com.project.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.repository.ReservationRepository;
 import com.project.repository.UserRepository;
 import com.project.request.UserSignIn;
 import com.project.request.UserSignUp;
@@ -53,13 +54,13 @@ class SignControllerDocTest {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private SignService signService;
 
 
     @BeforeEach
     void clean(){
+
         userRepository.deleteAll();
     }
 

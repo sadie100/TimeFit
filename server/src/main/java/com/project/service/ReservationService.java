@@ -3,6 +3,7 @@ package com.project.service;
 import com.project.domain.Center;
 import com.project.domain.CenterEquipment;
 import com.project.domain.Reservation;
+import com.project.domain.User;
 import com.project.exception.CenterNotFound;
 import com.project.exception.ReservationExist;
 import com.project.repository.CenterEquipmentRepository;
@@ -12,6 +13,7 @@ import com.project.request.ReservationRequest;
 import com.project.request.ReservationSearch;
 import com.project.response.ReservationDetailResponse;
 import com.project.response.ReservationResponse;
+import com.project.response.ReservationUserResponse;
 import com.project.response.TempResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +44,7 @@ public class ReservationService {
         }
         return reservationList;
     }
-    public void requestReservation(Long id, ReservationRequest request){
+    public void requestReservation(Long id, ReservationRequest request, User user){
         //예약 있을 시 예외처리 필요함
 
         if(!reservationRepository.check(id, request)){
@@ -57,12 +59,18 @@ public class ReservationService {
                 .centerEquipment(ce)
                 .start(request.getStart())
                 .end(request.getEnd())
-//                .user(user)
+                .user(user)
                 .build();
         reservationRepository.save(rv);
     }
 
     public void cancelReservation(Long centerId, Long reservationId) {
         reservationRepository.deleteById(reservationId);
+    }
+
+    public List<ReservationUserResponse> getMyReservation(User user){
+        return reservationRepository.getMyReserve(user).stream()
+                .map(ReservationUserResponse::new)
+                .collect(Collectors.toList());
     }
 }

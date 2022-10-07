@@ -41,7 +41,7 @@ public class User implements UserDetails {
     @Column(length = 100)
     private String name;
 
-    @Column(nullable = false, unique = true,length = 15)
+    @Column(unique = true,length = 15)
     private String phoneNumber;
 
     @Column(length = 2)

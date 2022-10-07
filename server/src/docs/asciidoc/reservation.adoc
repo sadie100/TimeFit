@@ -14,7 +14,6 @@ include::{snippets}/reservation/list/path-parameters.adoc[]
 
 === 응답
 include::{snippets}/reservation/list/http-response.adoc[]
-
 include::{snippets}/reservation/list/response-fields.adoc[]
 
 === CURL
@@ -48,4 +47,13 @@ include::{snippets}/reservation/cancel/path-parameters.adoc[]
 === 응답
 include::{snippets}/reservation/cancel/http-response.adoc[]
 
+=== CURL
+
+== 내 예약내역 조회
+=== 요청
+include::{snippets}/reservation/myReservation/http-request.adoc[]
+
+=== 응답
+include::{snippets}/reservation/myReservation/http-response.adoc[]
+include::{snippets}/reservation/myReservation/response-fields.adoc[]
 === CURL

@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface CenterRepositoryCustom {
 
-    List<Center> getList(CenterSearch itemSearch);
+    List<Center> getList(CenterSearch centerSearch);
     List<CenterEquipmentNumber> getEquipNumber(Long centerId);
-    void updateView(Long itemId);
+    void updateView(Long centerId);
 
 
 }

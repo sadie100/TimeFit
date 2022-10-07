@@ -101,12 +101,12 @@ class CenterControllerTest {
     @DisplayName("센터 필터링 조회")
     void test3() throws Exception {
         //given
-        List<Center> requestItems = IntStream.range(0,20)
+        List<Center> requestcenters = IntStream.range(0,20)
                 .mapToObj(i -> Center.builder()
                         .name("센터" +i)
                         .region("도시"+i)
                         .build()).collect(Collectors.toList());
-        centerRepository.saveAll(requestItems);
+        centerRepository.saveAll(requestcenters);
 
         //expected
         mockMvc.perform(get("/centers?page=1&size=10&region=도시1")
@@ -152,7 +152,7 @@ class CenterControllerTest {
 
         List<CenterImages> images =  IntStream.range(0,3)
                 .mapToObj(i -> CenterImages.builder()
-                        .item(center)
+                        .center(center)
                         .originFileName("origin_name"+i)
                         .newFileName("new_name"+i)
                         .filePath("경로/"+i)
@@ -209,14 +209,14 @@ class CenterControllerTest {
 //        CenterImages images1 = CenterImages.builder()
 //                .originFileName("123")
 //                .newFileName("123")
-//                .item(center).build();
-//        itemImgRepository.save(images1);
+//                .center(center).build();
+//        centerImgRepository.save(images1);
 //
 //        CenterImages images2 = CenterImages.builder()
 //                .originFileName("456")
 //                .newFileName("444")
-//                .item(center).build();
-//        itemImgRepository.save(images2);
+//                .center(center).build();
+//        centerImgRepository.save(images2);
 //
 //        //expected
 //        mockMvc.perform(get("/centers/{centerId}/img",center.getId())

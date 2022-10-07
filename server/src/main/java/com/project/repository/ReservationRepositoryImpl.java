@@ -5,14 +5,11 @@ import com.project.request.ReservationRequest;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.project.domain.QCenter.center;
-import static com.project.domain.QCenterEquipment.centerEquipment;
 import static com.project.domain.QReservation.reservation;
 
 @RequiredArgsConstructor //자동으로 생성자 주입
@@ -50,19 +47,15 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
                 .fetch();
     }
 
-//    @Override
-//    @Transactional
-//    public void saveReservation(Long id, ReservationRequest request){
-//        Center ct = jpaQueryFactory.selectFrom(center)
-//                .where(center.id.eq(id)).fetchOne();
-//        CenterEquipment eq = jpaQueryFactory.selectFrom(centerEquipment)
-//                .where(centerEquipment.id.eq(request.getEquipmentId())).fetchOne();
-//        Reservation rv = Reservation.builder()
-//                .center(ct)
-//                .equipment(eq)
-//                .start(request.getStart())
-//                .end(request.getEnd())
-//                .build();
-////        reservationRepository.save(rv);
-//    }
+    @Override
+    public List<Reservation> getMyReserve(User user){
+        LocalDateTime now = LocalDateTime.now();
+        return jpaQueryFactory.selectFrom(reservation)
+                .where(reservation.user.eq(user),
+                        reservation.start.goe(LocalDateTime.from(now)))
+                .orderBy(reservation.start.asc())
+                .fetch();
+    }
+
+
 }

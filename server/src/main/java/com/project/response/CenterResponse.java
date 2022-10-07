@@ -15,7 +15,7 @@ public class CenterResponse {
     private final List<CenterImgResponse> images;
 
 //    @Builder //빌더 패턴 새용
-//    public ItemResponse(Long id, String name, String topNotes, String brand, String season) {
+//    public centerResponse(Long id, String name, String topNotes, String brand, String season) {
 //        this.id = id;
 //        this.name = name;
 //        this.topNotes = topNotes;
