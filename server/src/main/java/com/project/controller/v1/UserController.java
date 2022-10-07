@@ -4,6 +4,7 @@ import com.project.domain.Center;
 import com.project.domain.User;
 import com.project.exception.CookieNotFound;
 import com.project.exception.UserExist;
+import com.project.exception.UserNotFound;
 import com.project.request.*;
 import com.project.response.CenterSignResponse;
 import com.project.response.TokenResponse;
@@ -20,6 +21,7 @@ import org.springframework.web.util.WebUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -54,9 +56,12 @@ public class UserController {
                 .phoneNumber(user.getPhoneNumber())
                 .build();
     }
+
+    @Transactional
     @PostMapping("/user/change-password")
-    public UserInfoResponse changePassword(@RequestBody UserInfoRequest userInfoRequest ) {
+    public UserInfoResponse changePassword(@AuthenticationPrincipal User loginUser, @RequestBody UserInfoRequest userInfoRequest ) {
         User user = userInfoService.changePassword(userInfoRequest);
+        if(loginUser.getMsrl()!=user.getMsrl()) throw new UserNotFound();
         return UserInfoResponse.builder().email(user.getEmail())
                 .gender(user.getGender())
                 .birth(user.getBirth())
@@ -67,9 +72,11 @@ public class UserController {
                 .build();
     }
 
+    @Transactional
     @PostMapping("/user/change-center")
-    public UserInfoResponse changeCenter(@RequestBody UserInfoRequest userInfoRequest ) {
+    public UserInfoResponse changeCenter(@AuthenticationPrincipal User loginUser, @RequestBody UserInfoRequest userInfoRequest ) {
         User user = userInfoService.changeCenter(userInfoRequest);
+        if(loginUser.getMsrl()!=user.getMsrl()) throw new UserNotFound();
         return UserInfoResponse.builder().email(user.getEmail())
                 .gender(user.getGender())
                 .birth(user.getBirth())
