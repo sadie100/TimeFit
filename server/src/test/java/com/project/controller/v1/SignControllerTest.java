@@ -1,6 +1,7 @@
 package com.project.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.domain.User;
 import com.project.repository.UserRepository;
 import com.project.request.UserSignIn;
 import com.project.request.UserSignUp;
@@ -15,11 +16,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @SpringBootTest
@@ -54,7 +56,7 @@ class SignControllerTest {
                 .phoneNumber("010-2323-3333")
                 .build();
         signService.join(user);
-        Assertions.assertEquals(1, userRepository.count());
+        assertEquals(1, userRepository.count());
         UserSignIn request = UserSignIn
                 .builder()
                 .email("id@naver.com")
@@ -81,7 +83,7 @@ class SignControllerTest {
                 .phoneNumber("010-2323-3333")
                 .build();
         signService.join(user);
-        Assertions.assertEquals(1, userRepository.count());
+        assertEquals(1, userRepository.count());
         UserSignIn request = UserSignIn
                 .builder()
                 .email("id@naver.com")
@@ -123,10 +125,10 @@ class SignControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
-//        Assertions.assertEquals(1, userRepository.count());
-//        User user = userRepository.findAll().get(0);
-//        assertEquals("id@naver.com",user.getEmail());
-//        assertEquals("이름",user.getName());
+        assertEquals(1, userRepository.count());
+        User user = userRepository.findAll().get(0);
+        assertEquals("id@naver.com",user.getEmail());
+        assertEquals("이름",user.getName());
     }
 
     @Test
@@ -201,6 +203,7 @@ class SignControllerTest {
 
         mockMvc .perform(get("/signin/find-email?phoneNumber=010-3333-3333"))
                 .andExpect(status().isOk())
+                .andExpect(content().string("id@naver.com"))
                 .andDo(print());
     }
 
@@ -215,7 +218,6 @@ class SignControllerTest {
                 .phoneNumber("010-3333-3333")
                 .build();
         signService.join(user);
-
         mockMvc .perform(get("/signin/find-password?email=id@naver.com"))
                 .andExpect(status().isOk())
                 .andDo(print());

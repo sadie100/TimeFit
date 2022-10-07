@@ -51,6 +51,7 @@ class SignServiceTest {
                 .builder()
                 .email("id@naver.com")
                 .password("1234")
+                .phoneNumber("010-3398-1830")
                 .name("이름")
                 .build();
         signService.join(user);
@@ -70,6 +71,7 @@ class SignServiceTest {
                 .builder()
                 .email("id@naver.com")
                 .password("1234")
+                .phoneNumber("0103333333")
                 .name("이름")
                 .build();
         signService.join(user);
