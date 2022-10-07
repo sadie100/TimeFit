@@ -38,7 +38,7 @@ const CenterReserve = () => {
     async function fetchData() {
       //예약데이터를 받는 api
       try {
-        const { data } = axiosInstance.get("/my-reserve");
+        const res = await axios.get("/my-reserve");
 
         // const { data } = useApiController({
         //   url: "/my-reserve",
@@ -47,7 +47,6 @@ const CenterReserve = () => {
         //     Authorization: accessToken,
         //   },
         // });
-        console.log(data);
       } catch (e) {
         console.log(e);
         //에러 타입에 따라 처리

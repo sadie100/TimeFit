@@ -28,9 +28,9 @@ const useAxiosInterceptor = () => {
     }
   );
   instance.interceptors.response.use(
-    (config) => {
+    (response) => {
       endLoading();
-      return config;
+      return response;
     },
     (error) => {
       console.log(error);
