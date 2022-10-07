@@ -1,11 +1,10 @@
 //
-// 센터 예약 확인 화면
+// 센터 예약 현황 화면
 //
 
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ApiController from "lib/AxiosInterceptor";
 import { Layout, SampleData } from "components/Center";
 import styled from "styled-components";
 import ReservePopperContextProvider from "contexts/reservePopperContext";
@@ -15,14 +14,19 @@ import * as FormComponent from "components/form/StyledComponents";
 import { MACHINE_NAME } from "constants/center";
 import TimeColumn from "pages/reserve/TimeColumn";
 import ReservationTable from "pages/reserve/ReservationTable";
+import { useAuth } from "hooks/useAuthContext";
+import useAxiosInterceptor from "hooks/useAxiosInterceptor";
 
 const CenterReserve = () => {
   const { StyledSelect, Line, StyledInput, Label, LineContent, ErrorDiv } =
     FormComponent;
   const navigate = useNavigate();
+  const axiosInstance = useAxiosInterceptor();
+
   //선택한 기구
   const [equipment, setEquipment] = useState("");
   const [itemData, setItemData] = useState([]);
+  const { accessToken } = useAuth();
 
   const handleEquipment = (e) => {
     const value = e.currentTarget.value;
@@ -31,22 +35,28 @@ const CenterReserve = () => {
 
   useEffect(() => {
     //센터 정보 받기
-    // async function fetchData() {
-    //   try {
-    //     const { data } = ApiController({
-    //       url: "/api/?",
-    //       method: "get",
-    //     });
-    //     //예약데이터를 받는 api
-    //   } catch (e) {
-    //     console.log(e);
-    //     //에러 타입에 따라 처리
-    //     //우선 로그인 없는 경우만 생각해서 구현. 추후수정
-    //     alert("로그인 정보가 없습니다. 로그인 화면으로 이동합니다.");
-    //     return navigate("/login");
-    //   }
-    // }
-    // fetchData();
+    async function fetchData() {
+      //예약데이터를 받는 api
+      try {
+        const { data } = axiosInstance.get("/my-reserve");
+
+        // const { data } = useApiController({
+        //   url: "/my-reserve",
+        //   method: "get",
+        //   headers: {
+        //     Authorization: accessToken,
+        //   },
+        // });
+        console.log(data);
+      } catch (e) {
+        console.log(e);
+        //에러 타입에 따라 처리
+        //우선 로그인 없는 경우만 생각해서 구현. 추후수정
+        alert("로그인 정보가 없습니다. 로그인 화면으로 이동합니다.");
+        return navigate("/login");
+      }
+    }
+    fetchData();
     setItemData([
       [
         {

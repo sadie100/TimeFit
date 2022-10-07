@@ -5,7 +5,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ApiController from "lib/AxiosInterceptor";
 import { Layout, SampleData } from "components/Center";
 import styled from "styled-components";
 import ReservePopperContextProvider from "contexts/reservePopperContext";

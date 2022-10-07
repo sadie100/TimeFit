@@ -1,12 +1,18 @@
 import React, { useContext } from "react";
 import axios from "axios";
 import { LoadingContext } from "contexts/loadingContext";
-
-const ApiController = ({ url, method, data }) => {
+// method: "post",
+//         url: "/upload-equipment",
+//         data: formData,
+//         headers: {
+//           "Content-Type": "multipart/form-data",
+//         },
+const useApiController = ({ url, method, data, ...props }) => {
   const instance = axios.create({
-    baseUrl: url,
+    url: url,
     method,
     data,
+    ...props,
     timeout: 1000,
   });
   const { startLoading, endLoading } = useContext(LoadingContext);
@@ -27,4 +33,4 @@ const ApiController = ({ url, method, data }) => {
   );
 };
 
-export default ApiController;
+export default useApiController;
