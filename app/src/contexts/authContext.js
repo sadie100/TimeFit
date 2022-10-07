@@ -4,6 +4,8 @@ import { Cookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 import { useLocation } from "react-router-dom";
 import { ROLE } from "constants/center";
+import useAxiosInterceptor from "hooks/useAxiosInterceptor";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext({
   accessToken: "",
@@ -21,6 +23,8 @@ const AuthContextProvider = (props) => {
   const [refreshToken, setRefreshToken] = useState("");
   const [user, setUser] = useState(null);
   const [type, setType] = useState("user");
+  const instance = useAxiosInterceptor();
+  const navigate = useNavigate();
   //const { pathname } = useLocation();
 
   const checkToken = async () => {
@@ -64,9 +68,19 @@ const AuthContextProvider = (props) => {
     }
   }, [user]);
 
-  const handleLogout = () => {
-    cookies.remove("AccessToken");
-    cookies.remove("RefreshToken");
+  const handleLogout = async () => {
+    if (!window.confirm("로그아웃 하시겠습니까?")) return;
+    try {
+      await instance.get("/signout");
+      alert("로그아웃 완료되었습니다.");
+      handleCheck();
+      navigate("/");
+    } catch (e) {
+      console.log(e);
+      alert("로그아웃 실패했습니다.");
+    }
+    // cookies.remove("AccessToken");
+    // cookies.remove("RefreshToken");
   };
 
   return (
