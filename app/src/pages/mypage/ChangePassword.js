@@ -10,25 +10,35 @@ import {
   StyledForm,
   LineContent,
 } from "components/form/StyledComponents";
+import { useAuth } from "hooks/useAuthContext";
+import useAxiosInterceptor from "hooks/useAxiosInterceptor";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState("");
+  const { user } = useAuth();
+  const axios = useAxiosInterceptor();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     //비밀번호 변경 로직
     e.preventDefault();
     if (!window.confirm("비밀번호를 변경하시겠습니까?")) return;
-    //비밀번호 변경 로직
-    alert("비밀번호가 변경되었습니다.");
-    setValue("");
+    try {
+      //비밀번호 변경 로직
+      await axios.post("/user/change-password", {
+        email: user.email,
+        password: value,
+      });
+      alert("비밀번호가 변경되었습니다.");
+      navigate("/mypage");
+    } catch (e) {
+      console.log(e);
+      alert("에러가 발생했습니다.");
+    }
   };
 
   const handleChange = (e) => {
     setValue(e.currentTarget.value);
-  };
-  const handleCancel = () => {
-    if (!window.confirm("예약을 취소하시겠습니까?")) return;
   };
 
   return (
