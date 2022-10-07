@@ -9,18 +9,21 @@ import "./styles/global.css";
 import LoadingContextProvider from "contexts/loadingContext";
 import AxiosInterceptor from "lib/AxiosInterceptor";
 import ModalContextProvider from "contexts/modalContext";
+import AuthContextProvider from "contexts/authContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <BrowserRouter>
     <ThemeProvider theme={theme}>
-      <ModalContextProvider>
-        <LoadingContextProvider>
-          <AxiosInterceptor />
-          <Route />
-        </LoadingContextProvider>
-      </ModalContextProvider>
+      <AuthContextProvider>
+        <ModalContextProvider>
+          <LoadingContextProvider>
+            <AxiosInterceptor />
+            <Route />
+          </LoadingContextProvider>
+        </ModalContextProvider>
+      </AuthContextProvider>
     </ThemeProvider>
   </BrowserRouter>
 );

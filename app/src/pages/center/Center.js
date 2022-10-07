@@ -11,6 +11,7 @@ import { ModalContext } from "contexts/modalContext";
 import TuneIcon from "@mui/icons-material/Tune";
 import CenterFilterModal from "pages/center/CenterFilterModal";
 import CenterInfoModal from "pages/center/CenterInfoModal";
+import blank_image from "assets/image/blank_image.png";
 
 const Center = () => {
   const formId = "UserFindCenter";
@@ -20,54 +21,39 @@ const Center = () => {
   const [searchCond, setSearchCond] = useState(null);
   const [centerList, setCenterList] = useState([]);
   const [center, setCenter] = useState("");
-  const { handleOpen } = useContext(ModalContext);
+  const { handleOpen, handleClose } = useContext(ModalContext);
 
   const handleSearchCond = (data) => {
     setSearchCond(data);
+    handleClose();
   };
-  //todo : 검색 handle function
+
   const handleSearch = async (data) => {
     let sendingData = { ...data, ...searchCond };
-    // try {
-    //   const result = await axios.post("url", data);
-    //   const { data } = result;
-    //   setCenterList(data);
-    // } catch (e) {
-    //   console.log(e);
-    //   alert("에러가 일어났습니다.");
-    // }
-    setCenterList([
-      {
-        _id: 1,
-        name: "11 헬스장",
-        address: "서울시 11구 11로 111-111",
-        image: "https://source.unsplash.com/random",
-      },
-      {
-        _id: 2,
-        name: "22 헬스장",
-        address: "서울시 22구 22로 222-222",
-        image: "https://source.unsplash.com/random",
-      },
-      {
-        _id: 3,
-        name: "33 헬스장",
-        address: "서울시 33구 33로 333-333",
-        image: "https://source.unsplash.com/random",
-      },
-      {
-        _id: 4,
-        name: "44 헬스장",
-        address: "서울시 44구 44로 444-444",
-        image: "https://source.unsplash.com/random",
-      },
-      {
-        _id: 5,
-        name: "55 헬스장",
-        address: "서울시 55구 55로 555-555",
-        image: "https://source.unsplash.com/random",
-      },
-    ]);
+    console.log(sendingData);
+    try {
+      const { data } = await axios.get("/centers", { params: sendingData });
+      if (data.length === 0) {
+        alert("등록된 헬스장이 없습니다.");
+        return setCenterList([]);
+      }
+
+      const centerList = await Promise.all(
+        data.map(async (one) => {
+          const { data: imageList } = await axios.get(`/get-center/${one.id}`);
+          const mainImage = imageList?.[0]?.filePath || "";
+          return {
+            ...one,
+            image: mainImage,
+          };
+        })
+      );
+
+      setCenterList(centerList);
+    } catch (e) {
+      console.log(e);
+      alert("에러가 일어났습니다.");
+    }
   };
 
   const handleClickCenter = (center) => {
@@ -83,7 +69,7 @@ const Center = () => {
     [
       {
         type: "text",
-        name: "search",
+        name: "name",
         button: "검색",
         buttonType: "submit",
         placeholder: "헬스장 이름으로 헬스장을 검색해 보세요.",
@@ -106,8 +92,17 @@ const Center = () => {
         <ListWrapper>
           {centerList.map((center, idx) => {
             return (
-              <CenterWrapper onClick={() => handleClickCenter(center)}>
-                <img width="50%" height="100%" src={center.image} />
+              <CenterWrapper
+                onClick={() => handleClickCenter(center)}
+                key={idx}
+              >
+                <img
+                  style={{
+                    maxWidth: "50%",
+                    height: "100%",
+                  }}
+                  src={center.image || blank_image}
+                />
                 <TextWrapper>
                   <CenterName>{center.name}</CenterName>
                   <div style={{ fontFamily: "Noto Sans KR" }}>
@@ -119,7 +114,10 @@ const Center = () => {
           })}
         </ListWrapper>
         <CenterInfoModal center={center} />
-        <CenterFilterModal handleSearchCond={handleSearchCond} />
+        <CenterFilterModal
+          handleSearchCond={handleSearchCond}
+          searchCond={searchCond}
+        />
       </Background>
     </>
   );
@@ -130,6 +128,7 @@ export default Center;
 const Background = styled.div`
   padding: 10vh 0;
   width: 100%;
+  min-width: 500px;
   background-color: white;
   display: flex;
   align-items: center;
@@ -149,7 +148,6 @@ const FilterDiv = styled.div`
   align-items: center;
 `;
 const ListWrapper = styled.div`
-  //border: 1px solid blue;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 200px;
@@ -171,8 +169,11 @@ const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  flex-wrap: wrap;
+  width: 100%;
 `;
-const CenterName = styled.span`
+const CenterName = styled.div`
   font-family: Noto Sans KR;
   font-weight: bold;
+  width: 100%;
 `;

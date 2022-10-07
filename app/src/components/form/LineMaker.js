@@ -105,6 +105,7 @@ export default (props) => {
                         <input
                           type="radio"
                           id={btn.value}
+                          value={btn.value}
                           name={formLine.name}
                           error={errors[formLine.name]}
                           {...formLine}
@@ -183,6 +184,29 @@ export default (props) => {
                   {...formStates}
                   {...props}
                 />
+              ) : formLine.type === "file" ? (
+                <StyledInput
+                  type={"file"}
+                  key={`${formId}-${formLine.name}`}
+                  name={formLine.name}
+                  error={errors[formLine.name]}
+                  {...formLine}
+                  {...register(formLine.name, {
+                    ...formLine.register,
+                    validate: (value) => {
+                      let totalSize = 0;
+                      for (let i = 0; i < value.length; i++) {
+                        totalSize += value[i].size;
+                      }
+                      if (totalSize > 10485760) {
+                        alert("파일 크기가 80MB를 넘지 않도록 등록해 주세요.");
+                        return false;
+                      } else {
+                        return true;
+                      }
+                    },
+                  })}
+                ></StyledInput>
               ) : (
                 <StyledInput
                   type={formLine.type}

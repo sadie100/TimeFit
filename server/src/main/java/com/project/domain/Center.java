@@ -26,8 +26,8 @@ public class Center {
     private String region;
     private String address;
     private Integer price;
-
     private String phoneNumber;
+
     private String storeNumber;
 
     @Column(columnDefinition = "integer default 0", nullable = false)
@@ -40,4 +40,21 @@ public class Center {
     @OneToMany(mappedBy ="center", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Trainer> trainers;
 
+    public CenterEditor.CenterEditorBuilder toEditor(){
+        return CenterEditor
+                .builder()
+                .phoneNumber(phoneNumber)
+                .price(price)
+                .address(address)
+                .region(region)
+                .name(name);
+    }
+
+    public void edit(CenterEditor centerEditor){
+        price = centerEditor.getPrice();
+        region = centerEditor.getRegion();
+        address = centerEditor.getAddress();
+        name =centerEditor.getName();
+        phoneNumber = centerEditor.getPhoneNumber();
+    }
 }

@@ -4,18 +4,52 @@ import styled from "styled-components";
 import FormMaker from "components/form/FormMaker";
 import SubmitButton from "components/form/SubmitButton";
 import kakaoButton from "assets/image/img-login-kakao.svg";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useLoading } from "hooks/useLoadingContext";
+import { useAuth } from "hooks/useAuthContext";
 
 export default () => {
-  const Kakao = "KAKAO";
+  const navigate = useNavigate();
+  const { startLoading, endLoading } = useLoading();
+  const { checkToken } = useAuth();
+  const handleKakao = async () => {
+    // try {
+    //   if (window.Kakao) {
+    //     const kakao = window.Kakao;
+    //     // 중복 initialization 방지
+    //     if (!kakao.isInitialized()) {
+    //       // 두번째 step 에서 가져온 javascript key 를 이용하여 initialize
+    //       kakao.init(process.env.REACT_APP_KAKAO_KEY);
+    //     }
+    //     const result = await kakao.Auth.authorize({
+    //       redirectUri: process.env.REACT_APP_KAKAO_REDIRECT,
+    //     });
+    //     console.log(result);
+    //   }
+    // } catch (e) {
+    //   console.log(e);
+    //   alert("에러가 발생했습니다.");
+    // }
+  };
   const onSubmit = (data) => {
+    startLoading();
     axios
-      .post("http://localhost:8080/signin/", data, { withCredentials: true })
-      .then((res) => console.log(res))
+      .post("/signin", data, { withCredentials: true })
+      .then((res) => {
+        if (res.status === 200) {
+          checkToken();
+          navigate("/");
+        }
+      })
       .catch((err) => {
         console.log(err);
-        alert("오류가 발생했습니다. 다시 시도해 주세요.");
+        if (err.response.status === 404) {
+          alert("존재하지 않는 계정입니다.");
+        } else {
+          alert("오류가 발생했습니다. 다시 시도해 주세요.");
+        }
       });
+    endLoading();
   };
   const formData = () => [
     {
@@ -51,12 +85,15 @@ export default () => {
           }}
         >
           다른 계정으로 로그인 하기
-          <a href={Kakao}>
+          <a
+            href={`${process.env.REACT_APP_KAKAO_LOGIN}?client_id=${process.env.REACT_APP_KAKAO_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT}&response_type=code`}
+          >
             <img
               src={kakaoButton}
               width="50px"
               height="50px"
               style={{ cursor: "pointer" }}
+              // onClick={handleKakao}
             />
           </a>
           <div style={{ display: "flex", gap: "10px" }}>
@@ -69,19 +106,6 @@ export default () => {
     );
   };
 
-  const HelloHandler = (e) => {
-    axios
-      .get("http://localhost:8080/helloworld/string/", {
-        withCredentials: true,
-      })
-      .then((res) => console.log(res));
-  };
-  const HelloHandler2 = (e) => {
-    axios
-      .get("http://localhost:8080/hello/string/", { withCredentials: true })
-      .then((res) => console.log(res));
-  };
-
   return (
     <Background>
       <div className="title">로그인</div>
@@ -90,26 +114,6 @@ export default () => {
         onSubmit={onSubmit}
         formDownside={formDownside}
       />
-      {/* <div>
-        <a href={Kakao}>카카오 로그인</a>
-        <form onSubmit={submitHandler}>
-          <label>Email</label>
-          <input type="uid" value={Email} onChange={emailHandler}></input>
-          <label>Password</label>
-          <input
-            type="password"
-            value={Password}
-            onChange={passwordHandler}
-          ></input>
-          <button type="submit">Login</button>
-        </form>
-      </div>
-      <div>
-        <button onClick={HelloHandler}>Hello</button>
-      </div>
-      <div>
-        <button onClick={HelloHandler2}>Hello2</button>
-      </div> */}
     </Background>
   );
 };

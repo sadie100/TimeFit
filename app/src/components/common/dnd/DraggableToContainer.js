@@ -21,21 +21,22 @@ export default ({ fromItems, items, setItems, setFromItems, type }) => {
   const heightGap = upListHeight + gap;
 
   const moveBox = useCallback(
-    (id, left, top, status) => {
+    (id, xloc, yloc, status) => {
       status === "UpToDown"
         ? setItems([
             ...items,
             {
-              component: fromItems[id].component,
+              ...fromItems[id],
+              img: fromItems[id].img,
               name: fromItems[id].name,
-              top: top,
-              left: left,
+              yloc: yloc,
+              xloc: xloc,
             },
           ])
         : setItems(
             update(items, {
               [id]: {
-                $merge: { left, top },
+                $merge: { xloc, yloc },
               },
             })
           );
@@ -55,12 +56,12 @@ export default ({ fromItems, items, setItems, setFromItems, type }) => {
         const status = handleStatus(item, [...fromItems]);
         setFromItems(fromItems.filter(({ name }) => name !== item.name));
         const delta = monitor.getDifferenceFromInitialOffset();
-        let left = Math.round(item.left + delta.x);
-        let top =
+        let xloc = Math.round(item.xloc + delta.x);
+        let yloc =
           status === "UpToDown"
-            ? Math.round(item.top + delta.y - heightGap)
-            : Math.round(item.top + delta.y);
-        moveBox(item.id, left, top, status);
+            ? Math.round(item.yloc + delta.y - heightGap)
+            : Math.round(item.yloc + delta.y);
+        moveBox(item.id, xloc, yloc, status);
         return undefined;
       },
       collect: (monitor) => ({

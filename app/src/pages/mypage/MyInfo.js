@@ -56,8 +56,8 @@ const MyInfo = () => {
         name: "gender",
         label: "성별",
         buttons: [
-          { label: "남성", value: "man" },
-          { label: "여성", value: "woman" },
+          { label: "남성", value: "남" },
+          { label: "여성", value: "여" },
         ],
         register: {
           required: "생년월일을 입력해 주세요.",
@@ -65,7 +65,7 @@ const MyInfo = () => {
       },
       {
         type: "number",
-        name: "phone",
+        name: "phoneNumber",
         label: "휴대전화",
         placeholder: "휴대전화 번호를 입력해 주세요.",
       },

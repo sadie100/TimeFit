@@ -5,7 +5,7 @@ import { useTheme } from "styled-components";
 const minDistance = 0;
 
 const Slider = ({ formLine, setValue, ...rest }) => {
-  const { name } = formLine;
+  const { name, minName, maxName } = formLine;
   const theme = useTheme();
   const [range, setRange] = useState([0, 50]);
 
@@ -30,7 +30,8 @@ const Slider = ({ formLine, setValue, ...rest }) => {
   };
 
   useEffect(() => {
-    setValue(name, range);
+    setValue(minName, range[0] * 10000);
+    setValue(maxName, range[1] * 10000);
   }, [range]);
 
   return (
@@ -42,7 +43,6 @@ const Slider = ({ formLine, setValue, ...rest }) => {
         valueLabelDisplay="off"
         valueLabelFormat={(x) => `${x}만원`}
         onChange={handleChange}
-        onDragEnd={() => console.log("df")}
         min={0}
         max={50}
         disableSwap

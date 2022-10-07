@@ -6,9 +6,11 @@ import Button from "components/common/Button";
 import { useTheme } from "styled-components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { MACHINE_NAME } from "constants/center";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default (props) => {
-  const { formStates, name, formId } = props;
+  const { formStates, name, machines } = props;
   const { control, register, watch } = formStates;
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
@@ -18,9 +20,11 @@ export default (props) => {
   );
   const { StyledSelect, Line, StyledInput, Label, LineContent, ErrorDiv } =
     FormComponent;
+
   const handleAppend = () => {
     append({ equipment: "", count: "" });
   };
+
   const handleRemove = (index) => {
     remove(index);
   };
@@ -45,11 +49,15 @@ export default (props) => {
                 <Label>기구 선택</Label>
                 <StyledSelect
                   name="equipment"
+                  defaultValue={""}
                   {...register(`${name}.${index}.equipment`)}
                 >
-                  {Object.entries(MACHINE_NAME).map(([key, value]) => (
-                    <option key={key} value={key}>
-                      {value}
+                  <option value="" disabled style={{ display: "none" }}>
+                    기구를 선택해 주세요.
+                  </option>
+                  {machines.map(({ name, id }) => (
+                    <option key={id} value={name}>
+                      {MACHINE_NAME[name]}
                     </option>
                   ))}
                 </StyledSelect>

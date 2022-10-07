@@ -1,42 +1,62 @@
 //회원 회원가입
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import FormMaker from "components/form/FormMaker";
 import styled from "styled-components";
 import SubmitButton from "components/form/SubmitButton";
 import { useTheme } from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { LoadingContext } from "contexts/loadingContext";
 
 export default () => {
+  const { state } = useLocation();
   const [isMailSend, setIsMailSend] = useState(false);
   const [certified, setCertified] = useState(false);
+  const { startLoading, endLoading } = useContext(LoadingContext);
+
   const formId = "UserJoin";
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    console.log(data);
     if (!certified) return alert("이메일 인증을 진행해 주세요.");
-
-    //세션스토리지에 현재 정보 저장, 헬스장 선택 후에 signup 리퀘스트 요청
-    window.sessionStorage.setItem("signup", data);
-
-    //헬스장 선택 페이지로 이동
-    navigate("/join/find-center");
-    // axios
-    //   .post(
-    //     "http://localhost:8080/signup/",
-    //     { ...data, type: "member" },
-    //     { withCredentials: true }
-    //   )
-    //   .then((res) => {
-    //     console.log(res);
-    //     navigate("/join/success");
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //     alert("에러가 발생했습니다.");
-    //   });
+    if (!window.confirm("회원가입을 진행하시겠습니까?")) return;
+    startLoading();
+    try {
+      //이메일 체크 진행
+      await axios.get("/signup/check-email", {
+        params: { email: data.email },
+      });
+    } catch (e) {
+      console.log(e);
+      alert("중복된 이메일입니다. 이메일을 변경해 주세요.");
+      return endLoading();
+    }
+    try {
+      //회원가입 요청
+      const res = await axios.post("/signup", data);
+      if (!!state?.kakaoId) {
+        //만약 카카오에서 리다이렉트됐을 경우, 카카오 회원가입 요청
+        await axios.post("/signup/kakao", {
+          email: data.email,
+          kakaoId: state.kakaoId,
+        });
+      }
+      endLoading();
+      if (res.status === 200) {
+        //회원가입 완료 처리
+        navigate("/join/success");
+      }
+      // window.sessionStorage.setItem("userId", res.data);
+      // //헬스장 선택 페이지로 이동
+      // navigate("/join/find-center");
+    } catch (e) {
+      console.log(e);
+      endLoading();
+      alert("오류가 일어났습니다. 다시 시도해 주세요.");
+    }
   };
 
   // const checkEmailHandler = (e) => {
@@ -64,6 +84,7 @@ export default () => {
         placeholder: "이메일을 입력해 주세요.",
         register: {
           required: "이메일을 입력해 주세요.",
+          value: state?.email || "",
         },
       },
       isMailSend && {
@@ -112,8 +133,8 @@ export default () => {
         name: "gender",
         label: "성별",
         buttons: [
-          { label: "남성", value: "man" },
-          { label: "여성", value: "woman" },
+          { label: "남성", value: "남" },
+          { label: "여성", value: "여" },
         ],
         register: {
           required: "생년월일을 입력해 주세요.",
@@ -121,7 +142,7 @@ export default () => {
       },
       {
         type: "number",
-        name: "phone",
+        name: "phoneNumber",
         label: "휴대전화",
         placeholder: "휴대전화 번호를 입력해 주세요.",
       },

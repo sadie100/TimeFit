@@ -16,8 +16,6 @@ public class Trainer {
 
     private String name;
     private String gender;
-
-
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="center_id")
     private Center center;

@@ -4,6 +4,7 @@ import com.project.domain.Center;
 import com.project.domain.User;
 import com.project.exception.CookieNotFound;
 import com.project.request.*;
+import com.project.response.CenterSignResponse;
 import com.project.response.CommonResult;
 import com.project.response.TokenResponse;
 
@@ -43,11 +44,10 @@ public class SignController {
     }
 
     @PostMapping("/signup-center")
-    public void signUpCenter(@RequestBody @Valid CenterSignUp request) {
+    public CenterSignResponse signUpCenter(@RequestBody @Valid CenterSignUp request) {
         System.out.println(request);
 //        request.setPassword(passwordEncoder.encode(request.getPassword()));
-        signService.joinCenter(request);
-        return ;
+        return signService.joinCenter(request);
     }
 
     @PostMapping("/signin")
@@ -116,29 +116,11 @@ public class SignController {
 
     @PostMapping("/signup/kakao")
     public void signUpByProvider(
-            @RequestParam String email, String code) {
-        signService.joinByKakao(email,code);
+            @RequestBody KakaoSignUp kakaoSignUp) {
+        signService.joinByKakao(kakaoSignUp);
         return ;
     }
-    @PostMapping("/signin/kakao")
-    public TokenResponse signInByProvider(
-            @RequestParam String code,
-            HttpServletResponse response) {
-        TokenResponse tokenResponse = signService.signInByKakao(code);
-//        response.setHeader("Set-Cookie", String.format("AccessToken=%s; Secure; SameSite=None",tokenResponse.getAccessToken()));
-//        response.addHeader("Set-Cookie", String.format("RefreshToken=%s; Secure; SameSite=None",tokenResponse.getRefreshToken()));
-        Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
-        accessCookie.setPath("/");
-////        accessCookie.setHttpOnly(true);
-////        accessCookie.setSecure(true);
-        response.addCookie(accessCookie);
-        Cookie refreshCookie = new Cookie("RefreshToken", tokenResponse.getAccessToken());
-        refreshCookie.setPath("/");
-//        cookie.setHttpOnly(true);
-//        cookie.setSecure(true);
-        response.addCookie(refreshCookie);
-        return tokenResponse;
-    }
+
 
     @GetMapping("/signin/find-email")
     public String findEmail(@RequestParam String phoneNumber) {
@@ -158,6 +140,25 @@ public class SignController {
         signService.addTrainer(center, trainer);
     }
 
+    //    @PostMapping("/signin/kakao")
+//    public TokenResponse signInByProvider(
+//            @RequestBody String code,
+//            HttpServletResponse response) {
+//        TokenResponse tokenResponse = signService.signInByKakao(code);
+////        response.setHeader("Set-Cookie", String.format("AccessToken=%s; Secure; SameSite=None",tokenResponse.getAccessToken()));
+////        response.addHeader("Set-Cookie", String.format("RefreshToken=%s; Secure; SameSite=None",tokenResponse.getRefreshToken()));
+//        Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
+//        accessCookie.setPath("/");
+//////        accessCookie.setHttpOnly(true);
+//////        accessCookie.setSecure(true);
+//        response.addCookie(accessCookie);
+//        Cookie refreshCookie = new Cookie("RefreshToken", tokenResponse.getAccessToken());
+//        refreshCookie.setPath("/");
+////        cookie.setHttpOnly(true);
+////        cookie.setSecure(true);
+//        response.addCookie(refreshCookie);
+//        return tokenResponse;
+//    }
 }
 
 
