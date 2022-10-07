@@ -23,6 +23,7 @@ const App = () => {
         <CircularProgress style={{ color: "black" }} />
       </LoadingBackground>
       <Header />
+      {/* todo : navbar 만들기 */}
       <Routes>
         {/* 메인 화면 */}
         <Route path="/" element={<Main />}></Route>
