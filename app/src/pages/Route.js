@@ -13,7 +13,6 @@ import MyPage from "pages/mypage/MyPage";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LoadingContext } from "contexts/loadingContext";
 import SetEquip from "./SetEquip";
-import FindCenter from "pages/join/FindCenter";
 
 const App = () => {
   const { loading } = useContext(LoadingContext);
