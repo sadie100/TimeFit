@@ -23,15 +23,25 @@ const AuthContextProvider = (props) => {
   const [type, setType] = useState("user");
   //const { pathname } = useLocation();
 
-  const checkToken = () => {
-    if (!!cookies.get("AccessToken")) {
-      setAccessToken(cookies.get("AccessToken"));
-      setRefreshToken(cookies.get("RefreshToken"));
-      setUser(jwt_decode(cookies.get("AccessToken")));
-    } else {
-      setAccessToken("");
-      setRefreshToken("");
-      setUser(null);
+  const checkToken = async () => {
+    try {
+      if (!!cookies.get("AccessToken")) {
+        setAccessToken(cookies.get("AccessToken"));
+        setRefreshToken(cookies.get("RefreshToken"));
+
+        const tokenInfo = jwt_decode(cookies.get("AccessToken"));
+        //유저정보 가져오기
+        const { data: userInfo } = await axios.get("/user/");
+
+        setUser({ ...userInfo, ...tokenInfo });
+      } else {
+        setAccessToken("");
+        setRefreshToken("");
+        setUser(null);
+      }
+    } catch (e) {
+      console.log(e);
+      alert("유저 정보 조회 과정에서 에러가 발생했습니다.");
     }
   };
 
