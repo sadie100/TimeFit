@@ -7,7 +7,7 @@ import { useAuth } from "hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const { isLogin, handleLogout: setLogout, checkToken } = useAuth();
+  const { isLogin, handleLogout: setLogout, handleCheck } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -16,7 +16,7 @@ const Header = () => {
     //todo : 비동기 문제 제대로 해결하기
     setTimeout(() => {
       alert("로그아웃 완료되었습니다.");
-      checkToken();
+      handleCheck();
       navigate("/");
     }, 300);
   };

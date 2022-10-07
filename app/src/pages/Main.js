@@ -4,11 +4,12 @@ import styled from "styled-components";
 import Button from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import { useAuth } from "hooks/useAuthContext";
+import axios from "axios";
 
 const Main = (props) => {
   const { type, isLogin, user } = useAuth();
+  console.log(user);
   const navigate = useNavigate();
   const handleReserve = async () => {
     if (!isLogin) {
@@ -19,16 +20,18 @@ const Main = (props) => {
       //예약 현황
       navigate("/reserve/center");
     } else {
-      //예약하기
-      const {
-        data: { center },
-      } = await axios.get("/user");
-      if (!center) {
-        //헬스장 없을 경우
-        alert("등록된 헬스장이 없습니다. 헬스장 등록 화면으로 이동합니다.");
-        navigate("/center?register=true");
-      } else {
-        navigate("/reserve");
+      try {
+        //const { data } = await axios.get("/user");
+        //예약하기
+        if (!user.center) {
+          //헬스장 없을 경우
+          alert("등록된 헬스장이 없습니다. 헬스장 등록 화면으로 이동합니다.");
+          navigate("/center?register=true");
+        } else {
+          navigate("/reserve");
+        }
+      } catch (e) {
+        console.log(e);
       }
     }
   };

@@ -11,10 +11,7 @@ const useAxiosInterceptor = () => {
   const { startLoading, endLoading } = useLoading();
 
   const instance = axios.create({
-    headers: {
-      Authorization: accessToken,
-    },
-    timeout: 1000,
+    //timeout: 1000,
   });
 
   instance.interceptors.request.use(

@@ -31,8 +31,7 @@ const AuthContextProvider = (props) => {
 
         const tokenInfo = jwt_decode(cookies.get("AccessToken"));
         //유저정보 가져오기
-        const { data: userInfo } = await axios.get("/user/");
-
+        const { data: userInfo } = await axios.get("/user");
         setUser({ ...userInfo, ...tokenInfo });
       } else {
         setAccessToken("");
@@ -45,8 +44,12 @@ const AuthContextProvider = (props) => {
     }
   };
 
+  const handleCheck = async () => {
+    await checkToken();
+  };
+
   useEffect(() => {
-    checkToken();
+    handleCheck();
   }, [cookies.get("AccessToken")]);
 
   useEffect(() => {
@@ -73,7 +76,7 @@ const AuthContextProvider = (props) => {
         user,
         type,
         handleLogout,
-        checkToken,
+        handleCheck,
         isLogin: !!accessToken,
       }}
       {...props}
