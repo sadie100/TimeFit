@@ -24,6 +24,7 @@ export default function CenterInfoModal({ center, register }) {
         return;
       }
       const { data } = await axios.get(`/centers/${center}`);
+      console.log(data);
       const { data: image } = await axios.get(`/get-center/${center}`);
       setData({
         ...data,
@@ -38,6 +39,7 @@ export default function CenterInfoModal({ center, register }) {
     try {
       if (!window.confirm("해당 헬스장을 선택하시겠습니까?")) return;
 
+      //todo : 에러 해결되면.. user context에서 받기
       const { data } = await axios.get("/user");
       console.log(data);
       await axios.post("/user/change-center", {
