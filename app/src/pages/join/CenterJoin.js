@@ -24,8 +24,8 @@ export default () => {
 
   //회원가입 로직
   const onSubmit = async (data) => {
-    if (!certified) return alert("이메일 인증을 진행해 주세요.");
     console.log(data);
+    if (!certified) return alert("이메일 인증을 진행해 주세요.");
     if (!window.confirm("회원가입을 진행하시겠습니까?")) return;
     startLoading();
 
@@ -175,7 +175,6 @@ export default () => {
         },
       },
       {
-        //todo : 서버랑 필드명 맞추기
         type: "address",
         label: "헬스장 주소",
         get: {

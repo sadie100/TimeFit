@@ -16,12 +16,14 @@ import SetEquip from "./SetEquip";
 
 const App = () => {
   const { loading } = useContext(LoadingContext);
+
   return (
     <Background>
       <LoadingBackground loading={loading}>
         <CircularProgress style={{ color: "black" }} />
       </LoadingBackground>
       <Header />
+      {/* todo : navbar 만들기 */}
       <Routes>
         {/* 메인 화면 */}
         <Route path="/" element={<Main />}></Route>
@@ -31,7 +33,7 @@ const App = () => {
         <Route path="/login" element={<Login />}></Route>
         {/* 이메일/비밀번호 찾기 화면 */}
         <Route path="/help/*" element={<Help />}></Route>
-        {/* 헬스장찾기 화면 */}
+        {/* 헬스장 찾기 화면 */}
         <Route path="/center" element={<Center />}></Route>
         {/* 예약 화면 */}
         <Route path="/reserve/*" element={<Reserve />}></Route>
@@ -53,8 +55,8 @@ const Background = styled.div`
   left: 0;
 `;
 const LoadingBackground = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: gray;
   z-index: 100;
   display: ${({ loading }) => (loading ? "flex" : "none")};

@@ -5,6 +5,7 @@ import axios from "axios";
 import styled from "styled-components";
 import FormMaker from "components/form/FormMaker";
 import { Link, useNavigate } from "react-router-dom";
+import useAxiosInterceptor from "hooks/useAxiosInterceptor";
 
 const formId = "FindPassword";
 
@@ -12,6 +13,7 @@ const FindPassword = () => {
   const navigate = useNavigate();
   const [isMailSend, setIsMailSend] = useState(false);
   const [certified, setCertified] = useState(false);
+  const axios = useAxiosInterceptor();
 
   const formData = () =>
     [
@@ -51,12 +53,19 @@ const FindPassword = () => {
       },
     ].filter((d) => !!d);
 
-  const onSubmit = (data) => {
-    //가입 이메일 찾기 서버 로직
-    const password = "dafwejfpwef";
-    navigate("/help/success", {
-      state: { type: "password", password },
-    });
+  const onSubmit = async (formData) => {
+    if (!certified) return alert("인증을 진행해 주세요.");
+    try {
+      const { data } = await axios.get("/signin/find-password", {
+        params: formData,
+      });
+      navigate("/help/success", {
+        state: { type: "password", password: data },
+      });
+    } catch (e) {
+      console.log(e);
+      alert("입력하신 정보에 해당하는 계정이 없습니다.");
+    }
   };
   return (
     <Background>

@@ -7,7 +7,7 @@ import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
 import "./styles/global.css";
 import LoadingContextProvider from "contexts/loadingContext";
-import AxiosInterceptor from "lib/AxiosInterceptor";
+//import AxiosInterceptor from "lib/AxiosInterceptor";
 import ModalContextProvider from "contexts/modalContext";
 import AuthContextProvider from "contexts/authContext";
 
@@ -19,7 +19,6 @@ root.render(
       <AuthContextProvider>
         <ModalContextProvider>
           <LoadingContextProvider>
-            <AxiosInterceptor />
             <Route />
           </LoadingContextProvider>
         </ModalContextProvider>

@@ -23,14 +23,19 @@ export default (props) => {
     <>
       <Wrapper>
         {Object.entries(infoData).map(([key, value]) => {
-          return (
-            <LineContent key={`viewer-line-${formId}-${key}`}>
-              <LineAtom className="label" key={`viewer-label-${formId}-${key}`}>
-                {dictionary[key]}
-              </LineAtom>
-              <LineAtom>{value}</LineAtom>
-            </LineContent>
-          );
+          if (!!dictionary?.[key]) {
+            return (
+              <LineContent key={`viewer-line-${formId}-${key}`}>
+                <LineAtom
+                  className="label"
+                  key={`viewer-label-${formId}-${key}`}
+                >
+                  {dictionary[key]}
+                </LineAtom>
+                <LineAtom>{value}</LineAtom>
+              </LineContent>
+            );
+          }
         })}
         {formDownside()}
       </Wrapper>

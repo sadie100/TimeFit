@@ -4,19 +4,34 @@ import styled from "styled-components";
 import Button from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import { useAuth } from "hooks/useAuthContext";
+import axios from "axios";
 
 const Main = (props) => {
-  const { type, user } = useAuth();
+  const { type, isLogin, user } = useAuth();
   const navigate = useNavigate();
-  const handleReserve = () => {
+  const handleReserve = async () => {
+    if (!isLogin) {
+      alert("로그인 정보가 없습니다. 로그인 화면으로 이동합니다.");
+      return navigate("/login");
+    }
     if (type === "center") {
+      //예약 현황
       navigate("/reserve/center");
     } else {
-      //todo : 유저가 선택한 헬스장 찾는 api 불러오기
-      //const center = axios.get(`/user/${}`)
-      navigate("/reserve");
+      try {
+        //const { data } = await axios.get("/user");
+        //예약하기
+        if (!user.center) {
+          //헬스장 없을 경우
+          alert("등록된 헬스장이 없습니다. 헬스장 등록 화면으로 이동합니다.");
+          navigate("/center?type=change");
+        } else {
+          navigate("/reserve");
+        }
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
   const handleCenter = () => {

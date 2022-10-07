@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import styled from "styled-components";
-import Button from "components/common/Button";
-import DaumPostcode from "components/form/DaumPostcode";
 import * as FormComponent from "components/form/StyledComponents";
 import LineMaker from "components/form/LineMaker";
 
@@ -33,6 +30,7 @@ export default (props) => {
               formId={formId}
               formStates={formStates}
               errors={errors}
+              key={`LineMaker-${formId}-${formLine.name}`}
             />
           );
         })}
