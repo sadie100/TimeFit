@@ -15,15 +15,15 @@ public class FileDto {
     private String originFileName;
     private String newFileName;
     private String filePath;
-    private Center item;
+    private Center center;
 
     @Builder
-    public FileDto(Long id, String originFileName, String newFileName, String filePath,Center item ) {
+    public FileDto(Long id, String originFileName, String newFileName, String filePath,Center center ) {
         this.id = id;
         this.originFileName = originFileName;
         this.newFileName = newFileName;
         this.filePath = filePath;
-        this.item = item;
+        this.center = center;
     }
 
 

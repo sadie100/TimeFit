@@ -90,10 +90,10 @@ public class CenterRepositoryImpl implements CenterRepositoryCustom {
 
     @Override
     @Transactional
-    public void updateView(Long itemId){
+    public void updateView(Long centerId){
         jpaQueryFactory.update(center)
                 .set(center.view, center.view.add(1))
-                .where(center.id.eq(itemId))
+                .where(center.id.eq(centerId))
                 .execute();
     }
 

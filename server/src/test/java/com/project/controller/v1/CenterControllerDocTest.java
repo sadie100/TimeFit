@@ -129,7 +129,7 @@ public class CenterControllerDocTest {
 
         List<CenterImages> images =  IntStream.range(0, 20)
                 .mapToObj(i -> CenterImages.builder()
-                        .item(requestCenter.get(i))
+                        .center(requestCenter.get(i))
                         .originFileName("origin_name"+i)
                         .newFileName("new_name"+i)
                         .filePath("경로/"+i+"/img.png")
@@ -194,7 +194,7 @@ public class CenterControllerDocTest {
 
         List<CenterImages> images =  IntStream.range(0,3)
                 .mapToObj(i -> CenterImages.builder()
-                        .item(center)
+                        .center(center)
                         .originFileName("origin_name"+i)
                         .newFileName("new_name"+i)
                         .filePath("경로/"+i)

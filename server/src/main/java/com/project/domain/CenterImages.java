@@ -20,5 +20,5 @@ public class CenterImages {
 
     @ManyToOne
     @JoinColumn(name = "center_id")
-    private Center item;
+    private Center center;
 }

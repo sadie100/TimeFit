@@ -47,7 +47,7 @@ public class ImageController {
                 String filePath = savePath + "\\" + newFilename;
                 file.transferTo(new File(filePath));
                 FileDto fileDto =
-                        FileDto.builder().originFileName(filename).newFileName(newFilename).filePath("center/"+newFilename).item(center).build();
+                        FileDto.builder().originFileName(filename).newFileName(newFilename).filePath("center/"+newFilename).center(center).build();
                 imageService.saveFile(fileDto);
             }
         } catch(Exception e) {

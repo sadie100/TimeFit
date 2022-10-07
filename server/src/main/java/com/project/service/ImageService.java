@@ -25,12 +25,12 @@ public class ImageService {
                 .originFileName(fileDto.getOriginFileName())
                 .newFileName(fileDto.getNewFileName())
                 .filePath(fileDto.getFilePath())
-                .item(fileDto.getItem()).build();
+                .center(fileDto.getCenter()).build();
         centerImgRepository.save(centerImages).getId();
         return;
     }
     public List<FileDto> getFile(Center center) {
-        List<CenterImages> centerImages = centerImgRepository.findByItem(center);
+        List<CenterImages> centerImages = centerImgRepository.findBycenter(center);
         List<FileDto> fileDtos = new ArrayList<>();
         for(CenterImages img : centerImages){
             fileDtos.add(FileDto.builder()
