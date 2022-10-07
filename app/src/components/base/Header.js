@@ -4,15 +4,18 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useAuth } from "hooks/useAuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const { isLogin, handleLogout: setLogout, checkToken } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     if (!window.confirm("로그아웃 하시겠습니까?")) return;
     setLogout();
     alert("로그아웃 완료되었습니다.");
     checkToken();
+    navigate("/");
   };
 
   return (
