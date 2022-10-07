@@ -15,9 +15,7 @@ export default () => {
       {type === "email" ? (
         <Background>
           <div className="title">가입 이메일 찾기</div>
-          <TextDiv>
-            {state.name}님이 가입하신 이메일은 {state.email}입니다.
-          </TextDiv>
+          <TextDiv>가입하신 이메일은 {state.email}입니다.</TextDiv>
           <BtnDiv>
             <Button
               padding="20px"
