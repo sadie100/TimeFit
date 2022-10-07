@@ -471,7 +471,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="_요청"><a class="link" href="#_요청">요청</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /centers?region=%EC%84%9C%EC%9A%B8&amp;minPrice=10000&amp;maxPrice=20000&amp;equipmentId=1&amp;minNumber=1 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /centers?name=%EC%84%BC%ED%84%B0&amp;region=%EC%84%9C%EC%9A%B8&amp;minPrice=10000&amp;maxPrice=20000&amp;equipmentId=1&amp;minNumber=1 HTTP/1.1
 Accept: application/json
 Host: api.timefit.com</code></pre>
 </div>
@@ -493,10 +493,16 @@ Host: api.timefit.com</code></pre>
 </thead>
 <tbody>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">헬스장 이름</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">입력된 단어가 포함된 모든 헬스장 필터링. '센터&#8217;입력했습니다.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>region</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">지역</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">'서울&#8217;입력했습니다.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>minPrice</code></p></td>
@@ -592,7 +598,7 @@ Content-Length: 195
 <h3 id="_curl"><a class="link" href="#_curl">CURL</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/centers?region=%EC%84%9C%EC%9A%B8&amp;minPrice=10000&amp;maxPrice=20000&amp;equipmentId=1&amp;minNumber=1' -i -X GET \
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/centers?name=%EC%84%BC%ED%84%B0&amp;region=%EC%84%9C%EC%9A%B8&amp;minPrice=10000&amp;maxPrice=20000&amp;equipmentId=1&amp;minNumber=1' -i -X GET \
     -H 'Accept: application/json'</code></pre>
 </div>
 </div>
@@ -655,7 +661,7 @@ Strict-Transport-Security: max-age=31536000 ; includeSubDomains
 X-Frame-Options: DENY
 Content-Length: 346
 
-{"id":21,"name":"센터","phoneNumber":"010-1234-5678","address":"서울시 마포구 신수동","trainers":["아무개1","아무개2","아무개3"],"images":[{"path":"경로/0"},{"path":"경로/1"},{"path":"경로/2"}],"equipmentNumbers":[{"equipment":"장비0","number":7},{"equipment":"장비1","number":7},{"equipment":"장비2","number":6}]}</code></pre>
+{"id":21,"name":"센터","phoneNumber":"010-1234-5678","address":"서울시 마포구 신수동","trainers":["아무개2","아무개1","아무개3"],"images":[{"path":"경로/0"},{"path":"경로/1"},{"path":"경로/2"}],"equipmentNumbers":[{"equipment":"장비0","number":7},{"equipment":"장비1","number":7},{"equipment":"장비2","number":6}]}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
