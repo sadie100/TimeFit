@@ -30,6 +30,7 @@ export default (props) => {
         gap: "10px",
         flex: "1 1 auto",
       }}
+      key={`${formId}-${name}`}
     >
       {fields.map((item, index) => {
         return (
@@ -52,50 +53,45 @@ export default (props) => {
                 flex: "1 0 auto",
               }}
             >
-              {/* todo : 라디오 버튼 클릭했다가 추가/삭제하면 클릭 value 사라지는 오류 수정하기 */}
-              <Controller
-                control={control}
-                name={`${name}.${index}.gender`}
-                render={({ field }) => (
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "10px",
-                      justifyContent: "start",
-                      flex: "0 0 auto",
-                    }}
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  justifyContent: "start",
+                  flex: "0 0 auto",
+                }}
+              >
+                <div>
+                  <input
+                    type="radio"
+                    name={`${name}.${index}.gender`}
+                    id={`${index}_male`}
+                    value="남"
+                    {...register(`${name}.${index}.gender`)}
+                  />
+                  <label
+                    style={{ cursor: "pointer", flex: "1 0 auto" }}
+                    htmlFor={`${index}_male`}
                   >
-                    <div>
-                      <input
-                        type="radio"
-                        id={`${index}_male`}
-                        value="남"
-                        {...field}
-                      />
-                      <label
-                        style={{ cursor: "pointer", flex: "1 0 auto" }}
-                        htmlFor={`${index}_male`}
-                      >
-                        남성
-                      </label>
-                    </div>
-                    <div>
-                      <input
-                        type="radio"
-                        id={`${index}_female`}
-                        value="여"
-                        {...field}
-                      />
-                      <label
-                        style={{ cursor: "pointer" }}
-                        htmlFor={`${index}_female`}
-                      >
-                        여성
-                      </label>
-                    </div>
-                  </div>
-                )}
-              />
+                    남성
+                  </label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    name={`${name}.${index}.gender`}
+                    id={`${index}_female`}
+                    value="여"
+                    {...register(`${name}.${index}.gender`)}
+                  />
+                  <label
+                    style={{ cursor: "pointer" }}
+                    htmlFor={`${index}_female`}
+                  >
+                    여성
+                  </label>
+                </div>
+              </div>
             </div>
             <button
               type="button"
