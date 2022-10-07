@@ -94,7 +94,7 @@ const MyPageMain = () => {
         </LongButton>
         <LongButton
           className="normal"
-          onClick={() => navigate("/mypage/center")}
+          onClick={() => navigate("/center?type=change")}
         >
           <BoxText>헬스장 변경</BoxText>
           <BoxText>&#62;</BoxText>

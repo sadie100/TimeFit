@@ -18,7 +18,7 @@ const Center = () => {
   const formId = "UserFindCenter";
   const location = useLocation();
   const navigate = useNavigate();
-  const { register = false } = QueryString.parse(location.search, {
+  const { type = "search" } = QueryString.parse(location.search, {
     ignoreQueryPrefix: true,
   });
 
@@ -117,7 +117,7 @@ const Center = () => {
             );
           })}
         </ListWrapper>
-        <CenterInfoModal center={center} register={register} />
+        <CenterInfoModal center={center} type={type} />
         <CenterFilterModal
           handleSearchCond={handleSearchCond}
           searchCond={searchCond}

@@ -13,7 +13,7 @@ import { useAuth } from "hooks/useAuthContext";
 
 const modalName = "CenterInfoModal";
 
-export default function CenterInfoModal({ center, register }) {
+export default function CenterInfoModal({ center, type }) {
   const [data, setData] = useState({});
   const navigate = useNavigate();
   const axios = useAxiosInterceptor();
@@ -90,7 +90,7 @@ export default function CenterInfoModal({ center, register }) {
             )}
           </InfoDiv>
         </DialogContent>
-        {register === "true" && (
+        {type === "change" && (
           <Button
             onClick={async () => await handleSelect()}
             fontSize="18px"

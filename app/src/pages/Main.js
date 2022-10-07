@@ -25,7 +25,7 @@ const Main = (props) => {
         if (!user.center) {
           //헬스장 없을 경우
           alert("등록된 헬스장이 없습니다. 헬스장 등록 화면으로 이동합니다.");
-          navigate("/center?register=true");
+          navigate("/center?type=change");
         } else {
           navigate("/reserve");
         }
