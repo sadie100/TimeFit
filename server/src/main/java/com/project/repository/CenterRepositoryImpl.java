@@ -32,9 +32,10 @@ public class CenterRepositoryImpl implements CenterRepositoryCustom {
         return jpaQueryFactory
                 .selectFrom(center)
                 .where(
+                        containsName(centerSearch.getName()),
                         goePrice(centerSearch.getMinPrice()),
                         loePrice(centerSearch.getMaxPrice()),
-                        eqCity(centerSearch.getRegion()),
+                        eqRegion(centerSearch.getRegion()),
                         findEquipment(centerSearch.getEquipmentId(), centerSearch.getMinNumber())
                 )
                 .groupBy(center.id)
@@ -43,32 +44,26 @@ public class CenterRepositoryImpl implements CenterRepositoryCustom {
                 .orderBy(center.id.desc())
                 .fetch();
     }
-    private BooleanExpression eqCity(String region){
-        if(region == null){
-            return null;
-        }
+    private BooleanExpression containsName(String name){
+        if(name == null) return null;
+        return center.name.contains(name);
+    }
+    private BooleanExpression eqRegion(String region){
+        if(region == null) return null;
         return center.region.eq(region);
     }
     private BooleanExpression goePrice(Integer minPrice){
-        if(minPrice == null){
-            return null;
-        }
+        if(minPrice == null) return null;
         return center.price.goe(minPrice);
     }
         private BooleanExpression loePrice(Integer maxPrice){
-        if(maxPrice == null){
-            return null;
-        }
+        if(maxPrice == null) return null;
         return center.price.loe(maxPrice);
     }
 
     private BooleanExpression findEquipment(Long equipmentId, Integer number){
-        if(equipmentId == null){
-            return null;
-        }
-        if(number == null){
-            number = 0;
-        }
+        if(equipmentId == null) return null;
+        if(number == null) number = 0;
         List<Long> ids =
                 jpaQueryFactory.select(centerEquipment.center.id).from(centerEquipment)
                 .where(centerEquipment.equipment.id.eq(equipmentId))

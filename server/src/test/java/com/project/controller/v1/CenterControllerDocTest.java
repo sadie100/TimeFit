@@ -63,7 +63,6 @@ public class CenterControllerDocTest {
 
     @BeforeEach
     void clean(){
-
         centerImgRepository.deleteAll();
         userRepository.deleteAll();
         centerEquipmentRepository.deleteAll();
@@ -136,13 +135,16 @@ public class CenterControllerDocTest {
                         .build()).collect(Collectors.toList());
         centerImgRepository.saveAll(images);
         //expected
-        this.mockMvc.perform(get("/centers?region=서울&minPrice=10000&maxPrice=20000&equipmentId=1&minNumber=1")
+        this.mockMvc.perform(get("/centers?name=센터&region=서울&minPrice=10000&maxPrice=20000&equipmentId=1&minNumber=1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("center/search"
                         , pathParameters(
-                                parameterWithName("region").optional().description("지역"),
+                                parameterWithName("name").description("헬스장 이름").optional()
+                                        .attributes(key("constraint").value("입력된 단어가 포함된 모든 헬스장 필터링. '센터'입력했습니다.")),
+                                parameterWithName("region").description("지역").optional()
+                                        .attributes(key("constraint").value("'서울'입력했습니다.")),
                                 parameterWithName("minPrice").description("최소 가격").optional(),
                                 parameterWithName("maxPrice").description("최대 가격").optional(),
                                 parameterWithName("equipmentId").description("헬스 기구 ID").optional(),
