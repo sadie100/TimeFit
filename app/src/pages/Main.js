@@ -8,9 +8,13 @@ import axios from "axios";
 import { useAuth } from "hooks/useAuthContext";
 
 const Main = (props) => {
-  const { type, user } = useAuth();
+  const { type, isLogin } = useAuth();
   const navigate = useNavigate();
   const handleReserve = () => {
+    if (!isLogin) {
+      alert("로그인 정보가 없습니다. 로그인 화면으로 이동합니다.");
+      return navigate("/login");
+    }
     if (type === "center") {
       navigate("/reserve/center");
     } else {
