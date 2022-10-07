@@ -77,7 +77,7 @@ export default function CenterFilterModal({ handleSearchCond, searchCond }) {
       // },
       {
         label: "기구",
-        type: "checkbox",
+        type: "radio",
         name: "equipment",
         buttons: equipment.map(({ name }) => ({
           label: MACHINE_NAME[name],
