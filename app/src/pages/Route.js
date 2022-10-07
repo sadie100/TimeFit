@@ -16,6 +16,7 @@ import SetEquip from "./SetEquip";
 
 const App = () => {
   const { loading } = useContext(LoadingContext);
+
   return (
     <Background>
       <LoadingBackground loading={loading}>
@@ -53,8 +54,8 @@ const Background = styled.div`
   left: 0;
 `;
 const LoadingBackground = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: gray;
   z-index: 100;
   display: ${({ loading }) => (loading ? "flex" : "none")};
