@@ -1,6 +1,6 @@
 import { useState, useEffect, createContext } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 export const ModalContext = createContext({
   nowOpenModal: "",
@@ -13,6 +13,7 @@ export const ModalContext = createContext({
 const ModalContextProvider = (props) => {
   const [nowOpenModal, setNowOpenModal] = useState("");
   const [modalProp, setModalProp] = useState(null);
+  const { pathname } = useLocation();
 
   const handleOpen = (name) => {
     setNowOpenModal(name);
@@ -23,6 +24,10 @@ const ModalContextProvider = (props) => {
   const handleModalProp = (data) => {
     setModalProp(data);
   };
+
+  useEffect(() => {
+    handleClose();
+  }, [pathname]);
 
   return (
     <ModalContext.Provider
