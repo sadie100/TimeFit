@@ -13,6 +13,7 @@ import MyPage from "pages/mypage/MyPage";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LoadingContext } from "contexts/loadingContext";
 import SetEquip from "./SetEquip";
+import FindCenter from "pages/join/FindCenter";
 
 const App = () => {
   const { loading } = useContext(LoadingContext);
@@ -32,8 +33,10 @@ const App = () => {
         <Route path="/login" element={<Login />}></Route>
         {/* 이메일/비밀번호 찾기 화면 */}
         <Route path="/help/*" element={<Help />}></Route>
-        {/* 헬스장찾기 화면 */}
+        {/* 헬스장 찾기 화면 */}
         <Route path="/center" element={<Center />}></Route>
+        {/* 헬스장 선택 화면 */}
+        <Route path="/find-center" element={<FindCenter />}></Route>
         {/* 예약 화면 */}
         <Route path="/reserve/*" element={<Reserve />}></Route>
         {/* 마이페이지 화면 */}

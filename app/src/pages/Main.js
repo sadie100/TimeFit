@@ -8,19 +8,28 @@ import axios from "axios";
 import { useAuth } from "hooks/useAuthContext";
 
 const Main = (props) => {
-  const { type, isLogin } = useAuth();
+  const { type, isLogin, user } = useAuth();
   const navigate = useNavigate();
-  const handleReserve = () => {
+  const handleReserve = async () => {
     if (!isLogin) {
       alert("로그인 정보가 없습니다. 로그인 화면으로 이동합니다.");
       return navigate("/login");
     }
     if (type === "center") {
+      //예약 현황
       navigate("/reserve/center");
     } else {
-      //todo : 유저가 선택한 헬스장 찾는 api 불러오기
-      //const center = axios.get(`/user/${}`)
-      navigate("/reserve");
+      //예약하기
+      const {
+        data: { center },
+      } = await axios.get("/user");
+      if (!center) {
+        //헬스장 없을 경우
+        alert("등록된 헬스장이 없습니다. 헬스장 등록 화면으로 이동합니다.");
+        navigate("/find-center");
+      } else {
+        navigate("/reserve");
+      }
     }
   };
   const handleCenter = () => {

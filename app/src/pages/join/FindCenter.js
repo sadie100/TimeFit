@@ -1,4 +1,4 @@
-//회원 헬스장 선택(회원가입)
+//회원 헬스장 선택(최초 가입 시)
 
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
