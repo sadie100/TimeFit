@@ -6,20 +6,20 @@ import styled from "styled-components";
 import Button from "components/common/Button";
 import FormMaker from "components/form/FormMaker";
 import FormViewer from "components/form/FormViewer";
+import useAxiosInterceptor from "hooks/useAxiosInterceptor";
 
 const formId = "MyInfoForm";
 
 const MyInfo = () => {
-  const [updateMode, setUpdateMode] = useState(false);
+  // const [updateMode, setUpdateMode] = useState(false);
   const [infoData, setInfoData] = useState({});
-
+  const axios = useAxiosInterceptor();
+  const getInfo = async () => {
+    const { data } = await axios.get("/user");
+    setInfoData(data);
+  };
   useEffect(() => {
-    setInfoData({
-      email: "email",
-      name: "홍길동",
-      birthday: "2000/01/02",
-      gender: "man",
-    });
+    getInfo();
   }, []);
 
   const formData = () =>
@@ -71,22 +71,23 @@ const MyInfo = () => {
       },
     ].filter((d) => !!d);
 
-  const handleUpdate = () => {
-    setUpdateMode(!updateMode);
-  };
+  // const handleUpdate = () => {
+  //   setUpdateMode(!updateMode);
+  // };
 
-  const handleSave = () => {
-    if (!window.confirm("저장하시겠습니까?")) return;
-    alert("저장 로직");
-    handleUpdate();
-  };
+  // const handleSave = () => {
+  //   if (!window.confirm("저장하시겠습니까?")) return;
+  //   alert("저장 로직");
+  //   handleUpdate();
+  // };
   return (
     <Background>
       <Wrapper>
         <LongDiv>
           <div className="title">내 정보</div>
         </LongDiv>
-        {updateMode ? (
+        <FormViewer infoData={infoData} />
+        {/* {updateMode ? (
           <FormMaker
             onSubmit={handleSave}
             formData={formData}
@@ -95,8 +96,8 @@ const MyInfo = () => {
           />
         ) : (
           <FormViewer infoData={infoData} />
-        )}
-        <ButtonDiv>
+        )} */}
+        {/* <ButtonDiv>
           <Button
             type={updateMode ? "submit" : "button"}
             form={updateMode && formId}
@@ -106,7 +107,7 @@ const MyInfo = () => {
           >
             {updateMode ? "저장하기" : "수정하기"}
           </Button>
-        </ButtonDiv>
+        </ButtonDiv> */}
       </Wrapper>
     </Background>
   );
