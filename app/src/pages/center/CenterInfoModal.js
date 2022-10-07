@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 const modalName = "CenterInfoModal";
 
-export default function CenterInfoModal({ center }) {
+export default function CenterInfoModal({ center, register }) {
   const [data, setData] = useState({});
   const navigate = useNavigate();
 
@@ -28,6 +28,27 @@ export default function CenterInfoModal({ center }) {
       price: "10만원",
     });
   }, []);
+
+  const handleSelect = () => {
+    //회원가입 로직 서버에 전달
+    const userInfo = window.sessionStorage.getItem("signup");
+    //todo : 서버 연결 시 아래 주석 풀기
+    navigate("/join/success");
+    // axios
+    //   .post(
+    //     "http://localhost:8080/signup/",
+    //     { ...userInfo, center: center, type: "member" },
+    //     { withCredentials: true }
+    //   )
+    //   .then((res) => {
+    //     console.log(res);
+    //     navigate("/join/success");
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //     alert("에러가 발생했습니다.");
+    //   });
+  };
 
   return (
     <Modal modalName={modalName}>
@@ -61,6 +82,11 @@ export default function CenterInfoModal({ center }) {
             </Partition>
           </InfoDiv>
         </DialogContent>
+        {register === "true" && (
+          <Button onClick={handleSelect} fontSize="18px" padding="1rem 3rem">
+            선택하기
+          </Button>
+        )}
       </ModalContent>
     </Modal>
   );

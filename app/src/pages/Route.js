@@ -35,8 +35,6 @@ const App = () => {
         <Route path="/help/*" element={<Help />}></Route>
         {/* 헬스장 찾기 화면 */}
         <Route path="/center" element={<Center />}></Route>
-        {/* 헬스장 선택 화면 */}
-        <Route path="/find-center" element={<FindCenter />}></Route>
         {/* 예약 화면 */}
         <Route path="/reserve/*" element={<Reserve />}></Route>
         {/* 마이페이지 화면 */}
