@@ -60,6 +60,7 @@ const CenterReserve = () => {
     getEquipment();
   }, [user]);
 
+  //센터 예약 가져오기
   const getReservation = async () => {
     if (!equipment) return;
     try {

@@ -15,6 +15,7 @@ export default (props) => {
   const [reservation, setReservation] = useState([]);
   const { user } = useAuth();
 
+  //todo : loading spinner 구현
   const handleReservation = async () => {
     try {
       const { data } = await axios.get(`/center/${user.center.id}/reserve`, {

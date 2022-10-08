@@ -20,6 +20,7 @@ const Reserve = () => {
   const { user } = useAuth();
   const axios = useAxiosInterceptor();
 
+  //센터 기구 배치하기
   const getEquip = async () => {
     try {
       const { data } = await axios.get(`/equipment/${user.center.id}`);

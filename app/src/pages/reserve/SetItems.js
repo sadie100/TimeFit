@@ -1,11 +1,7 @@
-import styled from "styled-components";
-import machines from "assets/machines";
 import { useTheme } from "styled-components";
-import Popper from "@mui/material/Popper";
 import { useState, useContext } from "react";
 import { ReservePopperContext } from "contexts/reservePopperContext";
 import { Entrance } from "components/Center";
-import ReservePopper from "pages/reserve/ReservePopper";
 
 export default ({ itemData }) => {
   const {
