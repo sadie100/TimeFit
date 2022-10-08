@@ -15,12 +15,12 @@ export default (props) => {
   const [reservation, setReservation] = useState([]);
   const { user } = useAuth();
 
-  const getReservation = async () => {
+  const handleReservation = async () => {
     try {
       const { data } = await axios.get(`/center/${user.center.id}/reserve`, {
         params: { searchIds: id },
       });
-      console.log("data", data);
+      setReservation(data[0].times);
     } catch (e) {
       console.log(e);
       alert("예약 조회 과정에서 에러가 발생했습니다.");
@@ -30,29 +30,7 @@ export default (props) => {
   //서버에서 데이터 가져와야 함
   useEffect(() => {
     if (!id) return;
-    getReservation();
-    setReservation([
-      {
-        reservationId: 2,
-        start: "2022-09-27T01:00:11",
-        end: "2022-09-27T01:15:11",
-      },
-      {
-        reservationId: 7,
-        start: "2022-09-27T02:15:16",
-        end: "2022-09-27T02:35:16",
-      },
-      {
-        reservationId: 12,
-        start: "2022-09-27T05:00:21",
-        end: "2022-09-27T06:00:21",
-      },
-      {
-        reservationId: 17,
-        start: "2022-09-27T12:00:26",
-        end: "2022-09-27T13:45:26",
-      },
-    ]);
+    handleReservation();
   }, [id]);
   return (
     <Popper id={id} open={!!id} anchorEl={anchorEl}>

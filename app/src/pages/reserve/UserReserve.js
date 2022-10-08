@@ -50,13 +50,7 @@ const Reserve = () => {
     //   navigate("/center?register=true");
     // }
     getEquip();
-
-    // setItemData(SampleData);
   }, [user]);
-
-  // const handleClick = (machineType) => {
-  //   navigate(`/reserve/${machineType}`);
-  // };
 
   return (
     <Background>
@@ -72,10 +66,10 @@ const Reserve = () => {
           <ReservePopperContextProvider>
             <SetItems itemData={itemData} />
             <ReservePopper />
+            <ReserveModal></ReserveModal>
           </ReservePopperContextProvider>
         </div>
       </Layout>
-      <ReserveModal></ReserveModal>
     </Background>
   );
 };

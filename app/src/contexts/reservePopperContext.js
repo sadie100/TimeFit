@@ -5,7 +5,7 @@ export const ReservePopperContext = createContext({
   id: "",
   anchorEl: null,
   handleOpen: () => {},
-  handleClose: null,
+  handleClose: () => {},
   name: "",
 });
 
@@ -25,7 +25,11 @@ const ReservePopperContextProvider = (props) => {
       setName(name);
     }
   };
-  const handleClose = () => {};
+  const handleClose = () => {
+    setId("");
+    setAnchorEl(null);
+    setName("");
+  };
 
   return (
     <ReservePopperContext.Provider
