@@ -37,21 +37,24 @@ const CenterReserve = () => {
   const getEquipment = async () => {
     try {
       const { data } = await axios.get(`/equipment/${user.center.id}`);
-      setCenterEquipment(
-        data.map((equip) => {
-          return {
-            ...equip.equipment,
-            equipmentId: equip.equipment.id,
-            centerEquipmentId: equip.id,
-          };
-        })
-      );
+      if (!data || data.length === 0) {
+        return alert("해당 센터의 기구가 없습니다.");
+      }
+      const equipArr = data.reduce(function (acc, { equipment }) {
+        if (acc.findIndex(({ id }) => id === equipment.id) === -1) {
+          acc.push(equipment);
+        }
+        return acc;
+      }, []);
+      setCenterEquipment(equipArr);
+      setEquipment(equipArr[0].equipmentId);
     } catch (e) {
       console.log(e);
       alert("센터 기구 조회 중 오류가 발생했습니다.");
     }
   };
 
+  console.log(centerEquipment);
   //user
   useEffect(() => {
     if (!user) return;
@@ -60,9 +63,7 @@ const CenterReserve = () => {
 
   const getReservation = async () => {
     try {
-      const { data } = await axios.get(`/center/${user.center.id}/reserve`, {
-        params: { searchIds: equipment.centerEquipmentId },
-      });
+      const { data } = await axios.get(`/center/${user.center.id}/reserve`);
       console.log(data);
     } catch (e) {
       console.log(e);
@@ -71,6 +72,7 @@ const CenterReserve = () => {
   };
 
   useEffect(() => {
+    if (!user) return;
     //equipment에 따른 예약 정보 받기
     getReservation();
     // setItemData([
@@ -152,8 +154,8 @@ const CenterReserve = () => {
       <LineContent>
         <Label>기구 선택</Label>
         <StyledSelect name="equipment" onChange={handleEquipment}>
-          {centerEquipment.map(({ name, centerEquipmentId }) => (
-            <option key={centerEquipmentId} value={centerEquipmentId}>
+          {centerEquipment.map(({ name, centerEquipmentId, equipmentId }) => (
+            <option key={centerEquipmentId} value={equipmentId}>
               {MACHINE_NAME[name]}
             </option>
           ))}
