@@ -6,41 +6,37 @@ import { ReservePopperContext } from "contexts/reservePopperContext";
 import styled from "styled-components";
 import { MACHINE_NAME } from "constants/center";
 import TimeColumn from "pages/reserve/TimeColumn";
+import axios from "axios";
+import { useAuth } from "hooks/useAuthContext";
 
-export default ({ name, type }) => {
+export default (props) => {
   const reservePopper = useContext(ReservePopperContext);
-  const { id, anchorEl } = reservePopper;
+  const { id, anchorEl, name } = reservePopper;
   const [reservation, setReservation] = useState([]);
+  const { user } = useAuth();
+
+  //todo : loading spinner 구현
+  const handleReservation = async () => {
+    try {
+      const { data } = await axios.get(`/center/${user.center.id}/reserve`, {
+        params: { searchIds: id },
+      });
+      setReservation(data[0].times);
+    } catch (e) {
+      console.log(e);
+      alert("예약 조회 과정에서 에러가 발생했습니다.");
+    }
+  };
 
   //서버에서 데이터 가져와야 함
   useEffect(() => {
-    setReservation([
-      {
-        reservationId: 2,
-        start: "2022-09-27T01:00:11",
-        end: "2022-09-27T01:15:11",
-      },
-      {
-        reservationId: 7,
-        start: "2022-09-27T02:15:16",
-        end: "2022-09-27T02:35:16",
-      },
-      {
-        reservationId: 12,
-        start: "2022-09-27T05:00:21",
-        end: "2022-09-27T06:00:21",
-      },
-      {
-        reservationId: 17,
-        start: "2022-09-27T12:00:26",
-        end: "2022-09-27T13:45:26",
-      },
-    ]);
-  }, []);
+    if (!id) return;
+    handleReservation();
+  }, [id]);
   return (
-    <Popper id={id} open={id === name} anchorEl={anchorEl}>
+    <Popper id={id} open={!!id} anchorEl={anchorEl}>
       <WrapperDiv>
-        <Title>{MACHINE_NAME[type]}</Title>
+        <Title>{MACHINE_NAME[name]}</Title>
         <TimeColumn reservation={reservation} readOnly={true}></TimeColumn>
       </WrapperDiv>
     </Popper>

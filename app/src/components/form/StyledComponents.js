@@ -39,6 +39,23 @@ export const StyledInput = styled.input`
   }
   width: ${({ width }) => width};
 `;
+
+export const ErrorBorderInput = styled.input`
+  border: 1px solid ${({ error }) => (error ? "red" : "lightgray")};
+  border-radius: 10px;
+  padding: ${({ theme }) => theme.form.padding};
+  color: black;
+  font-family: Noto Sans KR;
+  flex: 1 2 auto;
+  ::placeholder,
+  ::-webkit-input-placeholder {
+    color: lightgray;
+  }
+  :-ms-input-placeholder {
+    color: lightgray;
+  }
+  width: ${({ width }) => width};
+`;
 export const ErrorDiv = styled.div`
   border: none;
   color: red;
