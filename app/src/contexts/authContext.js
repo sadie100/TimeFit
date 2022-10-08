@@ -52,7 +52,6 @@ const AuthContextProvider = (props) => {
       alert("유효하지 않은 계정 정보입니다. 다시 로그인해 주세요.");
       cookies.remove("AccessToken");
       cookies.remove("RefreshToken");
-      handleCheck();
     }
   };
 
