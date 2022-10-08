@@ -156,6 +156,7 @@ public class CenterControllerDocTest {
                                 fieldWithPath("[].name").type(JsonFieldType.STRING).description("센터 이름"),
                                 fieldWithPath("[].address").type(JsonFieldType.STRING).description("센터 주소"),
                                 fieldWithPath("[].images").description("센터 이미지 목록"),
+                                fieldWithPath("[].images[].local").description("이미지 경로"),
                                 fieldWithPath("[].images[].path").description("이미지 경로")
                         )
                 ));
@@ -169,6 +170,7 @@ public class CenterControllerDocTest {
                 .name("센터")
                 .region("서울")
                 .address("서울시 마포구 신수동")
+                .price(50000)
                 .phoneNumber("010-1234-5678")
                 .build();
         centerRepository.save(center);
@@ -217,8 +219,10 @@ public class CenterControllerDocTest {
                                 fieldWithPath("name").description("센터 이름"),
                                 fieldWithPath("phoneNumber").description("센터 전화번호"),
                                 fieldWithPath("address").description("센터 주소"),
+                                fieldWithPath("price").description("센터 가격"),
                                 fieldWithPath("trainers").description("센터 트레이너 명단"),
                                 fieldWithPath("images").description("센터 이미지 목록"),
+                                fieldWithPath("images[].local").description("이미지 경로"),
                                 fieldWithPath("images[].path").description("이미지 경로"),
                                 fieldWithPath("equipmentNumbers").description("센터 기구"),
                                 fieldWithPath("equipmentNumbers[].equipment").description("기구 이름"),

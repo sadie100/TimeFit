@@ -1,6 +1,7 @@
 package com.project.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,7 +19,8 @@ public class CenterImages {
     private String newFileName;
     private String filePath;
 
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "center_id")
     private Center center;
 }
