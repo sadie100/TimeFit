@@ -13,12 +13,12 @@ export default ({ itemData }) => {
   } = useTheme();
   const reservePopper = useContext(ReservePopperContext);
   const { handleOpen } = reservePopper;
-  return itemData.map(({ xloc, yloc, img, centerEquipmentId }) => {
+  return itemData.map(({ xloc, yloc, img, centerEquipmentId, name }) => {
     const imgName = `http://localhost:8080/image/${img}`;
     return (
       <>
         <div
-          onClick={(e) => handleOpen(e, centerEquipmentId, imgName)}
+          onClick={(e) => handleOpen(e, centerEquipmentId, name)}
           style={{ top: yloc, left: xloc, position: "absolute" }}
           key={centerEquipmentId}
         >
@@ -33,7 +33,6 @@ export default ({ itemData }) => {
             ></img>
           )}
         </div>
-        <ReservePopper centerEquipmentId={centerEquipmentId} type={imgName} />
       </>
     );
   });

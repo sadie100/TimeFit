@@ -11,6 +11,7 @@ import SetItems from "pages/reserve/SetItems";
 import ReserveModal from "pages/reserve/ReserveModal";
 import { useAuth } from "hooks/useAuthContext";
 import useAxiosInterceptor from "hooks/useAxiosInterceptor";
+import ReservePopper from "pages/reserve/ReservePopper";
 
 const Reserve = () => {
   const navigate = useNavigate();
@@ -20,15 +21,26 @@ const Reserve = () => {
   const axios = useAxiosInterceptor();
 
   const getEquip = async () => {
-    const { data } = await axios.get(`/equipment/${user.center.id}`);
-    const equipArr = data.map(({ equipment, xloc, yloc, id }) => {
-      return { xloc, yloc, centerEquipmentId: id, img: equipment.img };
-    });
-    setItemData(equipArr);
+    try {
+      const { data } = await axios.get(`/equipment/${user.center.id}`);
+      const equipArr = data.map(({ equipment, xloc, yloc, id }) => {
+        return {
+          xloc,
+          yloc,
+          centerEquipmentId: id,
+          img: equipment.img,
+          name: equipment.name,
+        };
+      });
+      setItemData(equipArr);
+    } catch (e) {
+      console.log(e);
+      alert("기구 조회 과정에서 에러가 일어났습니다.");
+    }
   };
 
-  console.log(user);
   useEffect(() => {
+    if (!user) return;
     // if (!user) {
     //   alert("유저 정보가 없습니다. 로그인 화면으로 이동합니다.");
     //   navigate("/login");
@@ -40,7 +52,7 @@ const Reserve = () => {
     getEquip();
 
     // setItemData(SampleData);
-  }, []);
+  }, [user]);
 
   // const handleClick = (machineType) => {
   //   navigate(`/reserve/${machineType}`);
@@ -59,6 +71,7 @@ const Reserve = () => {
         >
           <ReservePopperContextProvider>
             <SetItems itemData={itemData} />
+            <ReservePopper />
           </ReservePopperContextProvider>
         </div>
       </Layout>

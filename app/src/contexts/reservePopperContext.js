@@ -6,19 +6,23 @@ export const ReservePopperContext = createContext({
   anchorEl: null,
   handleOpen: () => {},
   handleClose: null,
+  name: "",
 });
 
 const ReservePopperContextProvider = (props) => {
   const [id, setId] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
+  const [name, setName] = useState("");
 
-  const handleOpen = (event, centerEquipmentId) => {
+  const handleOpen = (event, centerEquipmentId, name) => {
     if (centerEquipmentId === id) {
       setId("");
       setAnchorEl(null);
+      setName("");
     } else {
       setAnchorEl(event.currentTarget);
       setId(centerEquipmentId);
+      setName(name);
     }
   };
   const handleClose = () => {};
@@ -30,6 +34,7 @@ const ReservePopperContextProvider = (props) => {
         anchorEl,
         handleOpen,
         handleClose,
+        name,
       }}
       {...props}
     ></ReservePopperContext.Provider>

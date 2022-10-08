@@ -6,14 +6,31 @@ import { ReservePopperContext } from "contexts/reservePopperContext";
 import styled from "styled-components";
 import { MACHINE_NAME } from "constants/center";
 import TimeColumn from "pages/reserve/TimeColumn";
+import axios from "axios";
+import { useAuth } from "hooks/useAuthContext";
 
-export default ({ centerEquipmentId, type }) => {
+export default (props) => {
   const reservePopper = useContext(ReservePopperContext);
-  const { id, anchorEl } = reservePopper;
+  const { id, anchorEl, name } = reservePopper;
   const [reservation, setReservation] = useState([]);
+  const { user } = useAuth();
+
+  const getReservation = async () => {
+    try {
+      const { data } = await axios.get(`/center/${user.center.id}/reserve`, {
+        params: { searchIds: id },
+      });
+      console.log("data", data);
+    } catch (e) {
+      console.log(e);
+      alert("예약 조회 과정에서 에러가 발생했습니다.");
+    }
+  };
 
   //서버에서 데이터 가져와야 함
   useEffect(() => {
+    if (!id) return;
+    getReservation();
     setReservation([
       {
         reservationId: 2,
@@ -36,11 +53,11 @@ export default ({ centerEquipmentId, type }) => {
         end: "2022-09-27T13:45:26",
       },
     ]);
-  }, []);
+  }, [id]);
   return (
-    <Popper id={id} open={id === centerEquipmentId} anchorEl={anchorEl}>
+    <Popper id={id} open={!!id} anchorEl={anchorEl}>
       <WrapperDiv>
-        <Title>{MACHINE_NAME[type]}</Title>
+        <Title>{MACHINE_NAME[name]}</Title>
         <TimeColumn reservation={reservation} readOnly={true}></TimeColumn>
       </WrapperDiv>
     </Popper>
