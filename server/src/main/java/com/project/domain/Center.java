@@ -1,5 +1,6 @@
 package com.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import lombok.*;
 import org.hibernate.annotations.TypeDef;
@@ -33,10 +34,13 @@ public class Center {
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
 
+    @JsonManagedReference
     @OneToMany(mappedBy ="center", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @OrderBy("id asc")
     private Set<CenterImages> centerImages;
 
+
+    @JsonManagedReference
     @OneToMany(mappedBy ="center", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Trainer> trainers;
 
