@@ -1,6 +1,7 @@
 package com.project.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class CenterImages {
     private String newFileName;
     private String filePath;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "center_id")
     private Center center;
