@@ -20,7 +20,7 @@ public class CenterImages {
     private String filePath;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "center_id")
     private Center center;
 }

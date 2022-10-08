@@ -5,19 +5,28 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ApiController from "lib/AxiosInterceptor";
 import { Layout, SampleData } from "components/Center";
 import styled from "styled-components";
 import ReservePopperContextProvider from "contexts/reservePopperContext";
 import SetItems from "pages/reserve/SetItems";
 import ReserveModal from "pages/reserve/ReserveModal";
+import { useAuth } from "hooks/useAuthContext";
 
 const Reserve = () => {
   const navigate = useNavigate();
   //기구 배치 데이터
   const [itemData, setItemData] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
+    if (!user) {
+      alert("유저 정보가 없습니다. 로그인 화면으로 이동합니다.");
+      navigate("/login");
+    }
+    if (!user.center) {
+      alert("등록된 헬스장이 없습니다. 헬스장 등록 화면으로 이동합니다.");
+      navigate("/center?register=true");
+    }
     // async function fetchData() {
     //   try {
     //     const { data } = ApiController({

@@ -7,27 +7,52 @@ import DialogTitle from "@mui/material/DialogTitle";
 import styled from "styled-components";
 import Modal from "components/common/Modal";
 import Button from "components/common/Button";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import useAxiosInterceptor from "hooks/useAxiosInterceptor";
+import { useAuth } from "hooks/useAuthContext";
 
 const modalName = "CenterInfoModal";
 
-export default function CenterInfoModal({ center }) {
+export default function CenterInfoModal({ center, type }) {
   const [data, setData] = useState({});
   const navigate = useNavigate();
+  const axios = useAxiosInterceptor();
 
-  //todo : 초기 데이터 가져오는 로직 서버 연결
   useEffect(() => {
-    setData({
-      name: "11 헬스장",
-      phoneNumber: "02-111-1111",
-      image: "https://source.unsplash.com/random",
-      address: "서울시 광진구 아차산로 123-232",
-      trainers: "홍길동, 홍길길",
-      machines: "기구1 3개, 기구2 4개, 기구3 1개, 기구4 1개",
-      price: "10만원",
-    });
-  }, []);
+    const fetchData = async () => {
+      if (!center) {
+        return;
+      }
+      const { data } = await axios.get(`/centers/${center}`);
+      console.log(data);
+      const { data: image } = await axios.get(`/get-center/${center}`);
+      setData({
+        ...data,
+        image: image ? image[0].filePath : "",
+        trainers: data.trainers.join(","),
+      });
+    };
+    fetchData();
+  }, [center]);
+
+  const handleSelect = async () => {
+    try {
+      if (!window.confirm("해당 헬스장을 선택하시겠습니까?")) return;
+
+      //todo : 에러 해결되면.. user context에서 받기
+      const { data } = await axios.get("/user");
+      console.log(data);
+      await axios.post("/user/change-center", {
+        email: data.email,
+        centerId: center,
+      });
+      alert("센터가 등록되었습니다.");
+      navigate("/main");
+    } catch (e) {
+      console.log(e);
+      alert("에러가 발생했습니다.");
+    }
+  };
 
   return (
     <Modal modalName={modalName}>
@@ -51,16 +76,29 @@ export default function CenterInfoModal({ center }) {
               <BoldText>트레이너</BoldText>
               <p>{data.trainers}</p>
             </Partition>
-            <Partition>
-              <BoldText>보유 기구</BoldText>
-              <p>{data.machines}</p>
-            </Partition>
-            <Partition>
-              <BoldText>가격</BoldText>
-              <p>{data.price}</p>
-            </Partition>
+            {data.machines && (
+              <Partition>
+                <BoldText>보유 기구</BoldText>
+                <p>{data.machines}</p>
+              </Partition>
+            )}
+            {data.price && (
+              <Partition>
+                <BoldText>가격</BoldText>
+                <p>{data.price}</p>
+              </Partition>
+            )}
           </InfoDiv>
         </DialogContent>
+        {type === "change" && (
+          <Button
+            onClick={async () => await handleSelect()}
+            fontSize="18px"
+            padding="1rem 3rem"
+          >
+            선택하기
+          </Button>
+        )}
       </ModalContent>
     </Modal>
   );

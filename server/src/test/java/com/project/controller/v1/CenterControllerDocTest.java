@@ -156,6 +156,7 @@ public class CenterControllerDocTest {
                                 fieldWithPath("[].name").type(JsonFieldType.STRING).description("센터 이름"),
                                 fieldWithPath("[].address").type(JsonFieldType.STRING).description("센터 주소"),
                                 fieldWithPath("[].images").description("센터 이미지 목록"),
+                                fieldWithPath("[].images[].local").description("이미지 경로"),
                                 fieldWithPath("[].images[].path").description("이미지 경로")
                         )
                 ));
@@ -219,6 +220,7 @@ public class CenterControllerDocTest {
                                 fieldWithPath("address").description("센터 주소"),
                                 fieldWithPath("trainers").description("센터 트레이너 명단"),
                                 fieldWithPath("images").description("센터 이미지 목록"),
+                                fieldWithPath("images[].local").description("이미지 경로"),
                                 fieldWithPath("images[].path").description("이미지 경로"),
                                 fieldWithPath("equipmentNumbers").description("센터 기구"),
                                 fieldWithPath("equipmentNumbers[].equipment").description("기구 이름"),

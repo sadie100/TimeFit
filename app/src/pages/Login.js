@@ -11,7 +11,7 @@ import { useAuth } from "hooks/useAuthContext";
 export default () => {
   const navigate = useNavigate();
   const { startLoading, endLoading } = useLoading();
-  const { checkToken } = useAuth();
+  const { handleCheck } = useAuth();
   const handleKakao = async () => {
     // try {
     //   if (window.Kakao) {
@@ -37,7 +37,7 @@ export default () => {
       .post("/signin", data, { withCredentials: true })
       .then((res) => {
         if (res.status === 200) {
-          checkToken();
+          handleCheck();
           navigate("/");
         }
       })

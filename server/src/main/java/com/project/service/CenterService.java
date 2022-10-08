@@ -30,6 +30,7 @@ public class CenterService {
 
 
     public List<CenterResponse> getList(CenterSearch centerSearch){
+
         return centerRepository.getList(centerSearch).stream()
                 .map(CenterResponse::new)
                 .collect(Collectors.toList());

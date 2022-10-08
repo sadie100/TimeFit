@@ -1,4 +1,4 @@
-//센터 찾기
+//센터 찾기/등록/변경
 
 import React, { useState, useContext } from "react";
 import axios from "axios";
@@ -6,17 +6,21 @@ import FormMaker from "components/form/FormMaker";
 import styled from "styled-components";
 import SubmitButton from "components/form/SubmitButton";
 import { useTheme } from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ModalContext } from "contexts/modalContext";
 import TuneIcon from "@mui/icons-material/Tune";
 import CenterFilterModal from "pages/center/CenterFilterModal";
 import CenterInfoModal from "pages/center/CenterInfoModal";
 import blank_image from "assets/image/blank_image.png";
+import QueryString from "qs";
 
 const Center = () => {
   const formId = "UserFindCenter";
-  const theme = useTheme();
+  const location = useLocation();
   const navigate = useNavigate();
+  const { type = "search" } = QueryString.parse(location.search, {
+    ignoreQueryPrefix: true,
+  });
 
   const [searchCond, setSearchCond] = useState(null);
   const [centerList, setCenterList] = useState([]);
@@ -57,7 +61,7 @@ const Center = () => {
   };
 
   const handleClickCenter = (center) => {
-    setCenter(center._id);
+    setCenter(center.id);
     handleOpen("CenterInfoModal");
   };
 
@@ -113,7 +117,7 @@ const Center = () => {
             );
           })}
         </ListWrapper>
-        <CenterInfoModal center={center} />
+        <CenterInfoModal center={center} type={type} />
         <CenterFilterModal
           handleSearchCond={handleSearchCond}
           searchCond={searchCond}
