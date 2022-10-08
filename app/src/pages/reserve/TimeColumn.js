@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
-import { MACHINE_NAME } from "constants/center";
-import { getTimeInfo } from "lib/center";
+import { getTimeInfo } from "lib/reserve";
 import { ModalContext } from "contexts/modalContext";
+import { setDoubleDigits } from "lib/reserve";
 
 const openAt = 9;
 const closeAt = 22;
@@ -30,7 +30,9 @@ export default ({ reservation = [] }) => {
       const rowStart =
         (startHour === openAt ? 1 : (startHour - openAt) * 60) + startMin;
       const rowEnd = (endHour - openAt) * 60 + endMin;
-      const text = `예약중(${startHour}:${startMin}~${endHour}:${endMin})`;
+      const text = `예약중(${setDoubleDigits(startHour)}:${setDoubleDigits(
+        startMin
+      )}~${setDoubleDigits(endHour)}:${setDoubleDigits(endMin)})`;
       return { start, end, rowStart, rowEnd, text, reservationId };
     });
     setReservedTime(reserved);
