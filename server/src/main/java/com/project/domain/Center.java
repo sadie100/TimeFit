@@ -1,5 +1,6 @@
 package com.project.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import lombok.*;

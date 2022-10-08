@@ -15,6 +15,7 @@ public class CenterDetailResponse {
     private final String name;
     private final String phoneNumber;
     private final String address;
+    private final Integer price;
 
     private final List<String> trainers;
     private List<CenterImgResponse> images;
@@ -27,6 +28,7 @@ public class CenterDetailResponse {
         this.name = center.getName();
         this.phoneNumber = center.getPhoneNumber();
         this.address = center.getAddress();
+        this.price = center.getPrice();
         this.trainers = center.getTrainers().stream()
                 .map(o -> o.getName())
                 .collect(Collectors.toList());
