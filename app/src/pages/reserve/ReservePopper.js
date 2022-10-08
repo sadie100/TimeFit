@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { MACHINE_NAME } from "constants/center";
 import TimeColumn from "pages/reserve/TimeColumn";
 
-export default ({ name, type }) => {
+export default ({ centerEquipmentId, type }) => {
   const reservePopper = useContext(ReservePopperContext);
   const { id, anchorEl } = reservePopper;
   const [reservation, setReservation] = useState([]);
@@ -38,7 +38,7 @@ export default ({ name, type }) => {
     ]);
   }, []);
   return (
-    <Popper id={id} open={id === name} anchorEl={anchorEl}>
+    <Popper id={id} open={id === centerEquipmentId} anchorEl={anchorEl}>
       <WrapperDiv>
         <Title>{MACHINE_NAME[type]}</Title>
         <TimeColumn reservation={reservation} readOnly={true}></TimeColumn>

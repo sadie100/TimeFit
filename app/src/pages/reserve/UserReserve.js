@@ -2,7 +2,6 @@
 // 예약 화면
 //
 
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Layout, SampleData } from "components/Center";
@@ -11,39 +10,36 @@ import ReservePopperContextProvider from "contexts/reservePopperContext";
 import SetItems from "pages/reserve/SetItems";
 import ReserveModal from "pages/reserve/ReserveModal";
 import { useAuth } from "hooks/useAuthContext";
+import useAxiosInterceptor from "hooks/useAxiosInterceptor";
 
 const Reserve = () => {
   const navigate = useNavigate();
   //기구 배치 데이터
   const [itemData, setItemData] = useState([]);
   const { user } = useAuth();
+  const axios = useAxiosInterceptor();
 
+  const getEquip = async () => {
+    const { data } = await axios.get(`/equipment/${user.center.id}`);
+    const equipArr = data.map(({ equipment, xloc, yloc, id }) => {
+      return { xloc, yloc, centerEquipmentId: id, img: equipment.img };
+    });
+    setItemData(equipArr);
+  };
+
+  console.log(user);
   useEffect(() => {
-    if (!user) {
-      alert("유저 정보가 없습니다. 로그인 화면으로 이동합니다.");
-      navigate("/login");
-    }
-    if (!user.center) {
-      alert("등록된 헬스장이 없습니다. 헬스장 등록 화면으로 이동합니다.");
-      navigate("/center?register=true");
-    }
-    // async function fetchData() {
-    //   try {
-    //     const { data } = ApiController({
-    //       url: "/api/?",
-    //       method: "get",
-    //     });
-    //     //예약데이터를 받는 api
-    //   } catch (e) {
-    //     console.log(e);
-    //     //에러 타입에 따라 처리
-    //     //우선 로그인 없는 경우만 생각해서 구현. 추후수정
-    //     alert("로그인 정보가 없습니다. 로그인 화면으로 이동합니다.");
-    //     return navigate("/login");
-    //   }
+    // if (!user) {
+    //   alert("유저 정보가 없습니다. 로그인 화면으로 이동합니다.");
+    //   navigate("/login");
     // }
-    // fetchData();
-    setItemData(SampleData);
+    // if (!user.center) {
+    //   alert("등록된 헬스장이 없습니다. 헬스장 등록 화면으로 이동합니다.");
+    //   navigate("/center?register=true");
+    // }
+    getEquip();
+
+    // setItemData(SampleData);
   }, []);
 
   // const handleClick = (machineType) => {

@@ -12,13 +12,13 @@ const ReservePopperContextProvider = (props) => {
   const [id, setId] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleOpen = (event, name, imgName) => {
-    if (name === id) {
+  const handleOpen = (event, centerEquipmentId) => {
+    if (centerEquipmentId === id) {
       setId("");
       setAnchorEl(null);
     } else {
       setAnchorEl(event.currentTarget);
-      setId(name);
+      setId(centerEquipmentId);
     }
   };
   const handleClose = () => {};

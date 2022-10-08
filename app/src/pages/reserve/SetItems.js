@@ -13,26 +13,27 @@ export default ({ itemData }) => {
   } = useTheme();
   const reservePopper = useContext(ReservePopperContext);
   const { handleOpen } = reservePopper;
-  return itemData.map(({ top, left, name }) => {
-    const imgName = name.replace(/_\d/, "");
+  return itemData.map(({ xloc, yloc, img, centerEquipmentId }) => {
+    const imgName = `http://localhost:8080/image/${img}`;
     return (
       <>
         <div
-          onClick={(e) => handleOpen(e, name, imgName)}
-          style={{ top, left, position: "absolute" }}
+          onClick={(e) => handleOpen(e, centerEquipmentId, imgName)}
+          style={{ top: yloc, left: xloc, position: "absolute" }}
+          key={centerEquipmentId}
         >
           {imgName === "entrance" ? (
             <Entrance>입구</Entrance>
           ) : (
             <img
-              src={machines[imgName]}
+              src={imgName}
               height={`${iconSize}px`}
               width={`${iconSize}px`}
               style={{ cursor: "pointer" }}
             ></img>
           )}
         </div>
-        <ReservePopper name={name} type={imgName} />
+        <ReservePopper centerEquipmentId={centerEquipmentId} type={imgName} />
       </>
     );
   });
