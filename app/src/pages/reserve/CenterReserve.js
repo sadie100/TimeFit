@@ -21,10 +21,12 @@ const CenterReserve = () => {
   const { StyledSelect, Label, LineContent } = FormComponent;
   const navigate = useNavigate();
   const axios = useAxiosInterceptor();
-  //센터의 모든 기구
+  //센터의 모든 centerEquipment
   const [centerEquipment, setCenterEquipment] = useState([]);
+  //센터의 모든 equipment list
+  const [equipmentList, setEquipmentList] = useState([]);
   //선택한 기구
-  const [equipment, setEquipment] = useState(null);
+  const [equipment, setEquipment] = useState("");
   const [itemData, setItemData] = useState([]);
   const { user } = useAuth();
 
@@ -40,13 +42,16 @@ const CenterReserve = () => {
       if (!data || data.length === 0) {
         return alert("해당 센터의 기구가 없습니다.");
       }
+      setCenterEquipment(data);
       const equipArr = data.reduce(function (acc, { equipment }) {
         if (acc.findIndex(({ id }) => id === equipment.id) === -1) {
           acc.push(equipment);
         }
         return acc;
       }, []);
-      setCenterEquipment(equipArr);
+      //equipmentList는 센터가 가진 equipment 리스트
+      setEquipmentList(equipArr);
+      //equipment는 현재 선택중인 기구
       setEquipment(equipArr[0].id);
     } catch (e) {
       console.log(e);
@@ -64,18 +69,24 @@ const CenterReserve = () => {
   const getReservation = async () => {
     if (!equipment) return;
     try {
+      const selectCenterEquips = centerEquipment
+        .filter(({ equipment: equip }) => equip.id === equipment)
+        .map((data) => data.id)
+        .join(",");
       const { data } = await axios.get(`/center/${user.center.id}/reserve`, {
-        params: { searchIds: equipment },
+        params: { searchIds: selectCenterEquips },
       });
-      console.log("data", data);
+      console.log(data);
+      const reservations = data.map((d) => d.times);
+      setItemData(reservations);
     } catch (e) {
       console.log(e);
       alert("예약 불러오기 중 에러가 발생했습니다.");
     }
   };
-  console.log(equipment);
+
   useEffect(() => {
-    if (!user) return;
+    if (!user || !equipment) return;
     //equipment에 따른 예약 정보 받기
     getReservation();
     // setItemData([
@@ -157,8 +168,8 @@ const CenterReserve = () => {
       <LineContent>
         <Label>기구 선택</Label>
         <StyledSelect name="equipment" onChange={handleEquipment}>
-          {centerEquipment.map(({ name, centerEquipmentId, equipmentId }) => (
-            <option key={centerEquipmentId} value={equipmentId}>
+          {equipmentList.map(({ name, id }) => (
+            <option key={id} value={id}>
               {MACHINE_NAME[name]}
             </option>
           ))}
