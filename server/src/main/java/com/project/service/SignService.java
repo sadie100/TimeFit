@@ -67,7 +67,7 @@ public class SignService  {
                 .build();
         userRepository.save(user);
     }
-
+    @javax.transaction.Transactional
     public CenterSignResponse joinCenter(CenterSignUp request){
         Center center= Center.builder()
                 .name(request.getName())

@@ -1,5 +1,6 @@
 package com.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,6 +17,8 @@ public class Trainer {
 
     private String name;
     private String gender;
+
+    @JsonBackReference
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="center_id")
     private Center center;
