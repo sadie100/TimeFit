@@ -24,7 +24,7 @@ const CenterReserve = () => {
   //센터의 모든 기구
   const [centerEquipment, setCenterEquipment] = useState([]);
   //선택한 기구
-  const [equipment, setEquipment] = useState("");
+  const [equipment, setEquipment] = useState(null);
   const [itemData, setItemData] = useState([]);
   const { user } = useAuth();
 
@@ -47,14 +47,13 @@ const CenterReserve = () => {
         return acc;
       }, []);
       setCenterEquipment(equipArr);
-      setEquipment(equipArr[0].equipmentId);
+      setEquipment(equipArr[0].id);
     } catch (e) {
       console.log(e);
       alert("센터 기구 조회 중 오류가 발생했습니다.");
     }
   };
 
-  console.log(centerEquipment);
   //user
   useEffect(() => {
     if (!user) return;
@@ -62,15 +61,18 @@ const CenterReserve = () => {
   }, [user]);
 
   const getReservation = async () => {
+    if (!equipment) return;
     try {
-      const { data } = await axios.get(`/center/${user.center.id}/reserve`);
-      console.log(data);
+      const { data } = await axios.get(`/center/${user.center.id}/reserve`, {
+        params: { searchIds: equipment },
+      });
+      console.log("data", data);
     } catch (e) {
       console.log(e);
       alert("예약 불러오기 중 에러가 발생했습니다.");
     }
   };
-
+  console.log(equipment);
   useEffect(() => {
     if (!user) return;
     //equipment에 따른 예약 정보 받기
