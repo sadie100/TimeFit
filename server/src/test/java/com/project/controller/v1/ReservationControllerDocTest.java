@@ -368,8 +368,8 @@ public class ReservationControllerDocTest {
                         .center(center)
                         .centerEquipment(requestEquip.get(i%5))
                         .user(user1)
-                        .start(LocalDateTime.parse(now+"T19:15:30"))
-                        .end(LocalDateTime.parse(now+"T19:25:30"))
+                        .start(LocalDateTime.parse(now+"T23:15:30"))
+                        .end(LocalDateTime.parse(now+"T23:25:30"))
                         .build()).collect(Collectors.toList());
         reservationRepository.saveAll(requestReserve);
 

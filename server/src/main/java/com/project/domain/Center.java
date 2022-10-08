@@ -1,9 +1,6 @@
 package com.project.domain;
 
-<<<<<<< HEAD
-import com.fasterxml.jackson.annotation.JsonBackReference;
-=======
->>>>>>> c0fa3f12372b2727beead3ccd829b77bc257e3d7
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import lombok.*;

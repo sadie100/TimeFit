@@ -324,38 +324,4 @@ class ReservationControllerTest {
                 .andDo(print());
     }
 
-//    @Test
-//    @DisplayName("예약 확인")
-//    void test6() throws Exception{
-//        //given
-//        List<Center> requestCenter = IntStream.range(0,20)
-//                .mapToObj(i -> Center.builder()
-//                        .name("센터" +i)
-//                        .region("서울")
-//                        .price(i*10000)
-//                        .build()).collect(Collectors.toList());
-//        centerRepository.saveAll(requestCenter);
-//
-//        List<CenterEquipment> requestEquip = IntStream.range(0,20)
-//                .mapToObj(i -> CenterEquipment.builder()
-//                        .center(requestCenter.get(i%5))
-//                        .build()).collect(Collectors.toList());
-//        centerEquipmentRepository.saveAll(requestEquip);
-//
-//        LocalDate now = LocalDate.now();
-//        List<Reservation> requestReserve = IntStream.range(0,20)
-//                .mapToObj(i -> Reservation.builder()
-//                        .center(requestCenter.get(0))
-//                        .centerEquipment(requestEquip.get(i%5))
-//                        .start(LocalDateTime.parse(now+"T10:15:"+(10+i)))
-//                        .end(LocalDateTime.parse(now+"T10:25:"+(10+i)))
-//                        .build()).collect(Collectors.toList());
-//        reservationRepository.saveAll(requestReserve);
-//
-//        mockMvc.perform(get("/center/{centerId}/reserve"
-//                        ,requestCenter.get(0).getId())
-//                        .contentType(APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andDo(print());
-//    }
 }
