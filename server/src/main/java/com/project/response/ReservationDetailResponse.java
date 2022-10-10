@@ -16,11 +16,13 @@ import java.time.LocalDateTime;
 public class ReservationDetailResponse {
 
     private Long reservationId;
+    private String userName;
     private LocalDateTime start;
     private LocalDateTime end;
 
     public ReservationDetailResponse(Reservation reservation) {
         this.reservationId = reservation.getId();
+        this.userName = reservation.getUser().getName();
         this.start = reservation.getStart();
         this.end = reservation.getEnd();
     }
