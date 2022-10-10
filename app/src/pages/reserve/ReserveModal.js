@@ -65,7 +65,11 @@ const ReserveModal = () => {
       reserveClose();
     } catch (e) {
       console.log(e);
-      alert("예약하기 진행 중 에러가 일어났습니다.");
+      if (e.response.status === 405) {
+        alert("예약할 수 없는 시간입니다. 다른 시간으로 시도해 주세요.");
+      } else {
+        alert("예약하기 진행 중 에러가 일어났습니다.");
+      }
     }
   };
 
