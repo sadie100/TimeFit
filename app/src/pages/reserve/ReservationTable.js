@@ -2,7 +2,7 @@ import Popper from "@mui/material/Popper";
 import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { MACHINE_NAME } from "constants/center";
-import { getTimeInfo } from "lib/center";
+import { getTimeInfo } from "lib/reserve";
 
 const openAt = 9;
 const closeAt = 22;

@@ -6,6 +6,8 @@ import Button from "components/common/Button";
 import { useNavigate } from "react-router-dom";
 import useAxiosInterceptor from "hooks/useAxiosInterceptor";
 import { useAuth } from "hooks/useAuthContext";
+import { getISOTimeValue, getHourFormat } from "lib/reserve";
+import { MACHINE_NAME } from "constants/center";
 
 const MyPageMain = () => {
   const navigate = useNavigate();
@@ -16,7 +18,13 @@ const MyPageMain = () => {
   const getReserve = async () => {
     try {
       const { data } = await axios.get("/my-reserve");
-      setReservation(data);
+      console.log(data);
+      const reserveArr = data.map((d) => ({
+        ...d,
+        start: getHourFormat(getISOTimeValue(d.start)),
+        end: getHourFormat(getISOTimeValue(d.end)),
+      }));
+      setReservation(reserveArr);
     } catch (e) {
       console.log(e);
       alert("예약 조회 과정에서 에러가 발생했습니다.");
@@ -26,7 +34,7 @@ const MyPageMain = () => {
   const handleCancel = async (reservationId) => {
     if (!window.confirm("예약을 취소하시겠습니까?")) return;
     try {
-      const centerId = user.center;
+      const centerId = user.center.id;
       await axios.delete(`/center/${centerId}/reserve/${reservationId}`);
       alert("예약이 취소되었습니다.");
       await getReserve();
@@ -54,8 +62,11 @@ const MyPageMain = () => {
             return (
               <LongButton key={idx}>
                 <div>
-                  <BoxText>{equipName}</BoxText>
-                  <BoxText className="bold">
+                  <BoxText style={{ marginBottom: "10px" }} className="bold">
+                    {MACHINE_NAME[equipName]}
+                  </BoxText>
+
+                  <BoxText>
                     {start}~{end}
                   </BoxText>
                 </div>

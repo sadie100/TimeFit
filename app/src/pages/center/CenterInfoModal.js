@@ -17,6 +17,7 @@ export default function CenterInfoModal({ center, type }) {
   const [data, setData] = useState({});
   const navigate = useNavigate();
   const axios = useAxiosInterceptor();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +25,6 @@ export default function CenterInfoModal({ center, type }) {
         return;
       }
       const { data } = await axios.get(`/centers/${center}`);
-      console.log(data);
       const { data: image } = await axios.get(`/get-center/${center}`);
       setData({
         ...data,
@@ -39,15 +39,12 @@ export default function CenterInfoModal({ center, type }) {
     try {
       if (!window.confirm("해당 헬스장을 선택하시겠습니까?")) return;
 
-      //todo : 에러 해결되면.. user context에서 받기
-      const { data } = await axios.get("/user");
-      console.log(data);
       await axios.post("/user/change-center", {
-        email: data.email,
+        email: user.email,
         centerId: center,
       });
       alert("센터가 등록되었습니다.");
-      navigate("/main");
+      navigate("/");
     } catch (e) {
       console.log(e);
       alert("에러가 발생했습니다.");
