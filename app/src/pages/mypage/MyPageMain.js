@@ -13,12 +13,11 @@ const MyPageMain = () => {
   const navigate = useNavigate();
   const axios = useAxiosInterceptor();
   const [reservation, setReservation] = useState([]);
-  const { user } = useAuth();
+  const { user, type } = useAuth();
 
   const getReserve = async () => {
     try {
       const { data } = await axios.get("/my-reserve");
-      console.log(data);
       const reserveArr = data.map((d) => ({
         ...d,
         start: getHourFormat(getISOTimeValue(d.start)),
@@ -56,38 +55,51 @@ const MyPageMain = () => {
     <Background>
       <Wrapper>
         <div className="title">마이페이지</div>
-        <SubTitle>내 예약</SubTitle>
-        {reservation.length > 0 ? (
-          reservation.map(({ equipName, start, end, reservationId }, idx) => {
-            return (
-              <LongButton key={idx}>
-                <div>
-                  <BoxText style={{ marginBottom: "10px" }} className="bold">
-                    {MACHINE_NAME[equipName]}
-                  </BoxText>
+        {type === "user" && <SubTitle>내 예약</SubTitle>}
+        {type === "user" ? (
+          reservation.length > 0 ? (
+            reservation.map(({ equipName, start, end, reservationId }, idx) => {
+              return (
+                <LongButton key={idx}>
+                  <div>
+                    <BoxText style={{ marginBottom: "10px" }} className="bold">
+                      {MACHINE_NAME[equipName]}
+                    </BoxText>
 
-                  <BoxText>
-                    {start}~{end}
-                  </BoxText>
-                </div>
-                <div>
-                  <Button
-                    backgroundColor="lightgray"
-                    onClick={async () => await handleCancel(reservationId)}
-                  >
-                    예약취소
-                  </Button>
-                </div>
-              </LongButton>
-            );
-          })
+                    <BoxText>
+                      {start}~{end}
+                    </BoxText>
+                  </div>
+                  <div>
+                    <Button
+                      backgroundColor="lightgray"
+                      onClick={async () => await handleCancel(reservationId)}
+                    >
+                      예약취소
+                    </Button>
+                  </div>
+                </LongButton>
+              );
+            })
+          ) : (
+            <LongButton>
+              <div>
+                <BoxText>예약 없음</BoxText>
+              </div>
+              <div>
+                <Button onClick={handleReserve}>예약하러 가기</Button>
+              </div>
+            </LongButton>
+          )
         ) : (
           <LongButton>
             <div>
-              <BoxText>예약 없음</BoxText>
+              <BoxText>{user?.name}</BoxText>
             </div>
             <div>
-              <Button onClick={handleReserve}>예약하러 가기</Button>
+              <Button onClick={() => navigate("/reserve/center")}>
+                예약 현황 보기
+              </Button>
             </div>
           </LongButton>
         )}
@@ -103,13 +115,15 @@ const MyPageMain = () => {
           <BoxText>비밀번호 변경</BoxText>
           <BoxText>&#62;</BoxText>
         </LongButton>
-        <LongButton
-          className="normal"
-          onClick={() => navigate("/center?type=change")}
-        >
-          <BoxText>헬스장 변경</BoxText>
-          <BoxText>&#62;</BoxText>
-        </LongButton>
+        {type === "user" && (
+          <LongButton
+            className="normal"
+            onClick={() => navigate("/center?type=change")}
+          >
+            <BoxText>헬스장 변경</BoxText>
+            <BoxText>&#62;</BoxText>
+          </LongButton>
+        )}
       </Wrapper>
     </Background>
   );
