@@ -13,7 +13,7 @@ const modalName = "ReserveModal";
 const formId = "ReserveForm";
 
 const ReserveModal = () => {
-  const { modalProp, handleClose } = useContext(ModalContext);
+  const { modalProp, handleClose, nowOpenModal } = useContext(ModalContext);
   const [startTime, setStartTime] = useState([0, 0]);
   const [endTime, setEndTime] = useState([0, 0]);
   const { user } = useAuth();
@@ -52,7 +52,6 @@ const ReserveModal = () => {
         startMin
       ).toISOString();
       const end = new Date(year, month, date, endHour, endMin).toISOString();
-
       await axios.post(`/center/${user.center.id}/reserve`, {
         centerEquipmentId: id,
         start,
@@ -67,6 +66,11 @@ const ReserveModal = () => {
       alert("예약하기 진행 중 에러가 일어났습니다.");
     }
   };
+
+  useEffect(() => {
+    reset();
+  }, [nowOpenModal]);
+
   return (
     <Modal modalName={modalName}>
       <WrapperDiv>
