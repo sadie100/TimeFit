@@ -3,21 +3,9 @@ import styled from "styled-components";
 import { getTimeInfo } from "lib/reserve";
 import { ModalContext } from "contexts/modalContext";
 import { setDoubleDigits } from "lib/reserve";
+import { reservationTime } from "lib/reserve";
 
-const openAt = 9;
-const closeAt = 22;
-const totalRowEnd = (closeAt - openAt) * 60;
-
-const times = Array.from(
-  { length: closeAt - openAt },
-  (data, idx) => openAt + idx
-).map((d, idx) => {
-  return {
-    label: d,
-    rowStart: idx === 0 ? 1 : idx * 60,
-    rowEnd: (idx + 1) * 60,
-  };
-});
+const { openAt, closeAt, totalRowEnd, times } = reservationTime();
 
 export default ({ reservation = [] }) => {
   const [reservedTime, setReservedTime] = useState([]);

@@ -13,7 +13,7 @@ const modalName = "ReserveModal";
 const formId = "ReserveForm";
 
 const ReserveModal = () => {
-  const { modalProp, handleClose } = useContext(ModalContext);
+  const { modalProp, handleClose, nowOpenModal } = useContext(ModalContext);
   const [startTime, setStartTime] = useState([0, 0]);
   const [endTime, setEndTime] = useState([0, 0]);
   const { user } = useAuth();
@@ -39,19 +39,20 @@ const ReserveModal = () => {
     if (!window.confirm("설정한 시간으로 예약하시겠습니까?")) return;
     try {
       const { startHour, startMin, endHour, endMin } = submitData;
+      const timeZoneOffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+
       const today = new Date();
       const year = today.getFullYear();
       const month = today.getMonth();
       const date = today.getDate();
 
-      const start = new Date(
-        year,
-        month,
-        date,
-        startHour,
-        startMin
-      ).toISOString();
-      const end = new Date(year, month, date, endHour, endMin).toISOString();
+      const startDay = new Date(year, month, date, startHour, startMin);
+      const endDay = new Date(year, month, date, endHour, endMin);
+
+      const start = new Date(startDay - timeZoneOffset)
+        .toISOString()
+        .slice(0, -1);
+      const end = new Date(endDay - timeZoneOffset).toISOString().slice(0, -1);
 
       await axios.post(`/center/${user.center.id}/reserve`, {
         centerEquipmentId: id,
@@ -64,9 +65,18 @@ const ReserveModal = () => {
       reserveClose();
     } catch (e) {
       console.log(e);
-      alert("예약하기 진행 중 에러가 일어났습니다.");
+      if (e.response.status === 405) {
+        alert("예약할 수 없는 시간입니다. 다른 시간으로 시도해 주세요.");
+      } else {
+        alert("예약하기 진행 중 에러가 일어났습니다.");
+      }
     }
   };
+
+  useEffect(() => {
+    reset();
+  }, [nowOpenModal]);
+
   return (
     <Modal modalName={modalName}>
       <WrapperDiv>

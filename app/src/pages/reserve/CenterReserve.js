@@ -5,10 +5,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Layout, SampleData } from "components/Center";
 import styled from "styled-components";
-import ReservePopperContextProvider from "contexts/reservePopperContext";
-import SetItems from "pages/reserve/SetItems";
 import ReserveModal from "pages/reserve/ReserveModal";
 import * as FormComponent from "components/form/StyledComponents";
 import { MACHINE_NAME } from "constants/center";
@@ -70,13 +67,13 @@ const CenterReserve = () => {
     if (!equipment) return;
     try {
       const selectCenterEquips = centerEquipment
-        .filter(({ equipment: equip }) => equip.id === equipment)
+        .filter((data) => data.equipment.id === Number(equipment))
         .map((data) => data.id)
         .join(",");
       const { data } = await axios.get(`/center/${user.center.id}/reserve`, {
         params: { searchIds: selectCenterEquips },
       });
-      console.log(data);
+
       const reservations = data.map((d) => d.times);
       setItemData(reservations);
     } catch (e) {
@@ -89,79 +86,8 @@ const CenterReserve = () => {
     if (!user || !equipment) return;
     //equipment에 따른 예약 정보 받기
     getReservation();
-    // setItemData([
-    //   [
-    //     {
-    //       reservationId: 2,
-    //       start: "2022-09-27T01:00:11",
-    //       end: "2022-09-27T01:15:11",
-    //     },
-    //     {
-    //       reservationId: 7,
-    //       start: "2022-09-27T02:15:16",
-    //       end: "2022-09-27T02:35:16",
-    //     },
-    //     {
-    //       reservationId: 12,
-    //       start: "2022-09-27T05:00:21",
-    //       end: "2022-09-27T06:00:21",
-    //     },
-    //     {
-    //       reservationId: 17,
-    //       start: "2022-09-27T12:00:26",
-    //       end: "2022-09-27T13:45:26",
-    //     },
-    //   ],
-    //   [
-    //     {
-    //       reservationId: 2,
-    //       start: "2022-09-27T01:00:11",
-    //       end: "2022-09-27T01:15:11",
-    //     },
-    //     {
-    //       reservationId: 7,
-    //       start: "2022-09-27T02:15:16",
-    //       end: "2022-09-27T02:35:16",
-    //     },
-    //     {
-    //       reservationId: 12,
-    //       start: "2022-09-27T05:00:21",
-    //       end: "2022-09-27T06:00:21",
-    //     },
-    //     {
-    //       reservationId: 17,
-    //       start: "2022-09-27T12:00:26",
-    //       end: "2022-09-27T13:45:26",
-    //     },
-    //   ],
-    //   [
-    //     {
-    //       reservationId: 2,
-    //       start: "2022-09-27T01:00:11",
-    //       end: "2022-09-27T01:15:11",
-    //     },
-    //     {
-    //       reservationId: 7,
-    //       start: "2022-09-27T02:15:16",
-    //       end: "2022-09-27T02:35:16",
-    //     },
-    //     {
-    //       reservationId: 12,
-    //       start: "2022-09-27T05:00:21",
-    //       end: "2022-09-27T06:00:21",
-    //     },
-    //     {
-    //       reservationId: 17,
-    //       start: "2022-09-27T12:00:26",
-    //       end: "2022-09-27T13:45:26",
-    //     },
-    //   ],
-    // ]);
   }, [equipment]);
 
-  // const handleClick = (machineType) => {
-  //   navigate(`/reserve/${machineType}`);
-  // };
   return (
     <Background>
       <div className="title">예약 현황 보기</div>
