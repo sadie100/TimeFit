@@ -96,27 +96,28 @@ class ReservationControllerTest {
                         .build()).collect(Collectors.toList());
         centerEquipmentRepository.saveAll(requestEquip);
 
+        List<User> users = IntStream.range(0,20)
+                .mapToObj(i -> User.builder()
+                        .email(i+"id@naver.com")
+                        .password("1234")
+                        .name("name"+i)
+                        .build()).collect(Collectors.toList());
+        userRepository.saveAll(users);
+
         LocalDate now = LocalDate.now();
         List<Reservation> requestReserve = IntStream.range(0,20)
                 .mapToObj(i -> Reservation.builder()
                         .center(requestCenter.get(0))
                         .centerEquipment(requestEquip.get(i%5))
+                        .user(users.get(i))
                         .start(LocalDateTime.parse(now+"T10:15:"+(10+i)))
                         .end(LocalDateTime.parse(now+"T10:25:"+(10+i)))
                         .build()).collect(Collectors.toList());
         reservationRepository.saveAll(requestReserve);
 
-        List<Long> ids = new ArrayList<>();
-        ids.add(requestEquip.get(1).getId());
-        ids.add(requestEquip.get(2).getId());
-        ReservationSearch request = ReservationSearch.builder()
-                .searchIds(ids)
-//                .searchDate(LocalDate.parse("2022-09-25"))
-                .build();
 
         mockMvc.perform(get("/center/{centerId}/reserve?searchIds={1},{2}&searchDate={d}"
                         ,requestCenter.get(0).getId(),requestEquip.get(1).getId(),requestEquip.get(2).getId(),now)
-//                        .content(objectMapper.writeValueAsString(request))
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

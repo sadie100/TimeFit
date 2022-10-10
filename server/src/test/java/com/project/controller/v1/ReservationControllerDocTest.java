@@ -101,24 +101,24 @@ public class ReservationControllerDocTest {
                         .build()).collect(Collectors.toList());
         centerEquipmentRepository.saveAll(requestEquip);
 
+        List<User> users = IntStream.range(0,20)
+                .mapToObj(i -> User.builder()
+                        .email(i+"id@naver.com")
+                        .password("1234")
+                        .name("name"+i)
+                        .build()).collect(Collectors.toList());
+        userRepository.saveAll(users);
+
         LocalDate now = LocalDate.now();
         List<Reservation> requestReserve = IntStream.range(0,20)
                 .mapToObj(i -> Reservation.builder()
                         .center(requestCenter.get(0))
                         .centerEquipment(requestEquip.get(i%5))
+                        .user(users.get(i))
                         .start(LocalDateTime.parse(now+"T10:15:"+(10+i)))
                         .end(LocalDateTime.parse(now+"T10:25:"+(10+i)))
                         .build()).collect(Collectors.toList());
         reservationRepository.saveAll(requestReserve);
-
-        List<Long> ids = new ArrayList<>();
-
-        ids.add(requestEquip.get(1).getId());
-        ids.add(requestEquip.get(2).getId());
-        ReservationSearch request = ReservationSearch.builder()
-                .searchIds(ids)
-//                .searchDate(now)
-                .build();
 
 
         this.mockMvc.perform(get("/center/{centerId}/reserve?searchDate={d}&searchIds={1},{2}"
@@ -139,6 +139,7 @@ public class ReservationControllerDocTest {
                                 fieldWithPath("[].id").description("헬스장 기구 ID"),
                                 fieldWithPath("[].times").description("기구 예약 리스트"),
                                 fieldWithPath("[].times[].reservationId").description("예약 ID"),
+                                fieldWithPath("[].times[].userName").description("예약 고객 이름"),
                                 fieldWithPath("[].times[].start").description("예약 시작 시간"),
                                 fieldWithPath("[].times[].end").description("예약 종료 시간")
                         )
@@ -368,8 +369,8 @@ public class ReservationControllerDocTest {
                         .center(center)
                         .centerEquipment(requestEquip.get(i%5))
                         .user(user1)
-                        .start(LocalDateTime.parse(now+"T23:15:30"))
-                        .end(LocalDateTime.parse(now+"T23:25:30"))
+                        .start(LocalDateTime.parse(now+"T23:48:30"))
+                        .end(LocalDateTime.parse(now+"T23:58:30"))
                         .build()).collect(Collectors.toList());
         reservationRepository.saveAll(requestReserve);
 
