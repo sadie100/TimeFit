@@ -1,5 +1,6 @@
 export const getISOTimeValue = (time) => {
-  const timeDate = new Date(time + "Z");
+  // const timeDate = new Date(time + "Z");
+  const timeDate = new Date(time);
   const year = timeDate.getFullYear();
   const month = timeDate.getMonth();
   const date = timeDate.getDate();

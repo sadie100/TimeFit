@@ -39,19 +39,21 @@ const ReserveModal = () => {
     if (!window.confirm("설정한 시간으로 예약하시겠습니까?")) return;
     try {
       const { startHour, startMin, endHour, endMin } = submitData;
+      const timeZoneOffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+
       const today = new Date();
       const year = today.getFullYear();
       const month = today.getMonth();
       const date = today.getDate();
 
-      const start = new Date(
-        year,
-        month,
-        date,
-        startHour,
-        startMin
-      ).toISOString();
-      const end = new Date(year, month, date, endHour, endMin).toISOString();
+      const startDay = new Date(year, month, date, startHour, startMin);
+      const endDay = new Date(year, month, date, endHour, endMin);
+
+      const start = new Date(startDay - timeZoneOffset)
+        .toISOString()
+        .slice(0, -1);
+      const end = new Date(endDay - timeZoneOffset).toISOString().slice(0, -1);
+
       await axios.post(`/center/${user.center.id}/reserve`, {
         centerEquipmentId: id,
         start,
