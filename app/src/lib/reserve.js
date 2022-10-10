@@ -29,3 +29,21 @@ export const getHourFormat = (time) => {
   const { hour, min } = time;
   return `${setDoubleDigits(hour)}:${setDoubleDigits(min)}`;
 };
+
+export const reservationTime = () => {
+  const openAt = 9;
+  const closeAt = 22;
+  const totalRowEnd = (closeAt - openAt) * 60;
+
+  const times = Array.from(
+    { length: closeAt - openAt },
+    (data, idx) => openAt + idx
+  ).map((d, idx) => {
+    return {
+      label: d,
+      rowStart: idx === 0 ? 1 : idx * 60,
+      rowEnd: (idx + 1) * 60,
+    };
+  });
+  return { openAt, closeAt, totalRowEnd, times };
+};
