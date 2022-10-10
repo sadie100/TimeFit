@@ -11,15 +11,17 @@ const ReservationTable = ({ reservation = [] }) => {
   const [reservedTime, setReservedTime] = useState([]);
   useEffect(() => {
     const reserved = reservation.map((one, idx) => {
-      const column = one.map(({ reservationId, start, end }) => {
+      const column = one.map(({ reservationId, start, end, userName }) => {
         const [startHour, startMin] = getTimeInfo(start);
         const [endHour, endMin] = getTimeInfo(end);
-        const rowStart = (startHour - openAt) * 60 + startMin;
+        const rowStart =
+          (startHour === openAt ? 1 : (startHour - openAt) * 60) + startMin;
         const rowEnd = (endHour - openAt) * 60 + endMin;
-        //todo  : 이름 하드코딩 변경
-        const text = `김철수님(${setDoubleDigits(startHour)}:${setDoubleDigits(
-          startMin
-        )}~${setDoubleDigits(endHour)}:${setDoubleDigits(endMin)})`;
+        const text = `${userName}님(${setDoubleDigits(
+          startHour
+        )}:${setDoubleDigits(startMin)}~${setDoubleDigits(
+          endHour
+        )}:${setDoubleDigits(endMin)})`;
         return { start, end, rowStart, rowEnd, text, reservationId };
       });
       return {
@@ -75,14 +77,14 @@ const TimeTable = styled.div`
 const WhieColumn = styled.div`
   display: grid;
   background-color: white;
-  grid-template-rows: repeat(${(closeAt - openAt + 1) * 60}, 2px);
+  grid-template-rows: repeat(${totalRowEnd}, 2px);
   grid-template-columns: 1fr;
 `;
 
 const TimeColumn = styled.div`
   display: grid;
   background-color: white;
-  grid-template-rows: repeat(${(closeAt - openAt + 1) * 60}, 2px);
+  grid-template-rows: repeat(${totalRowEnd}, 2px);
   grid-template-columns: 1fr;
   border: 1px solid Gainsboro;
   border-right: 1px dashed Gainsboro;
