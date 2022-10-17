@@ -6,6 +6,8 @@
 
 헬스장 운동 기구 예약 시스템, 타임핏
 
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/416fe9ca-7cd3-4dec-aa30-8c20d2fda419/Untitled.png)
+
 ## 기술 스택
 
 <img src="https://img.shields.io/badge/java | 11-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/javascript | ES6-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
