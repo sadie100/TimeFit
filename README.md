@@ -6,7 +6,8 @@
 
 헬스장 운동 기구 예약 시스템, 타임핏
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/416fe9ca-7cd3-4dec-aa30-8c20d2fda419/Untitled.png)
+![image](https://user-images.githubusercontent.com/90018305/196167022-7f3bec34-9190-4a1b-9c64-5e1cd6d33e79.png)
+
 
 ## 기술 스택
 
