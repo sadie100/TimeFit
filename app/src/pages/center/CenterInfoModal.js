@@ -17,7 +17,7 @@ export default function CenterInfoModal({ center, type }) {
   const [data, setData] = useState({});
   const navigate = useNavigate();
   const axios = useAxiosInterceptor();
-  const { user } = useAuth();
+  const { user, handleCheck } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +44,7 @@ export default function CenterInfoModal({ center, type }) {
         centerId: center,
       });
       alert("센터가 등록되었습니다.");
+      await handleCheck();
       navigate("/");
     } catch (e) {
       console.log(e);

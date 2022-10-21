@@ -71,9 +71,9 @@ export default () => {
   const formDownside = () => {
     return (
       <Line>
-        <div>
+        {/* <div>
           <input type="checkbox"></input>로그인 정보 저장
-        </div>
+        </div> */}
         <SubmitButton>로그인</SubmitButton>
         <div
           style={{

@@ -5,11 +5,11 @@ import { ModalContext } from "contexts/modalContext";
 import styled from "styled-components";
 import Modal from "components/common/Modal";
 import Button from "components/common/Button";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import FormMaker from "components/form/FormMaker";
 import { MACHINE_NAME } from "constants/center";
 import useEquipment from "hooks/useEquipment";
+import { filterObj } from "lib/common";
 
 const modalName = "CenterFilterModal";
 const formId = "CenterFilterForm";
@@ -33,7 +33,7 @@ export default function CenterFilterModal({ handleSearchCond, searchCond }) {
   }, []);
 
   const handleFilter = (data) => {
-    handleSearchCond(data);
+    handleSearchCond(filterObj(data));
   };
 
   const formData = ({ watch }) =>
@@ -43,6 +43,7 @@ export default function CenterFilterModal({ handleSearchCond, searchCond }) {
         label: "지역",
         name: "region",
         items: [
+          { label: "전체", value: "" },
           { label: "강원도", value: "강원" },
           { label: "경기도", value: "경기" },
           { label: "경상남도", value: "경남" },
@@ -61,7 +62,6 @@ export default function CenterFilterModal({ handleSearchCond, searchCond }) {
           { label: "제주특별자치도", value: "제주" },
           { label: "세종특별시", value: "세종" },
         ],
-        placeholder: "시/도 선택",
       },
       // !!watch("city") && {
       //   type: "select",
