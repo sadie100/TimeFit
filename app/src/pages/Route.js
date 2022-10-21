@@ -64,7 +64,7 @@ const LoadingBackground = styled.div`
   justify-content: center;
   flex-direction: column;
   opacity: 0.5;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
 `;
