@@ -11,6 +11,7 @@ import { Layout, Entrance } from "components/Center";
 import { useTheme } from "styled-components";
 import axios from "axios";
 import Machines from "pages/join/Machines";
+import MachineList from "pages/join/MachineList";
 import { useForm } from "react-hook-form";
 import {
   StyledForm,
@@ -63,43 +64,33 @@ export default (props) => {
 
   //이전 페이지에서 machine 데이터 가져와서 그 수만큼 아이콘 배치하기
   useEffect(() => {
-    setToItems([]);
-    setFromItems([]);
-    const machineArr = [];
-    const selectedField = watch(fieldName);
-    selectedField
-      .filter((d) => !!d.equipment)
-      .map(({ equipment, count }, idx) => {
-        const machine = machines.find((element) => element.name === equipment);
-        const { id, img } = machine;
-        for (let i = 0; i < count; i++) {
-          machineArr.push({
-            //todo : 센터id 가져오는 걸로 변경
-            equipment: id,
-            name: `${id}_${i}`,
-            yloc: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
-            xloc: parseInt(machineArr.length / 2) * (iconSize + 20),
-            img: img,
-            // component: (
-            //   <img
-            //     src={img}
-            //     height={`${iconSize}px`}
-            //     width={`${iconSize}px`}
-            //     style={{ cursor: "pointer" }}
-            //   ></img>
-            // ),
-          });
-        }
-      });
-
-    //입구 일단 빼둠
-    // machineArr.push({
-    //   name: "entrance",
-    //   equipment: "entrance",
-    //   yloc: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
-    //   xloc: parseInt(machineArr.length / 2) * (iconSize + 20),
-    // });
-    setFromItems(machineArr);
+    // setToItems([]);
+    // setFromItems([]);
+    // const machineArr = [];
+    // const selectedField = watch(fieldName);
+    // selectedField
+    //   .filter((d) => !!d.equipment)
+    //   .map(({ equipment, count }, idx) => {
+    //     const machine = machines.find((element) => element.name === equipment);
+    //     const { id, img } = machine;
+    //     for (let i = 0; i < count; i++) {
+    //       machineArr.push({
+    //         equipment: id,
+    //         name: `${id}_${i}`,
+    //         yloc: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
+    //         xloc: parseInt(machineArr.length / 2) * (iconSize + 20),
+    //         img: img,
+    //       });
+    //     }
+    //   });
+    // //입구 일단 빼둠
+    // // machineArr.push({
+    // //   name: "entrance",
+    // //   equipment: "entrance",
+    // //   yloc: machineArr.length % 2 === 0 ? 10 : iconSize * 2,
+    // //   xloc: parseInt(machineArr.length / 2) * (iconSize + 20),
+    // // });
+    // setFromItems(machineArr);
   }, [watch(fieldName)]);
 
   //회원가입 로직
@@ -133,7 +124,7 @@ export default (props) => {
       <Background>
         <div className="title">헬스장 배치도 설정</div>
         <StyledForm formId={formId}>
-          <Line>
+          {/* <Line>
             <LineContent>
               <Machines
                 formStates={formStates}
@@ -141,7 +132,8 @@ export default (props) => {
                 name={fieldName}
               />
             </LineContent>
-          </Line>
+          </Line> */}
+          <MachineList formStates={formStates} machines={machines} />
         </StyledForm>
         <DndProvider backend={HTML5Backend}>
           <MachineBox>
