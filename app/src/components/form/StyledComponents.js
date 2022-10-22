@@ -26,7 +26,7 @@ export const Line = styled.div`
 export const StyledInput = styled.input`
   border: ${({ disabled }) => (disabled ? "none" : `1px solid lightgray`)};
   border-radius: 10px;
-  padding: ${({ theme }) => theme.form.padding};
+  padding: ${({ padding, theme }) => padding || theme.form.padding};
   color: black;
   font-family: Noto Sans KR;
   flex: 1 2 auto;
@@ -38,6 +38,8 @@ export const StyledInput = styled.input`
     color: lightgray;
   }
   width: ${({ width }) => width};
+  font-size: ${({ fontSize }) => fontSize};
+  //${({ css }) => css}
 `;
 
 export const ErrorBorderInput = styled.input`

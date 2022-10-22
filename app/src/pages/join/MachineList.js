@@ -1,21 +1,20 @@
 //저장된 머신 리스트
 
+import { useEffect } from "react";
 import styled from "styled-components";
 import blank_image from "assets/image/blank_image.png";
 import { MACHINE_NAME } from "constants/center";
 import useEquipment from "hooks/useEquipment";
 import * as FormComponent from "components/form/StyledComponents";
 
-const checkboxName = "equipment";
-
 const MachineList = (props) => {
-  const equipment = useEquipment();
-  const { formStates, name } = props;
+  const { formStates, resetIcon, name, equipment } = props;
   const { control, register, watch } = formStates;
   const { StyledForm, Line, StyledInput, Label, LineContent, ErrorDiv } =
     FormComponent;
-  const machines = watch(checkboxName) || [];
-  console.log(watch(checkboxName));
+  const machines = watch(name) || [];
+  // const equipment = useEquipment();
+
   return (
     <>
       <div>
@@ -34,15 +33,12 @@ const MachineList = (props) => {
               <>
                 <input
                   type="checkbox"
-                  id={`${checkboxName}_${idx}`}
-                  name={checkboxName}
+                  id={`${name}_${idx}`}
+                  name={name}
                   value={idx}
-                  {...register(checkboxName)}
+                  {...register(name)}
                 ></input>
-                <label
-                  style={{ cursor: "pointer" }}
-                  htmlFor={`${checkboxName}_${idx}`}
-                >
+                <label style={{ cursor: "pointer" }} htmlFor={`${name}_${idx}`}>
                   {MACHINE_NAME[equip.name]}
                 </label>
               </>
@@ -65,8 +61,28 @@ const MachineList = (props) => {
                 />
                 <TextWrapper>
                   <CenterName>{MACHINE_NAME[name]}</CenterName>
-                  <div style={{ fontFamily: "Noto Sans KR" }}>
-                    개수 : <input {...register(name)} />
+                  <div
+                    style={{
+                      fontFamily: "Noto Sans KR",
+                      display: "flex",
+                      width: "100%",
+                      gap: "5px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>개수 : </div>
+                    <StyledInput
+                      fontSize="16px"
+                      width="50%"
+                      type="number"
+                      padding="3px"
+                      placeholder="0"
+                      {...register(name, {
+                        onBlur: (e) => {
+                          resetIcon(equipment);
+                        },
+                      })}
+                    />
                   </div>
                 </TextWrapper>
               </MachineWrapper>
