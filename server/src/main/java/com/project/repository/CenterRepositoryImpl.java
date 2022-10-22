@@ -44,6 +44,7 @@ public class CenterRepositoryImpl implements CenterRepositoryCustom {
                 .orderBy(center.id.desc())
                 .fetch();
     }
+    // 동적 쿼리 처리를 위한 BooleanExpression
     private BooleanExpression containsName(String name){
         if(name == null) return null;
         return center.name.contains(name);
@@ -56,11 +57,11 @@ public class CenterRepositoryImpl implements CenterRepositoryCustom {
         if(minPrice == null) return null;
         return center.price.goe(minPrice);
     }
-        private BooleanExpression loePrice(Integer maxPrice){
+    private BooleanExpression loePrice(Integer maxPrice){
         if(maxPrice == null) return null;
         return center.price.loe(maxPrice);
     }
-
+    //헬스 기구의 개수 이상인 헬스장의 ID 리스트를 리턴하도록 함
     private BooleanExpression findEquipment(Long equipmentId, Integer number){
         if(equipmentId == null) return null;
         if(number == null) number = 0;
@@ -72,6 +73,7 @@ public class CenterRepositoryImpl implements CenterRepositoryCustom {
                 .fetch();
         return center.id.in(ids);
     }
+    //DTO에 알맞게 결과를 출력하도록 Projection.constructor를 통해 처리
     @Override
     public List<CenterEquipmentNumber> getEquipNumber(Long centerId){
          return jpaQueryFactory.select(Projections.constructor(CenterEquipmentNumber.class,

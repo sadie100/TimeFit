@@ -1,17 +1,12 @@
 package com.project.response;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+// 헬스장의 기구와 기구 개수를 넘겨주기 위한 클래스
 @Getter
-@Setter
-@Data
 public class CenterEquipmentNumber {
-    private String equipment;
-    private Long number;
+    private final String equipment;
+    private final Long number;
 
     public CenterEquipmentNumber(String name, Long number){
         this.equipment = name;

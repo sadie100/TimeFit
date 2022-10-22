@@ -5,14 +5,12 @@ import com.project.request.ReservationRequest;
 import com.project.request.ReservationSearch;
 import com.project.response.ReservationResponse;
 import com.project.response.ReservationUserResponse;
-import com.project.response.TempResponse;
 import com.project.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -34,8 +32,8 @@ public class ReservationController {
         }
 
         @DeleteMapping("/center/{centerId}/reserve/{reservationId}")
-        public void cancelReservation(@PathVariable Long centerId, @PathVariable Long reservationId){
-            reservationService.cancelReservation(centerId,reservationId);
+        public void cancelReservation(@PathVariable Long reservationId){
+            reservationService.cancelReservation(reservationId);
         }
 
         @GetMapping("/my-reserve")

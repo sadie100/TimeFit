@@ -28,14 +28,13 @@ public class CenterService {
     private final CenterRepository centerRepository;
     private final CenterImgRepository centerImgRepository;
 
-
+    // 검색조건을 받아와 헬스장 정보를 받아와 List로 반환
     public List<CenterResponse> getList(CenterSearch centerSearch){
-
         return centerRepository.getList(centerSearch).stream()
                 .map(CenterResponse::new)
                 .collect(Collectors.toList());
     }
-
+    // 헬스장 ID를 통해 센터 정보를 찾고, 헬스장의 기구 개수와 함께 DTO 전달
     public CenterDetailResponse get(Long centerId) {
         Center center = centerRepository.findById(centerId)
                 .orElseThrow(CenterNotFound::new);

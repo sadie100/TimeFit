@@ -1,24 +1,18 @@
 package com.project.response;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.project.domain.Reservation;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+// 예약 정보를 넘겨주기 위한 클래스
 @Getter
-@Setter
-@Data
 public class ReservationDetailResponse {
 
-    private Long reservationId;
-    private String userName;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private final Long reservationId;
+    private final String userName;
+    private final LocalDateTime start;
+    private final LocalDateTime end;
 
     public ReservationDetailResponse(Reservation reservation) {
         this.reservationId = reservation.getId();
