@@ -9,9 +9,8 @@ import * as FormComponent from "components/form/StyledComponents";
 
 const MachineList = (props) => {
   const { formStates, resetIcon, name, equipment } = props;
-  const { control, register, watch } = formStates;
-  const { StyledForm, Line, StyledInput, Label, LineContent, ErrorDiv } =
-    FormComponent;
+  const { setValue, register, watch } = formStates;
+  const { StyledInput, Label, LineContent, ErrorDiv } = FormComponent;
   const machines = watch(name) || [];
   // const equipment = useEquipment();
 
@@ -78,8 +77,12 @@ const MachineList = (props) => {
                       padding="3px"
                       placeholder="0"
                       {...register(name, {
-                        onBlur: (e) => {
-                          resetIcon(equipment);
+                        onChange: (e) => {
+                          const val = e.currentTarget.value;
+                          if (val < 0) {
+                            setValue(name, 0);
+                          }
+                          resetIcon();
                         },
                       })}
                     />
