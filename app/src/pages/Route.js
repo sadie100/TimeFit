@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Main from "./Main";
 import Login from "./Login";
 import Join from "./join/Join";
 import Header from "components/base/Header";
-import Sample from "./Sample";
 import Reserve from "pages/reserve/Reserve";
 import Center from "pages/center/Center";
 import Help from "pages/help/Help";
@@ -64,7 +63,7 @@ const LoadingBackground = styled.div`
   justify-content: center;
   flex-direction: column;
   opacity: 0.5;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
 `;

@@ -193,7 +193,11 @@ export default () => {
         label: "사업자등록번호",
         name: "storeNumber",
         button: centerNumCertified ? "인증완료" : "인증",
-        buttonOnClick: () => handleStoreNumCheck(watch),
+        buttonOnClick: () => {
+          if (watch("storeNumber") === "")
+            return alert("사업자등록번호를 입력해 주세요.");
+          handleStoreNumCheck(watch);
+        },
         buttonDisabled: centerNumCertified,
         disabled: centerNumCertified,
         placeholder: "사업자등록번호를 입력해 주세요.",

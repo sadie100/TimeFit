@@ -12,25 +12,7 @@ export default () => {
   const navigate = useNavigate();
   const { startLoading, endLoading } = useLoading();
   const { handleCheck } = useAuth();
-  const handleKakao = async () => {
-    // try {
-    //   if (window.Kakao) {
-    //     const kakao = window.Kakao;
-    //     // 중복 initialization 방지
-    //     if (!kakao.isInitialized()) {
-    //       // 두번째 step 에서 가져온 javascript key 를 이용하여 initialize
-    //       kakao.init(process.env.REACT_APP_KAKAO_KEY);
-    //     }
-    //     const result = await kakao.Auth.authorize({
-    //       redirectUri: process.env.REACT_APP_KAKAO_REDIRECT,
-    //     });
-    //     console.log(result);
-    //   }
-    // } catch (e) {
-    //   console.log(e);
-    //   alert("에러가 발생했습니다.");
-    // }
-  };
+
   const onSubmit = (data) => {
     startLoading();
     axios
