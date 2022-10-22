@@ -13,11 +13,7 @@ import axios from "axios";
 import Machines from "pages/join/Machines";
 import MachineList from "pages/join/MachineList";
 import { useForm } from "react-hook-form";
-import {
-  StyledForm,
-  Line,
-  LineContent,
-} from "components/form/StyledComponents";
+import { Line, LineContent } from "components/form/StyledComponents";
 import { useLoading } from "hooks/useLoadingContext";
 
 const formId = "CenterLayout";
@@ -126,11 +122,11 @@ export default (props) => {
         <StyledForm formId={formId}>
           {/* <Line>
             <LineContent>
-              <Machines
-                formStates={formStates}
-                machines={machines}
-                name={fieldName}
-              />
+            <Machines
+            formStates={formStates}
+            machines={machines}
+            name={fieldName}
+            />
             </LineContent>
           </Line> */}
           <MachineList formStates={formStates} machines={machines} />
@@ -175,4 +171,16 @@ const MachineBox = styled.div`
   border: 1px solid gray;
   width: 800px;
   padding: 10px;
+`;
+
+const StyledForm = styled.form`
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  * {
+    font-family: Noto Sans KR;
+  }
 `;
