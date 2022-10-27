@@ -17,6 +17,7 @@ import com.project.response.ReservationUserResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,9 @@ public class ReservationService {
         return reservationList;
     }
     // 예약 요청
+    @Transactional
     public void requestReservation(Long id, ReservationRequest request, User user){
+
         //예약 있을 시 예외처리
         if(!reservationRepository.check(id, request)){
             throw new ReservationExist();
