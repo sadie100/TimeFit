@@ -9,6 +9,7 @@ import lombok.ToString;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static com.project.domain.QReservation.reservation;
 
@@ -30,6 +31,7 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
             return true;
         return false;
     }
+
     // 예약정보 확인
     @Override
     public List<Reservation> getReserve(Long id, String date, Long equipment){

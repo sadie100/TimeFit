@@ -1,6 +1,7 @@
 package com.project.domain;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -28,4 +29,5 @@ public class CenterEquipment {
     private Long yLoc;
     private Long height;
     private Long width;
+
 }
