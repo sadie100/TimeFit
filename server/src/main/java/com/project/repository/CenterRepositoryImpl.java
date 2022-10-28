@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.project.domain.QCenter.center;
 import static com.project.domain.QCenterEquipment.centerEquipment;
@@ -92,6 +93,10 @@ public class CenterRepositoryImpl implements CenterRepositoryCustom {
                 .set(center.view, center.view.add(1))
                 .where(center.id.eq(centerId))
                 .execute();
+    }
+    @Override
+    public Center findByIdFetchJoin(Long id){
+        return jpaQueryFactory.selectFrom(center).where(center.id.eq(id)).fetchOne();
     }
 
 }

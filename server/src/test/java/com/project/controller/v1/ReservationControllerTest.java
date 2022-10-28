@@ -9,6 +9,7 @@ import com.project.request.ReservationRequest;
 import com.project.request.ReservationSearch;
 import com.project.request.UserSignIn;
 import com.project.request.UserSignUp;
+import com.project.service.ReservationService;
 import com.project.service.SignService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -58,6 +61,8 @@ class ReservationControllerTest {
     private UserRepository userRepository;
     @Autowired
     private EquipmentRepository equipmentRepository;
+    @Autowired
+    private ReservationService reservationService;
     @Autowired
     private SignService signService;
     @BeforeEach
@@ -325,4 +330,73 @@ class ReservationControllerTest {
                 .andDo(print());
     }
 
+//    @Test
+//    @DisplayName("예약 동시성 처리")
+//    void test6() throws Exception{
+//
+//        ExecutorService executorService = Executors.newFixedThreadPool(5);
+//        UserSignUp user = UserSignUp
+//                .builder()
+//                .email("id@naver.com")
+//                .password("1234")
+//                .name("이름")
+//                .phoneNumber("010-2323-3333")
+//                .build();
+//        signService.join(user);
+//        Assertions.assertEquals(1, userRepository.count());
+//        UserSignIn request = UserSignIn
+//                .builder()
+//                .email("id@naver.com")
+//                .password("1234")
+//                .build();
+//        String json = objectMapper.writeValueAsString(request);
+//        MvcResult result = mockMvc .perform(post("/signin")
+//                        .contentType(APPLICATION_JSON)
+//                        .content(json))
+//                .andExpect(status().isOk())
+//                .andReturn();
+//
+//        Center center = Center.builder()
+//                .name("센터")
+//                .region("서울")
+//                .price(10000).build();
+//        centerRepository.save(center);
+//
+//        List<Equipment> equipments = IntStream.range(0,5)
+//                .mapToObj(i -> Equipment.builder()
+//                        .name("헬스 기구"+i)
+//                        .build()).collect(Collectors.toList());
+//        equipmentRepository.saveAll(equipments);
+//
+//        List<CenterEquipment> requestEquip = IntStream.range(0,20)
+//                .mapToObj(i -> CenterEquipment.builder()
+//                        .center(center)
+//                        .equipment(equipments.get(i%5))
+//                        .build()).collect(Collectors.toList());
+//        centerEquipmentRepository.saveAll(requestEquip);
+//
+//        User user1 = userRepository.findByEmail(user.getEmail()).orElseThrow(CenterNotFound::new);
+//        LocalDate now = LocalDate.now();
+//
+//        ReservationRequest requestR1 = ReservationRequest.builder()
+//                .centerEquipmentId(requestEquip.get(1).getId())
+//                .start(LocalDateTime.parse(now+"T10:45:30"))
+//                .end(LocalDateTime.parse(now+"T10:55:30"))
+//                .build();
+//
+//
+//        for(int i=0; i < 5; i++){
+//
+//            executorService.execute(()->{
+//                reservationService.requestReservation(center.getId(),requestR1,user1);
+//            });
+//        }
+//
+//        mockMvc.perform(get("/center/{centerId}/reserve?searchIds={1}&searchDate={d}"
+//                        ,center.getId(),requestEquip.get(1).getId(),now)
+//                        .contentType(APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andDo(print());
+//
+//    }
 }
