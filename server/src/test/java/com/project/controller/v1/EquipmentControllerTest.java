@@ -161,7 +161,8 @@ class EquipmentControllerTest {
 
         mockMvc.perform(get("/equipment/{centerId}",center.getId())
                         .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(print());
         centerEquipmentRepository.deleteAll();
         equipmentRepository.deleteAll();
         centerRepository.deleteAll();

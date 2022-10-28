@@ -17,7 +17,7 @@ public class CenterEquipment {
     @Column(name="center_equipmentId")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="center_id")
     private Center center;
 

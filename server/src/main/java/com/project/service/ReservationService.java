@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @Slf4j //로그 작성
 @Service  //서비스 레이어
 @RequiredArgsConstructor  //lombok을 통해 생성자처리
@@ -45,7 +46,7 @@ public class ReservationService {
         return reservationList;
     }
     // 예약 요청
-    @Transactional
+
     public void requestReservation(Long id, ReservationRequest request, User user){
 
         //예약 있을 시 예외처리

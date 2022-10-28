@@ -36,13 +36,13 @@ public class Center {
     private int view;
 
     @JsonManagedReference
-    @OneToMany(mappedBy ="center", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy ="center", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("id asc")
     private Set<CenterImages> centerImages;
 
 
     @JsonManagedReference
-    @OneToMany(mappedBy ="center", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy ="center", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Trainer> trainers;
 
     public CenterEditor.CenterEditorBuilder toEditor(){
