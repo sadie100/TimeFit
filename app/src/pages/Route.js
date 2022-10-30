@@ -57,7 +57,7 @@ const LoadingBackground = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: gray;
-  z-index: 100;
+  z-index: 10000;
   display: ${({ loading }) => (loading ? "flex" : "none")};
   align-items: center;
   justify-content: center;

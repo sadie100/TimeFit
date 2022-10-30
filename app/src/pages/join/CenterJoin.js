@@ -171,7 +171,10 @@ export default () => {
         placeholder: "헬스장 연락처를 입력해 주세요.",
         register: {
           required: "헬스장 연락처를 입력해 주세요.",
-          maxLength: 11,
+          maxLength: {
+            value: 11,
+            message: "연락처는 11자를 넘을 수 없습니다.",
+          },
         },
       },
       {
