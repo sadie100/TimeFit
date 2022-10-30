@@ -1,6 +1,7 @@
 import FormMaker from "components/form/FormMaker";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
 
 const SetEquip = () => {
   const [equips, setEquips] = useState([]);
@@ -78,11 +79,15 @@ const SetEquip = () => {
   ];
 
   return (
-    <>
+    <Background>
       <div>{equips.map((d) => d.name).join()}</div>
       <FormMaker formId="SetEquip" formData={formData} onSubmit={onSubmit} />
-    </>
+    </Background>
   );
 };
 
 export default SetEquip;
+
+const Background = styled.div`
+  padding: ${({ theme }) => theme.height.header} 0;
+`;

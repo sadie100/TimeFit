@@ -44,8 +44,9 @@ export default () => {
 };
 
 const Background = styled.div`
-  padding: 10vh 0;
+  padding: ${({ theme }) => theme.common.padding};
   width: 100%;
+  height: 100%;
   background-color: white;
   display: flex;
   align-items: center;
@@ -64,4 +65,5 @@ const StyledButton = styled(Button)`
     primary ? theme.color.main : "white"};
   min-width: 11rem;
   min-height: 7rem;
+  word-break: keep-all;
 `;

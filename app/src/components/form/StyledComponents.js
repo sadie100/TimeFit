@@ -38,6 +38,7 @@ export const StyledInput = styled.input`
     color: lightgray;
   }
   width: ${({ width }) => width};
+  max-width: ${({ maxWidth }) => maxWidth};
   font-size: ${({ fontSize }) => fontSize};
   //${({ css }) => css}
 `;
