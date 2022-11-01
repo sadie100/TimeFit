@@ -4,6 +4,7 @@ import com.project.domain.CenterEquipment;
 import com.project.domain.Equipment;
 import com.project.request.CenterEquipmentAdd;
 import com.project.request.EquipmentCategory;
+import com.project.response.CenterEquipmentLocation;
 import com.project.response.EquipmentResponse;
 import com.project.service.EquipmentService;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class EquipmentController {
 
     /* 센터 기구 가져오기*/
     @GetMapping("/equipment/{centerId}")
-    public List<CenterEquipment> getCenterEquipments(@PathVariable Long centerId){
+    public List<CenterEquipmentLocation> getCenterEquipments(@PathVariable Long centerId){
         return equipmentService.getByCenter(centerId);
     }
 

@@ -6,6 +6,7 @@ import com.project.response.CenterEquipmentNumber;
 import com.querydsl.core.Tuple;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CenterRepositoryCustom {
 
@@ -13,5 +14,6 @@ public interface CenterRepositoryCustom {
     List<CenterEquipmentNumber> getEquipNumber(Long centerId);
     void updateView(Long centerId);
 
+    Center findByIdFetchJoin(Long id);
 
 }

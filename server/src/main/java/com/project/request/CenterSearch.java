@@ -17,7 +17,6 @@ public class CenterSearch {
 
     private static final int MAX_SIZE = 2000;
 
-
     private Integer page;
     private Integer size;
     private String name;

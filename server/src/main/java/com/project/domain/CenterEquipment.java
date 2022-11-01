@@ -1,6 +1,7 @@
 package com.project.domain;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -16,7 +17,7 @@ public class CenterEquipment {
     @Column(name="center_equipmentId")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="center_id")
     private Center center;
 
@@ -28,4 +29,5 @@ public class CenterEquipment {
     private Long yLoc;
     private Long height;
     private Long width;
+
 }

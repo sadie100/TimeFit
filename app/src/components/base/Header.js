@@ -46,6 +46,8 @@ const StyledHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px;
+  position: fixed;
+  z-index: 100;
 `;
 
 export default Header;

@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+// 헬스장 상세정보를 넘겨주기 위한 클래스
 @Getter
 public class CenterDetailResponse {
 
@@ -18,8 +18,8 @@ public class CenterDetailResponse {
     private final Integer price;
 
     private final List<String> trainers;
-    private List<CenterImgResponse> images;
-    private List<CenterEquipmentNumber> equipmentNumbers;
+    private final List<CenterImgResponse> images;
+    private final List<CenterEquipmentNumber> equipmentNumbers;
 
 
 
@@ -30,7 +30,7 @@ public class CenterDetailResponse {
         this.address = center.getAddress();
         this.price = center.getPrice();
         this.trainers = center.getTrainers().stream()
-                .map(o -> o.getName())
+                .map(Trainer::getName)
                 .collect(Collectors.toList());
         this.equipmentNumbers = eq;
         this.images = center.getCenterImages().stream()
