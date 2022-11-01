@@ -42,6 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser
 class EquipmentControllerTest {
 
     @Autowired
@@ -96,7 +97,6 @@ class EquipmentControllerTest {
 //        signService.join(user);
     }
     @Test
-    @WithMockUser
     void getEquipments() throws Exception {
         mockMvc.perform(get("/equipment")
                         .contentType(APPLICATION_JSON))
@@ -105,7 +105,6 @@ class EquipmentControllerTest {
     }
 
     @Test
-    @WithMockUser
     void addEquipmentCategory() throws Exception{
         EquipmentCategory equipmentCategory
                 = EquipmentCategory.builder()
@@ -122,7 +121,6 @@ class EquipmentControllerTest {
     }
 
     @Test
-    @WithMockUser
     void addCenterEquipment() throws Exception {
         Center center= Center.builder()
                 .name("이름")
@@ -153,7 +151,6 @@ class EquipmentControllerTest {
     }
 
     @Test
-    @WithMockUser
     void getCenterEquipments() throws Exception {
         Center center= Center.builder()
                 .name("이름")
