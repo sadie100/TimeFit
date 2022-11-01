@@ -10,6 +10,8 @@ import com.project.request.*;
 import com.project.service.EquipmentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,8 +39,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser
 class EquipmentControllerTest {
 
     @Autowired
@@ -73,22 +77,31 @@ class EquipmentControllerTest {
 
     EntityManager em;
 
+    @Autowired
+    private SignService signService;
+
     @BeforeEach
     void clean(){
+        reservationRepository.deleteAll();
         centerEquipmentRepository.deleteAll();
         equipmentRepository.deleteAll();
-        centerRepository.deleteAll();
-//        centerRepository.deleteAll();
-//        centerImgRepository.deleteAll();
         userRepository.deleteAll();
-//        centerEquipmentRepository.deleteAll();
-//        equipmentRepository.deleteAll();
+        centerRepository.deleteAll();
+//        UserSignUp user = UserSignUp
+//                .builder()
+//                .email("id@naver.com")
+//                .password("1234")
+//                .name("이름")
+//                .phoneNumber("010-2323-3333")
+//                .build();
+//        signService.join(user);
     }
     @Test
     void getEquipments() throws Exception {
         mockMvc.perform(get("/equipment")
                         .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test
@@ -135,10 +148,6 @@ class EquipmentControllerTest {
                 )
                 .andExpect(status().isOk());
         Assertions.assertEquals(1, centerEquipmentRepository.count());
-        centerEquipmentRepository.deleteAll();
-        equipmentRepository.deleteAll();
-        centerRepository.deleteAll();
-
     }
 
     @Test
