@@ -32,6 +32,7 @@ public class UserController {
     @Autowired
     private final UserInfoService userInfoService;
 
+    /*유저 정보 가져오기 */
     @GetMapping("/user")
     public UserInfoResponse get(@AuthenticationPrincipal User user) {
         return UserInfoResponse.builder().email(user.getEmail())
@@ -44,6 +45,8 @@ public class UserController {
                 .build();
     }
 
+
+    /*ID로 유저 정보 가져오기 */
     @GetMapping("/user/{msrl}")
     public UserInfoResponse get(@PathVariable Long msrl) {
         User user = userInfoService.get(msrl);
@@ -57,6 +60,8 @@ public class UserController {
                 .build();
     }
 
+
+    /*유저 비밀번호 변경*/
     @Transactional
     @PostMapping("/user/change-password")
     public UserInfoResponse changePassword(@AuthenticationPrincipal User loginUser, @RequestBody UserInfoRequest userInfoRequest ) {
@@ -72,6 +77,7 @@ public class UserController {
                 .build();
     }
 
+    /*유저 센터 변경*/
     @Transactional
     @PostMapping("/user/change-center")
     public UserInfoResponse changeCenter(@AuthenticationPrincipal User loginUser, @RequestBody UserInfoRequest userInfoRequest ) {
