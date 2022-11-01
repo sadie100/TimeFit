@@ -69,6 +69,7 @@ public class SignController {
     }
 
     @GetMapping("/signout")
+
     public void signOut(HttpServletResponse response){
 //        Cookie cookie = new Cookie("X-AUTH-TOKEN", null);
         Cookie cookie = new Cookie("AccessToken", null);
