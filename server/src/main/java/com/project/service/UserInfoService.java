@@ -50,7 +50,7 @@ public class UserInfoService {
     public User changeCenter(UserInfoRequest request){
         //Long msrl, String Email
         User user= userRepository.findByEmail(request.getEmail()).orElseThrow(UserNotFound::new);
-        Center center = centerRepository.findById(request.getCenterId()).orElseThrow(CenterNotFound::new);
+        Center center = centerRepository.findByIdFetchJoin(request.getCenterId());
         user.setCenter(center);
         userRepository.save(user);
         return user;

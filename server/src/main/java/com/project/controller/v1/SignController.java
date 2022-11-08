@@ -153,6 +153,7 @@ public class SignController {
     @PostMapping("/signup/add-trainer/{centerId}")
     public void addTrainer(@PathVariable Long centerId, @RequestBody TrainerRequest trainer ) {
         Center center = centerService.getCenterByID(centerId);
+
         signService.addTrainer(center, trainer);
     }
 
