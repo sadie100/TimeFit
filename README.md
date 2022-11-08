@@ -20,12 +20,17 @@
 
 ## 사용 화면
 
-
+### 메인 페이지
 ![image](https://user-images.githubusercontent.com/90018305/196168688-f537da11-3d66-4194-a682-4dea27f0f27a.png)
 
+### 로그인 페이지
 ![image](https://user-images.githubusercontent.com/90018305/196168772-19092f61-368c-4d2d-b291-3a9d5405c532.png)
 
+### 배치도 페이지
+![배치도 페이지](https://user-images.githubusercontent.com/90018305/200566207-a3a61bb5-c9a4-4127-a830-5d351c5a9653.png)
 
+### 마이 페이지
+![image](https://user-images.githubusercontent.com/90018305/200566531-4005c67e-65d0-462c-812e-27570618e67d.png)
 
 
 ## 기술 스택
