@@ -43,6 +43,14 @@ const MachineList = (props) => {
               </>
             );
           })}
+          <input
+            type="checkbox"
+            id={`${name}_hidden`}
+            name={name}
+            value="hidden"
+            hidden={true}
+            {...register(name)}
+          ></input>
         </div>
       </div>
       {machines.length > 0 && (
