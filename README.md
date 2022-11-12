@@ -41,5 +41,5 @@
 ![배치도 페이지](https://user-images.githubusercontent.com/90018305/200566207-a3a61bb5-c9a4-4127-a830-5d351c5a9653.png)
 
 ### 마이 페이지
-![image](https://user-images.githubusercontent.com/90018305/200566531-4005c67e-65d0-462c-812e-27570618e67d.png)
+<img width="1278" alt="image" src="https://user-images.githubusercontent.com/82367039/201481187-6d16f974-c499-4629-9363-47ed1a44dbaa.png">
 
