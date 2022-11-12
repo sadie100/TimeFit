@@ -9,7 +9,7 @@ export default {
   },
   form: {
     width: "100%",
-    maxWidth: "500px",
+    maxWidth: "600px",
     padding: "10px",
   },
   height: {

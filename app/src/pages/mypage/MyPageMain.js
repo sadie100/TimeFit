@@ -142,7 +142,8 @@ const Background = styled.div`
 `;
 
 const Wrapper = styled.div`
-  width: 80%;
+  width: ${({ theme }) => theme.form.width};
+  max-width: ${({ theme }) => theme.form.maxWidth};
   display: flex;
   justify-content: center;
   flex-direction: column;
