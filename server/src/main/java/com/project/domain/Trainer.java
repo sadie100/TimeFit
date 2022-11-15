@@ -18,7 +18,7 @@ public class Trainer {
     private String name;
     private String gender;
 
-    @JsonBackReference
+//    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY ,cascade = CascadeType.MERGE)
     @JoinColumn(name="center_id")
     private Center center;

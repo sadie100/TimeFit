@@ -14,12 +14,13 @@ import javax.persistence.*;
 public class CenterImages {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "image_id")
     private Long id;
     private String originFileName;
     private String newFileName;
     private String filePath;
 
-    @JsonBackReference
+//    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY ,cascade = CascadeType.MERGE)
     @JoinColumn(name = "center_id")
     private Center center;

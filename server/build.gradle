@@ -48,6 +48,8 @@ dependencies {
 
 	asciidoctorExt "org.springframework.restdocs:spring-restdocs-asciidoctor:${ascidocVersion}"
 	testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc:${ascidocVersion}"
+
+	implementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {

@@ -636,12 +636,12 @@ Content-Type: application/json;charset=UTF-8
 Content-Length: 48
 Host: api.timefit.com
 
-{"center":82,"equipment":11,"xloc":30,"yloc":20}</code></pre>
+{"center":82,"equipment":11,"yloc":20,"xloc":30}</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>{"center":82,"equipment":11,"xloc":30,"yloc":20}</code></pre>
+<pre class="highlight nowrap"><code>{"center":82,"equipment":11,"yloc":20,"xloc":30}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -722,7 +722,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/equipment/add-center' -i -X POST \
     -H 'Content-Type: application/json;charset=UTF-8' \
-    -d '{"center":82,"equipment":11,"xloc":30,"yloc":20}'</code></pre>
+    -d '{"center":82,"equipment":11,"yloc":20,"xloc":30}'</code></pre>
 </div>
 </div>
 </div>
@@ -781,14 +781,14 @@ Pragma: no-cache
 Expires: 0
 Strict-Transport-Security: max-age=31536000 ; includeSubDomains
 X-Frame-Options: DENY
-Content-Length: 277
+Content-Length: 113
 
-[{"id":42,"center":{"id":83,"name":"이름","region":"지역","address":"주소","price":null,"phoneNumber":null,"storeNumber":null,"view":0,"centerImages":[],"trainers":[]},"equipment":{"id":12,"name":"sssss","img":"sssssssss"},"height":null,"width":null,"yloc":20,"xloc":30}]</code></pre>
+[{"id":42,"equipment":{"id":12,"name":"sssss","img":"sssssssss"},"height":null,"width":null,"yloc":20,"xloc":30}]</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[{"id":42,"center":{"id":83,"name":"이름","region":"지역","address":"주소","price":null,"phoneNumber":null,"storeNumber":null,"view":0,"centerImages":[],"trainers":[]},"equipment":{"id":12,"name":"sssss","img":"sssssssss"},"height":null,"width":null,"yloc":20,"xloc":30}]</code></pre>
+<pre class="highlight nowrap"><code>[{"id":42,"equipment":{"id":12,"name":"sssss","img":"sssssssss"},"height":null,"width":null,"yloc":20,"xloc":30}]</code></pre>
 </div>
 </div>
 </div>

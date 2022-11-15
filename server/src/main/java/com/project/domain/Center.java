@@ -4,6 +4,7 @@ package com.project.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
@@ -35,15 +36,17 @@ public class Center {
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
 
-    @JsonManagedReference
+//    @JsonManagedReference
+    @BatchSize(size = 100)
     @OneToMany(mappedBy ="center", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("id asc")
-    private Set<CenterImages> centerImages;
+    private List<CenterImages> centerImages;
 
 
-    @JsonManagedReference
+//    @JsonManagedReference
+    @BatchSize(size = 100)
     @OneToMany(mappedBy ="center", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private Set<Trainer> trainers;
+    private List<Trainer> trainers;
 
     public CenterEditor.CenterEditorBuilder toEditor(){
         return CenterEditor

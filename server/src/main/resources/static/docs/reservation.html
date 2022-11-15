@@ -486,7 +486,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="_요청"><a class="link" href="#_요청">요청</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /center/86/reserve?searchDate=2022-10-23&amp;searchIds=46,47 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /center/86/reserve?searchDate=2022-11-08&amp;searchIds=46,47 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Host: api.timefit.com</code></pre>
@@ -547,7 +547,7 @@ Strict-Transport-Security: max-age=31536000 ; includeSubDomains
 X-Frame-Options: DENY
 Content-Length: 827
 
-[{"id":46,"times":[{"reservationId":5,"userName":"name1","start":"2022-10-23T10:15:11","end":"2022-10-23T10:25:11"},{"reservationId":10,"userName":"name6","start":"2022-10-23T10:15:16","end":"2022-10-23T10:25:16"},{"reservationId":15,"userName":"name11","start":"2022-10-23T10:15:21","end":"2022-10-23T10:25:21"},{"reservationId":20,"userName":"name16","start":"2022-10-23T10:15:26","end":"2022-10-23T10:25:26"}]},{"id":47,"times":[{"reservationId":6,"userName":"name2","start":"2022-10-23T10:15:12","end":"2022-10-23T10:25:12"},{"reservationId":11,"userName":"name7","start":"2022-10-23T10:15:17","end":"2022-10-23T10:25:17"},{"reservationId":16,"userName":"name12","start":"2022-10-23T10:15:22","end":"2022-10-23T10:25:22"},{"reservationId":21,"userName":"name17","start":"2022-10-23T10:15:27","end":"2022-10-23T10:25:27"}]}]</code></pre>
+[{"id":46,"times":[{"reservationId":5,"userName":"name1","start":"2022-11-08T10:15:11","end":"2022-11-08T10:25:11"},{"reservationId":10,"userName":"name6","start":"2022-11-08T10:15:16","end":"2022-11-08T10:25:16"},{"reservationId":15,"userName":"name11","start":"2022-11-08T10:15:21","end":"2022-11-08T10:25:21"},{"reservationId":20,"userName":"name16","start":"2022-11-08T10:15:26","end":"2022-11-08T10:25:26"}]},{"id":47,"times":[{"reservationId":6,"userName":"name2","start":"2022-11-08T10:15:12","end":"2022-11-08T10:25:12"},{"reservationId":11,"userName":"name7","start":"2022-11-08T10:15:17","end":"2022-11-08T10:25:17"},{"reservationId":16,"userName":"name12","start":"2022-11-08T10:15:22","end":"2022-11-08T10:25:22"},{"reservationId":21,"userName":"name17","start":"2022-11-08T10:15:27","end":"2022-11-08T10:25:27"}]}]</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -601,7 +601,7 @@ Content-Length: 827
 <h3 id="_curl"><a class="link" href="#_curl">CURL</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/center/86/reserve?searchDate=2022-10-23&amp;searchIds=46,47' -i -X GET \
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/center/86/reserve?searchDate=2022-11-08&amp;searchIds=46,47' -i -X GET \
     -H 'Content-Type: application/json;charset=UTF-8' \
     -H 'Accept: application/json'</code></pre>
 </div>
@@ -621,10 +621,10 @@ Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 82
 Host: api.timefit.com
-Cookie: AccessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2NjY0NTU4NjcsImV4cCI6MTY2NjQ1NzY2N30.pBriHJyQ56yFaZ9a06Xlo3pfLBSc_gdpPT5R2xr1BGU
-Cookie: RefreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2NjY0NTU4NjcsImV4cCI6MTY2NzA2MDY2N30.ewxJ3SEYnlM9yL1MvO6RVRnApSsP2LmsjP03DBdOS7I
+Cookie: AccessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2Njc4OTA1MzAsImV4cCI6MTY2Nzg5MjMzMH0.L8Xtk9GlGRIKpBDkFEY9LEmKaw-vvQK6Osug6KEODeY
+Cookie: RefreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2Njc4OTA1MzAsImV4cCI6MTY2ODQ5NTMzMH0.qisb3dPVEzBAbzAOv1j7Wsif-P_sKWVMgyNW459MvjM
 
-{"centerEquipmentId":66,"start":"2022-10-23T10:45:30","end":"2022-10-23T10:55:30"}</code></pre>
+{"centerEquipmentId":66,"start":"2022-11-08T10:45:30","end":"2022-11-08T10:55:30"}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -730,7 +730,7 @@ Content-Length: 76
 <pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.timefit.com/center/127/reserve' -i -X POST \
     -H 'Content-Type: application/json;charset=UTF-8' \
     -H 'Accept: application/json' \
-    -d '{"centerEquipmentId":86,"start":"2022-10-23T10:15:30","end":"2022-10-23T10:20:30"}'</code></pre>
+    -d '{"centerEquipmentId":86,"start":"2022-11-08T10:15:30","end":"2022-11-08T10:20:30"}'</code></pre>
 </div>
 </div>
 </div>
@@ -815,8 +815,8 @@ X-Frame-Options: DENY</code></pre>
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Host: api.timefit.com
-Cookie: AccessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMiIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2NjY0NTU4NzQsImV4cCI6MTY2NjQ1NzY3NH0.ykdmosm0VttNpDUR97EcqiXoT5c2Tj6CTSYUkDZQauA
-Cookie: RefreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMiIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2NjY0NTU4NzQsImV4cCI6MTY2NzA2MDY3NH0.LlyQk_ChLddSi4-1pbeAi9_AinPFA2nvAmkRTAe8__o</code></pre>
+Cookie: AccessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMiIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2Njc4OTA1MzYsImV4cCI6MTY2Nzg5MjMzNn0.Eia64qrz4Ptohqq2tb8Mr517vKIjONKKQEU1xi_l7Ok
+Cookie: RefreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMiIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2Njc4OTA1MzYsImV4cCI6MTY2ODQ5NTMzNn0.rQN4yeczFcAmyHOD9l5SuoiiaBbklcDrSdqEJkDZgts</code></pre>
 </div>
 </div>
 </div>
@@ -838,7 +838,7 @@ Strict-Transport-Security: max-age=31536000 ; includeSubDomains
 X-Frame-Options: DENY
 Content-Length: 641
 
-[{"reservationId":66,"centerEquipId":106,"equipName":"헬스 기구0","start":"2022-10-23T23:48:30","end":"2022-10-23T23:58:30"},{"reservationId":67,"centerEquipId":107,"equipName":"헬스 기구1","start":"2022-10-23T23:48:30","end":"2022-10-23T23:58:30"},{"reservationId":68,"centerEquipId":108,"equipName":"헬스 기구2","start":"2022-10-23T23:48:30","end":"2022-10-23T23:58:30"},{"reservationId":69,"centerEquipId":109,"equipName":"헬스 기구3","start":"2022-10-23T23:48:30","end":"2022-10-23T23:58:30"},{"reservationId":70,"centerEquipId":110,"equipName":"헬스 기구4","start":"2022-10-23T23:48:30","end":"2022-10-23T23:58:30"}]</code></pre>
+[{"reservationId":66,"centerEquipId":106,"equipName":"헬스 기구0","start":"2022-11-08T23:48:30","end":"2022-11-08T23:58:30"},{"reservationId":67,"centerEquipId":107,"equipName":"헬스 기구1","start":"2022-11-08T23:48:30","end":"2022-11-08T23:58:30"},{"reservationId":68,"centerEquipId":108,"equipName":"헬스 기구2","start":"2022-11-08T23:48:30","end":"2022-11-08T23:58:30"},{"reservationId":69,"centerEquipId":109,"equipName":"헬스 기구3","start":"2022-11-08T23:48:30","end":"2022-11-08T23:58:30"},{"reservationId":70,"centerEquipId":110,"equipName":"헬스 기구4","start":"2022-11-08T23:48:30","end":"2022-11-08T23:58:30"}]</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">

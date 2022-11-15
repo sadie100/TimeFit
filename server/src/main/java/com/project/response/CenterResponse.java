@@ -1,6 +1,7 @@
 package com.project.response;
 
 import com.project.domain.Center;
+import com.project.domain.CenterImages;
 import lombok.Getter;
 
 import java.util.List;
