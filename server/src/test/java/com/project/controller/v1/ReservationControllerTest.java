@@ -44,6 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ReservationControllerTest {
 

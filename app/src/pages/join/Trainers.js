@@ -29,19 +29,27 @@ export default (props) => {
         flexDirection: "column",
         gap: "10px",
         flex: "1 1 auto",
+        width: "100%",
       }}
       key={`${formId}-${name}`}
     >
       {fields.map((item, index) => {
         return (
           <li
-            style={{ display: "flex", gap: "1rem", alignItems: "center" }}
+            style={{
+              display: "flex",
+              gap: "3%",
+              alignItems: "center",
+              width: "100%",
+              // flexWrap: "wrap",
+            }}
             key={item.id}
           >
             <Label>이름</Label>
             <StyledInput
               type="text"
               placeholder="이름을 입력해 주세요."
+              maxWidth="40%"
               {...register(`${name}.${index}.name`)}
             ></StyledInput>
             <Label>성별</Label>

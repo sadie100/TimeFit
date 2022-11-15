@@ -23,6 +23,8 @@ public class ImageController {
     private final ImageService imageService;
     private final CenterService centerService;
     private final EquipmentService equipmentService;
+
+    /* 센터 이미지 업로드 기능 */
     @PostMapping("/upload-center")
     public void uploadCenter(@RequestParam("file") MultipartFile[] files, Long centerId) {
         Center center = centerService.getCenterByID(centerId);
@@ -55,7 +57,7 @@ public class ImageController {
         }
         return ;
     }
-
+    /* 센터 이미지 가져오기 기능 */
     @GetMapping("/get-center/{centerId}")
     public List<FileDto> getFiles(@PathVariable("centerId") Long centerId) {
         Center center = centerService.getCenterByID(centerId);
@@ -64,6 +66,7 @@ public class ImageController {
         return fileDto;
     }
 
+    /* 센터 기구 이미지 업로드 기능 */
     @PostMapping("/upload-equipment")
     public void uploadEquipment(@RequestParam("file") MultipartFile[] files, Long equipmentId) {
         LocalDateTime localtime = LocalDateTime.now();
