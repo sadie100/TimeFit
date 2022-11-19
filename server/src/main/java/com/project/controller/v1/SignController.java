@@ -91,9 +91,6 @@ public class SignController {
         Optional<User> user =signService.getByEmail(email);
         System.out.println(user);
         if(user.isEmpty()==false) throw new UserExist();
-        //1. 인증번호 전송 로직
-        //2. 인증번호 받기
-        //3. 인증 처리
         return ;
     }
 
