@@ -59,7 +59,6 @@ public class SignController {
         TokenResponse tokenResponse = signService.signIn(request);
         Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
         accessCookie.setPath("/");
-        //테스트를 위해 잠시 주석 처리
 //         accessCookie.setHttpOnly(true);
 //         accessCookie.setSecure(true);
         response.addCookie(accessCookie);
