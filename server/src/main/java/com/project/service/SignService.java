@@ -37,9 +37,8 @@ public class SignService  {
 
     private final CenterRepository centerRepository;
 
-    @Autowired
     private final PasswordEncoder passwordEncoder;
-    private final KakaoService kakaoService;
+
 
     private final TrainerRepository trainerRepository;
 
@@ -51,7 +50,9 @@ public class SignService  {
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L;              // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일
 
-//    public UserDetails loadUserByUsername(String userPk) {
+
+
+    //    public UserDetails loadUserByUsername(String userPk) {
 //        return userRepository.findById(Long.valueOf(userPk)).orElseThrow(UserNotFoundException::new);
 //    }
     // 현재는 여기서 loadUserByUsername를 구현하지 않음

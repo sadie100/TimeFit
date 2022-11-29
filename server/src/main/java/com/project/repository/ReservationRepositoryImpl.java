@@ -29,7 +29,7 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
                                 .or(reservation.end.between(request.getStart(),request.getStart()))                        )
                 .fetch().size() == 0)
             return true;
-        return false;
+        return false; 
     }
 
     // 예약정보 확인
