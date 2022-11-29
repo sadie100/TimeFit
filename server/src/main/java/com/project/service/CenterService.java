@@ -63,8 +63,7 @@ public class CenterService {
     }
 
     public Center getCenterByID(Long centerId){
-        Center center = centerRepository.findById(centerId)
-                .orElseThrow(CenterNotFound::new);
+        Center center = centerRepository.findByIdFetchJoin(centerId);
         return center;
     }
 

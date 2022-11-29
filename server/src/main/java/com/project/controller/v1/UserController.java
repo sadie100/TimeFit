@@ -87,7 +87,6 @@ public class UserController {
                 .gender(user.getGender())
                 .birth(user.getBirth())
                 .name(user.getName())
-                .center(user.getCenter())
                 .msrl(user.getMsrl())
                 .phoneNumber(user.getPhoneNumber())
                 .build();
