@@ -42,7 +42,6 @@ public class SignService  {
 
     private final TrainerRepository trainerRepository;
 
-
     private static final String BEARER_TYPE = "Bearer";
     private final RedisTemplate redisTemplate;
 
@@ -68,7 +67,7 @@ public class SignService  {
                 .build();
         userRepository.save(user);
     }
-    @javax.transaction.Transactional
+    @Transactional
     public CenterSignResponse joinCenter(CenterSignUp request){
         Center center= Center.builder()
                 .name(request.getName())
@@ -105,7 +104,6 @@ public class SignService  {
 
     public TokenResponse signIn(UserSignIn request){
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(EmailSigninFailed::new);
-
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new EmailSigninFailed();
         }
@@ -146,33 +144,24 @@ public class SignService  {
 
     @Transactional
     public TokenResponse reissue(TokenRequest tokenRequest) { //추후 리퀘스트로 수정
-
         // 1. Refresh Token 검증
         if (!jwtTokenProvider.validateToken(tokenRequest.getRefreshToken())) {
             throw new RuntimeException("Refresh Token 이 유효하지 않습니다.");
         }
-
         // 2. Access Token 에서 Member ID 가져오기
         Authentication authentication = jwtTokenProvider.getAuthentication(tokenRequest.getRefreshToken());
-
         // 3. Redis 에서 User email 을 기반으로 저장된 Refresh Token 값을 가져옵니다.
         String refreshToken = (String)redisTemplate.opsForValue().get("RT:" + authentication.getName());
         if(!refreshToken.equals(tokenRequest.getRefreshToken())) {
             return null;
         }
-        System.out.println("refreshToken");
-        System.out.println( refreshToken);
         User principal = (User) authentication.getPrincipal();
-//        System.out.println( principal.getRoles());
-
         // 4. Refresh Token 일치하는지 검사
         if (!refreshToken.equals(tokenRequest.getRefreshToken())) {
             throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
         }
-
 //         5. 새로운 Access 토큰 생성
         String newAccessToken = jwtTokenProvider.createToken(jwtTokenProvider.getUserPk(refreshToken),principal.getRoles(),ACCESS_TOKEN_EXPIRE_TIME);
-
 //         토큰 발급
         return TokenResponse.builder().accessToken(newAccessToken).refreshToken(tokenRequest.getRefreshToken()).build();
     }
