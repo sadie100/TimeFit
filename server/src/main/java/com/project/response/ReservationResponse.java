@@ -1,23 +1,15 @@
 package com.project.response;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.project.domain.Reservation;
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+// 헬스장 기구 별로 예약 정보의 리스트를 넘겨주기 위한 클래스
 @Getter
-@Setter
-@Data
 public class ReservationResponse {
 
-    private Long id;
-    private List<ReservationDetailResponse> times;
+    private final Long id;
+    private final List<ReservationDetailResponse> times;
 
     public ReservationResponse(Long equipID, List<ReservationDetailResponse> reserves){
         this.id = equipID;

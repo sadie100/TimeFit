@@ -36,6 +36,7 @@ public class SignController {
     private final SignService signService;
 
 
+    /* 회원가입 일반 유저 가입자 */
     @PostMapping("/signup")
     public void signUp(@RequestBody @Valid UserSignUp request) {
 //        request.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -43,6 +44,7 @@ public class SignController {
         return;
     }
 
+    /* 회원가입 센터 가입자 */
     @PostMapping("/signup-center")
     public CenterSignResponse signUpCenter(@RequestBody @Valid CenterSignUp request) {
         System.out.println(request);
@@ -50,13 +52,13 @@ public class SignController {
         return signService.joinCenter(request);
     }
 
+    /* 로그인 */
     @PostMapping("/signin")
     public TokenResponse signIn(@RequestBody @Valid UserSignIn request, HttpServletResponse response) {
         //Access Token, RefreshToken 발행
         TokenResponse tokenResponse = signService.signIn(request);
         Cookie accessCookie = new Cookie("AccessToken", tokenResponse.getAccessToken());
         accessCookie.setPath("/");
-        //테스트를 위해 잠시 주석 처리
 //         accessCookie.setHttpOnly(true);
 //         accessCookie.setSecure(true);
         response.addCookie(accessCookie);
@@ -68,6 +70,7 @@ public class SignController {
         return tokenResponse;
     }
 
+    /* 로그아웃 */
     @GetMapping("/signout")
     public void signOut(HttpServletResponse response){
 //        Cookie cookie = new Cookie("X-AUTH-TOKEN", null);
@@ -80,6 +83,7 @@ public class SignController {
         return ;
     }
 
+    /* 이메일 유효성 검사 */
     @GetMapping("/signup/check-email")
     public void checkEmail(@RequestParam String email) {
 //        request.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -87,17 +91,18 @@ public class SignController {
         Optional<User> user =signService.getByEmail(email);
         System.out.println(user);
         if(user.isEmpty()==false) throw new UserExist();
-        //1. 인증번호 전송 로직
-        //2. 인증번호 받기
-        //3. 인증 처리
         return ;
     }
 
+
+    /* 사업자번호 유효성 검사 */
     @GetMapping("/signup/check-storeNumber")
     public void tempCheck(@RequestParam String number) {
         return ;
     }
 
+
+    /* 토큰 재발급 */
     @GetMapping("/reissue")
     public TokenResponse reissue(HttpServletRequest request, HttpServletResponse response) {
         String RefreshToken = null;
@@ -114,6 +119,7 @@ public class SignController {
         return tokenResponse;
     }
 
+
     @PostMapping("/signup/kakao")
     public void signUpByProvider(
             @RequestBody KakaoSignUp kakaoSignUp) {
@@ -122,21 +128,28 @@ public class SignController {
     }
 
 
+
+    /* 이메일 찾기 */
     @GetMapping("/signin/find-email")
     public String findEmail(@RequestParam String phoneNumber) {
         User user = signService.getByPhoneNumber(phoneNumber).orElseThrow();
         return user.getEmail();
     }
 
+
+    /* 비밀번호 찾기 */
     @GetMapping("/signin/find-password")
     public String findPassword(@RequestParam String email) {
         String password = signService.makeNewPassword(email);
         return password;
     }
 
+
+    /* 트레이너 추가 기능 */
     @PostMapping("/signup/add-trainer/{centerId}")
     public void addTrainer(@PathVariable Long centerId, @RequestBody TrainerRequest trainer ) {
         Center center = centerService.getCenterByID(centerId);
+
         signService.addTrainer(center, trainer);
     }
 

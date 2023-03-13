@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @Slf4j //로그 작성
 @Service  //서비스 레이어
 @RequiredArgsConstructor  //lombok을 통해 생성자처리
@@ -28,14 +29,13 @@ public class CenterService {
     private final CenterRepository centerRepository;
     private final CenterImgRepository centerImgRepository;
 
-
+    // 검색조건을 받아와 헬스장 정보를 받아와 List로 반환
     public List<CenterResponse> getList(CenterSearch centerSearch){
-
         return centerRepository.getList(centerSearch).stream()
                 .map(CenterResponse::new)
                 .collect(Collectors.toList());
     }
-
+    // 헬스장 ID를 통해 센터 정보를 찾고, 헬스장의 기구 개수와 함께 DTO 전달
     public CenterDetailResponse get(Long centerId) {
         Center center = centerRepository.findById(centerId)
                 .orElseThrow(CenterNotFound::new);
@@ -63,13 +63,12 @@ public class CenterService {
     }
 
     public Center getCenterByID(Long centerId){
-        Center center = centerRepository.findById(centerId)
-                .orElseThrow(CenterNotFound::new);
+        Center center = centerRepository.findByIdFetchJoin(centerId);
         return center;
     }
 
-    @Transactional
-    public Center update(CenterInfo centerInfo){
+//    @Transactional
+    public void update(CenterInfo centerInfo){
         Center center = centerRepository.findById(centerInfo.getCenterId())
                 .orElseThrow(CenterNotFound::new);
         CenterEditor.CenterEditorBuilder editorBuilder = center.toEditor(); //빌더클래스를 받음
@@ -81,6 +80,5 @@ public class CenterService {
                 .phoneNumber(centerInfo.getPhoneNumber())
                 .build();
         center.edit(centerEditor);
-        return center;
     }
 }

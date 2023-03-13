@@ -9,16 +9,20 @@ export default {
   },
   form: {
     width: "100%",
-    maxWidth: "500px",
+    maxWidth: "600px",
     padding: "10px",
   },
   height: {
-    header: "35px",
+    header: "50px",
+    footer: "100px",
   },
   center: {
     upListHeight: 200,
     gap: 50,
     iconSize: 60,
     //heightGap : upListHeight + gap
+  },
+  common: {
+    padding: "10px",
   },
 };

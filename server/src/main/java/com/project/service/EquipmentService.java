@@ -11,14 +11,17 @@ import com.project.repository.CenterRepository;
 import com.project.repository.EquipmentRepository;
 import com.project.request.CenterEquipmentAdd;
 import com.project.request.EquipmentCategory;
+import com.project.response.CenterEquipmentLocation;
 import com.project.response.EquipmentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -52,9 +55,11 @@ public class EquipmentService {
         equipmentRepository.save(equipment);
     }
 
-    public List<CenterEquipment> getByCenter(Long centerId) {
-        Center center = centerRepository.findById(centerId).orElseThrow(CenterNotFound::new);
-        return centerEquipmentRepository.findByCenter(center);
+    @Transactional
+    public List<CenterEquipmentLocation> getByCenter(Long centerId) {
+        Center center = centerRepository.findByIdFetchJoin(centerId);
+        return centerEquipmentRepository.findByCenter(center).stream()
+                .map(CenterEquipmentLocation::new).collect(Collectors.toList());
     }
 
     public List<EquipmentResponse> getAllEquipment() {
