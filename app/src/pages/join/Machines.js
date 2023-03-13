@@ -57,7 +57,7 @@ export default (props) => {
                   </option>
                   {machines.map(({ name, id }) => (
                     <option key={id} value={name}>
-                      {MACHINE_NAME[name]}
+                      {MACHINE_NAME?.[name] || name}
                     </option>
                   ))}
                 </StyledSelect>
